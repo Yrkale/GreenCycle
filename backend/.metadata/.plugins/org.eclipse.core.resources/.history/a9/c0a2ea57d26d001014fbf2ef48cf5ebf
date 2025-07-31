@@ -1,0 +1,5 @@
+package com.greencycle.domain.users;
+
+public class User {
+
+}
