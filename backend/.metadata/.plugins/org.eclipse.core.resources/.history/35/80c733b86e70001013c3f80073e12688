@@ -1,0 +1,5 @@
+package com.greencycle.repository;
+
+public class UserRepository {
+
+}

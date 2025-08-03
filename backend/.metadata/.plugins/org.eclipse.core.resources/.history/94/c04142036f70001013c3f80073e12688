@@ -1,0 +1,5 @@
+package com.greencycle.security.jwt;
+
+public class JwtUtils {
+
+}

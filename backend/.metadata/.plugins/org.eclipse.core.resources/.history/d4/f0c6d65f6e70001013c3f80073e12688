@@ -1,0 +1,5 @@
+package com.greencycle.model;
+
+public class ERole {
+
+}
