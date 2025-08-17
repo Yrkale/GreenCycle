@@ -1,4 +1,4 @@
-import { login, register } from '../services/authService';
+import { login, register } from './UserAuthService';
 
 export const handleRegister = async (userData, setMessage) => {
   try {

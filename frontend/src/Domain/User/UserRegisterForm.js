@@ -1,9 +1,10 @@
-// src/components/LoginForm.js
+// src/components/RegisterForm.js
 import React, { useState } from 'react';
-import { login } from '../services/AuthService';
+import { register } from './UserAuthService';
 
-function LoginForm() {
+function RegisterForm() {
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: ''
   });
@@ -12,25 +13,25 @@ function LoginForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(formData);
-      alert('Login successful!');
-      console.log('JWT:', response.data.token);
+      await register(formData);
+      alert('Registration successful!');
     } catch (error) {
-      alert('Login failed');
+      alert('Registration failed');
       console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleRegister}>
+      <input name="username" placeholder="Username" onChange={handleChange} />
       <input name="email" placeholder="Email" onChange={handleChange} />
       <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
     </form>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
