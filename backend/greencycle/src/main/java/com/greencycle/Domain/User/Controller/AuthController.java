@@ -1,0 +1,134 @@
+package com.greencycle.Domain.User.Controller;
+
+import java.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import com.greencycle.model.ERole;
+import com.greencycle.model.Role;
+import com.greencycle.model.User;
+import com.greencycle.Domain.User.DTO.JwtResponse;
+import com.greencycle.Domain.User.DTO.LoginRequest;
+import com.greencycle.Domain.User.DTO.MessageResponse;
+import com.greencycle.Domain.User.DTO.SignupRequest;
+import com.greencycle.Domain.User.Repository.RoleRepository;
+import com.greencycle.Domain.User.Repository.UserRepository;
+import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
+import com.greencycle.Domain.User.jwt.JwtUtils;
+import com.greencycle.Domain.User.DTO.*;
+
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    // -------------------- LOGIN ----------------------
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        System.out.println("Login API called");  // ✅ Confirm API is hit
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getAuthorities()));
+    }
+
+
+    // -------------------- REGISTER ----------------------
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                             signUpRequest.getEmail(),
+                             encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null || strRoles.isEmpty()) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role.toLowerCase()) {
+                    case "superadmin":
+                        roles.add(roleRepository.findByName(ERole.ROLE_SUPER_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
+                        break;  
+                    case "messowner":
+                        roles.add(roleRepository.findByName(ERole.ROLE_MESS_OWNER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
+                        break;  
+                    case "pgowner":
+                        roles.add(roleRepository.findByName(ERole.ROLE_PG_OWNER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
+                        break;
+                         
+                    default:
+                        roles.add(roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
+                }
+            });
+        }
+
+        user.setRoles(roles);
+        Set<Role> r=user.getRoles();
+        userRepository.save(user);
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new MessageResponse("User registered successfully!"));
+    }
+}

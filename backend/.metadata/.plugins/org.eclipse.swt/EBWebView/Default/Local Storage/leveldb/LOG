@@ -1,2 +1,3 @@
-2025/08/17-22:09:49.026 1f6c Creating DB C:\Users\Admin\Desktop\GreenCycle\backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb since it was missing.
-2025/08/17-22:09:49.152 1f6c Reusing MANIFEST C:\Users\Admin\Desktop\GreenCycle\backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/08/07-21:22:40.186 4b4c Reusing MANIFEST D:\GreenCycle\backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/08/07-21:22:40.200 4b4c Recovering log #3
+2025/08/07-21:22:40.202 4b4c Reusing old log D:\GreenCycle\backend\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 

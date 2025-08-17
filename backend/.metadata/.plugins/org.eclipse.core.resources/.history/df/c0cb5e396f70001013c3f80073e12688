@@ -1,5 +1,0 @@
-package com.greencycle.security.services;
-
-public class UserDetailsServiceImpl {
-
-}

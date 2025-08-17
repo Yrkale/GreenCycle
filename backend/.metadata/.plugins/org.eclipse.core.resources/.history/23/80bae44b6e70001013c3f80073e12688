@@ -1,5 +1,0 @@
-package com.greencycle.dto;
-
-public class SignupRequest {
-
-}
