@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./NavBar.css";
-import logo from "../../LandingPageAssets/logo.jpg";
+import { Link } from "react-router-dom";
+import logo from "../../LandingPageAssets/logo.png";
+
 
 function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,19 +17,23 @@ function NavBar() {
 
       {/* Center links (desktop) */}
       <nav className={`navbar-center ${menuOpen ? "active" : ""}`}>
-        <a href="#how">How It Works</a>
-        <a href="#shop">Shop</a>
+        <a href="#How-It-Works">How It Works</a>
+        <Link to="/shop">Shop</Link>
         <a href="#impact">Impact</a>
-        <a href="#contributors">Contributors</a>
-        <a href="#live">Live Feed</a>
-        <a href="#contact">Contact</a>
+        <a href="#TopContributor">Contributors</a>
+        <a href="#LiveContribution">Live Feed</a>
+        <a href="#Join">Contact</a>
       </nav>
 
       {/* Right buttons (desktop only) */}
       <div className="navbar-right">
-        <button className="btn ghost">Sign In</button>
-        <button className="btn primary">Get Started</button>
-      </div>
+  <Link to="/login">
+    <button className="btn ghost">Sign In</button>
+  </Link>
+  <Link to="/register">
+    <button className="btn primary">Get Started</button>
+  </Link>
+</div>
 
       {/* Hamburger (mobile only) */}
       <div

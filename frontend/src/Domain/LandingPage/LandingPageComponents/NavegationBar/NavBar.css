@@ -12,9 +12,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 40px;
-  background: #111827;
-  border-bottom: 1px solid #1f2937;
-  box-sizing: border-box; /* ✅ fix overflow */
+  background: #eff5ef; /* white navbar */
+  border-bottom: 1px solid #e5e7eb; /* subtle divider */
+  box-sizing: border-box;
 }
 
 /* Logo */
@@ -25,15 +25,15 @@
 }
 
 .logo {
-  width: 28px;
-  height: 28px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
 .brand {
   font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: #111827; /* dark brand text */
 }
 
 /* Links */
@@ -43,13 +43,14 @@
 }
 
 .navbar-center a {
-  color: #d1d5db;
+  color: #374151; /* dark gray */
   text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .navbar-center a:hover {
-  color: #22c55e;
+  color: #22c55e; /* eco green hover */
 }
 
 /* Buttons */
@@ -77,11 +78,13 @@
 
 .btn.ghost {
   background: transparent;
-  color: #d1d5db;
+  color: #374151; /* dark gray text */
+  border: 1px solid #d1d5db;
 }
 
 .btn.ghost:hover {
   color: #22c55e;
+  border-color: #22c55e;
 }
 
 /* Hamburger */
@@ -96,7 +99,7 @@
 
 .hamburger span {
   height: 3px;
-  background: white;
+  background: #111827; /* dark bars */
   border-radius: 2px;
   transition: 0.3s;
 }
@@ -129,18 +132,18 @@
     top: 64px; /* below navbar */
     left: 0;
     width: 100%;
-    background: #1f2937;
+    background: #f9fafb; /* light background */
     flex-direction: column;
     display: flex;
     padding: 20px;
     gap: 12px;
-    border-top: 1px solid #374151;
+    border-top: 1px solid #e5e7eb;
   }
 
   .navbar-center.active a {
     font-size: 16px;
     padding: 8px 0;
-    color: white;
+    color: #111827;
   }
 
   .navbar-center.active a:hover {

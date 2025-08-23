@@ -1,10 +1,14 @@
 import React from "react";
-import "./LandingPage.css";
+ 
 import Footer from "./LandingPageComponents/Footer/Footer.js"
 import Nav from "./LandingPageComponents/NavegationBar/NavBar.js"
-import ImpactSection from "./LandingPageComponents/ImpactSection/ImpactSection.js"
+import BigImpact from "./LandingPageComponents/BigImpactSection/BigImpactSection.js"
 import HeroSection from "./LandingPageComponents/HeroSection/HeroSection.js";
 import HowItWorks from "./LandingPageComponents/HowItWorks/HowItWorks.js";
+import ImpactResult from "./LandingPageComponents/ImpactResultSection/ImpactResult.js";
+import TopContributor from "./LandingPageComponents/TopContributor/TopContributor.js"
+import LiveContributor from "./LandingPageComponents/LiveContributor/LiveContributor.js"
+import Join from "./LandingPageComponents/Join/Join.js"
 
 function LandingPage() {
   return (
@@ -16,10 +20,20 @@ function LandingPage() {
        <HeroSection/>
 
       {/* Hero Section Two Impact */}
-      <ImpactSection/>
+      <BigImpact/>
 
       {/* Hero Section Three How It Works */}
       <HowItWorks/>
+
+      <ImpactResult/>
+
+      <TopContributor/>
+
+      <LiveContributor/>
+
+      <Join/>
+
+
 
       {/* Footer */}
       <Footer/>

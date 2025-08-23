@@ -1,0 +1,82 @@
+.impact-section {
+  background-color: #ffffff;   /* White background */
+  color: #374151;              /* Dark gray text */
+  text-align: center;
+  padding: 80px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.impact-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: #111827; /* Almost black for headings */
+}
+
+.impact-section .highlight {
+  color: #22c55e; /* Keep green highlight */
+}
+
+.impact-subtitle {
+  max-width: 800px;
+  margin: 0 auto 60px auto;
+  font-size: 1.1rem;
+  color: #6b7280; /* Softer gray for subtitle */
+}
+
+.impact-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.impact-card {
+  background-color: #f9fafb; /* Light gray card bg */
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb; /* subtle border */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.impact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.impact-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  color: #22c55e; /* green stays */
+  margin-bottom: 15px;
+}
+
+.impact-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #111827; /* Dark heading */
+  text-align: center;
+}
+
+.impact-card p {
+  font-size: 0.95rem;
+  color: #374151; /* darker text */
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.impact-card ul {
+  padding-left: 20px;
+}
+
+.impact-card li {
+  color: #22c55e; /* Green bullets */
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}

@@ -1,8 +1,8 @@
 import React from "react";
-import "./ImpactSection.css";
+import "./BigImpactSection.css";
 import { FaRecycle, FaTree, FaLeaf, FaCoins } from "react-icons/fa";
 
-const ImpactSection = () => {
+const ImpactResult = () => {
   const features = [
     {
       icon: <FaRecycle />,
@@ -54,13 +54,13 @@ const ImpactSection = () => {
   ];
 
   return (
-    <section className="impact-section">
+    <section id="impact" className="impact-section">
       <h2>
         Earn Rewards While Making a <span className="highlight">Big Impact</span>
       </h2>
       <p className="impact-subtitle">
-        Our comprehensive approach tackles waste reduction and reforestation while 
-        rewarding you with eco-points. Contribute waste and seeds, earn points, 
+        Our comprehensive approach tackles waste reduction and reforestation while
+        rewarding you with eco-points. Contribute waste and seeds, earn points,
         and shop for sustainable products made from recycled materials.
       </p>
 
@@ -82,4 +82,4 @@ const ImpactSection = () => {
   );
 };
 
-export default ImpactSection;
+export default ImpactResult;

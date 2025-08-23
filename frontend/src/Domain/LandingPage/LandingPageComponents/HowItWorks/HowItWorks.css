@@ -3,8 +3,8 @@
   flex-direction: column;
   gap: 4rem;
   padding: 4rem 2rem;
-  background: #111827;
-  color: #fff;
+  background: #ffffff; /* White background */
+  color: #111827;      /* Dark text */
 }
 
 .step-card {
@@ -32,7 +32,7 @@
 }
 
 .step-icon {
-  background: #00c853;
+  background: #22c55e; /* Green circle */
   color: white;
   padding: 0.8rem;
   border-radius: 50%;
@@ -45,19 +45,20 @@
 .step-number {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #00c853;
+  color: #22c55e; /* Green number */
 }
 
 .step-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.75rem;
+  color: #111827; /* Dark title */
 }
 
 .step-description {
   font-size: 1rem;
   line-height: 1.6;
-  color: #ccc;
+  color: #374151; /* Softer gray for readability */
 }
 
 .step-image img {
@@ -65,6 +66,7 @@
   max-width: 100%;
   border-radius: 12px;
   object-fit: cover;
+  border: 1px solid #e5e7eb; /* Light border for contrast */
 }
 
 /* 📱 Responsive */

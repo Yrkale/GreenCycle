@@ -34,7 +34,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="how-it-works">
+    <section id="How-It-Works" className="how-it-works">
       {steps.map((step, index) => (
         <div
           key={step.id}

@@ -1,0 +1,92 @@
+.impact-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem 5rem;
+  background: #ffffff; /* White background */
+  color: #111827;      /* Dark text */
+}
+
+.impact-text {
+  flex: 1;
+}
+
+.impact-text h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827; /* Dark heading */
+}
+
+.impact-text .highlight {
+  color: #2ecc71; /* Green highlight */
+}
+
+.subtitle {
+  color: #374151; /* Softer dark gray */
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.impact-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 3rem;
+}
+
+.stat-box {
+  border-left: 3px solid #2ecc71;
+  padding-left: 1rem;
+}
+
+.stat-box h3 {
+  color: #2ecc71; /* Green numbers */
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-box p {
+  color: #555; /* Darker gray for readability */
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.impact-image {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.impact-image img {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.growth-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ffffff; /* White badge */
+  border: 1px solid #e5e7eb; /* Light border */
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.growth-badge span {
+  color: #2ecc71;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.growth-badge p {
+  font-size: 0.85rem;
+  color: #374151;
+  margin: 0;
+}

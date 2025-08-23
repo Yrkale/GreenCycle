@@ -1,8 +1,9 @@
 .footer-main {
-  background: #0f172a;
-  color: #d1d5db;
+  background: #252424; /* White background */
+  color: #374151;      /* Dark gray text */
   padding: 40px 60px 20px;
   font-family: Arial, sans-serif;
+  border-top: 1px solid #e5e7eb; /* subtle separation from above */
 }
 
 .footer-content {
@@ -22,7 +23,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #22c55e;
+  color: #22c55e; /* keep eco green */
   font-size: 20px;
   font-weight: bold;
 }
@@ -35,7 +36,7 @@
   margin-bottom: 12px;
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: #f9fbff; /* heading */
 }
 
 .footer-col ul {
@@ -51,16 +52,18 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  color: #e2eaf6; /* Default dark gray */
 }
 
 .footer-col ul li:hover {
-  color: #22c55e;
+  color: #22c55e; /* green hover */
 }
 
 .footer-col p {
   font-size: 14px;
   line-height: 1.6;
   max-width: 250px;
+  color: #f9f9f9; /* softer dark gray */
 }
 
 .icon {
@@ -69,11 +72,11 @@
 
 /* Bottom Bar */
 .footer-bottom {
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid #e5e7eb; /* light border */
   padding-top: 16px;
   text-align: center;
   font-size: 13px;
-  color: #9ca3af;
+  color: #6b7280; /* muted gray */
 }
 
 /* Responsive */

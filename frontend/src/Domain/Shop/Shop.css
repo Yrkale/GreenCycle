@@ -1,0 +1,144 @@
+.shop-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f7fff7;
+  color: #333;
+}
+
+/* Header */
+.shop-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.shop-header h1 {
+  font-size: 28px;
+}
+
+.eco-text {
+  color: green;
+}
+
+.shop-header p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.signin-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #0066ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+}
+
+/* Product Section */
+.products {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  width: 280px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 10px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-info h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.product-info p {
+  font-size: 14px;
+  color: #555;
+}
+
+.points-price {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.points {
+  color: #ff9900;
+  font-weight: bold;
+}
+
+.price {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.impact {
+  background: #e9fce9;
+  padding: 5px;
+  font-size: 13px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.redeem-btn {
+  background: #ccc;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+/* Earn Points */
+.earn-points {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.earn-points h2 {
+  margin-bottom: 20px;
+}
+
+.points-grid {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.task-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  width: 180px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-card .icon {
+  font-size: 30px;
+  display: block;
+}
+
+.task-card h4 {
+  margin: 10px 0 5px;
+  font-size: 16px;
+}
+
+.task-card p {
+  color: green;
+  font-weight: bold;
+}
