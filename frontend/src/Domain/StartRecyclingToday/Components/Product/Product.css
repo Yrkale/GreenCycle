@@ -1,0 +1,119 @@
+.product-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.product-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.product-header h2 { color: #2e7d32; font-size: 20px; }
+
+.product-body h3 { font-size: 22px; margin-bottom: 8px; text-align: center; }
+.product-body p  { color: #666; text-align: center; margin-bottom: 25px; }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+.product-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.product-card:hover { transform: translateY(-3px); border-color: #4caf50; }
+
+.product-card input { display: none; } /* keep checkbox but hide it visually */
+.product-card label { display: block; cursor: pointer; }
+
+.image-placeholder {
+  background: #ececec;
+  border-radius: 10px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #aaa;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 4px;
+}
+
+/* --- Custom round checkbox with tick --- */
+.checkbox-round {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cfd8dc;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s ease-in-out;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* tick hidden by default */
+.checkbox-round::after {
+  content: "";
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+/* when card is selected -> green circle + white ✓ */
+.product-card.selected .checkbox-round {
+  background: #16a34a;          /* green fill */
+  border-color: #16a34a;         /* green border */
+}
+.product-card.selected .checkbox-round::after {
+  content: "✓";
+  color: #fff;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Texts */
+.product-card h4 { margin: 0; font-size: 16px; }
+.product-card p  { font-size: 13px; color: #555; margin: 6px 0 8px; }
+
+.eco-points { color: #2e7d32; font-weight: bold; font-size: 13px; }
+
+/* Selected card styling (green highlight) */
+.product-card.selected {
+  border: 2px solid #16a34a;
+  background: #f0fff4;
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.2);
+}
+
+/* Summary */
+.summary-box {
+  background: #e6f9eb;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 24px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2e7d32;
+}

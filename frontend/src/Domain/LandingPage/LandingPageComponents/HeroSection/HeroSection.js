@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HeroSection.css";
-import plantHands from "../../LandingPageAssets/plant-hands.jpg"; // update the path to your image
+import plantHands from "../../LandingPageAssets/plant-hands.jpg"; 
+import Modal from "../../../StartRecyclingToday/StartRecyclingToday.js";
 
 const HeroSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const stats = [
     { number: "1,250+", label: "Households Joined" },
     { number: "5,000+", label: "Seeds Collected" },
@@ -23,7 +26,12 @@ const HeroSection = () => {
         </p>
 
         <div className="hero-buttons">
-          <button className="btn primary">Start Recycling Today</button>
+          <button 
+            className="btn primary" 
+            onClick={() => setIsModalOpen(true)}
+          >
+            Start Recycling Today
+          </button>
           <button className="btn secondary">Learn More</button>
         </div>
 
@@ -40,6 +48,13 @@ const HeroSection = () => {
       <div className="hero-image">
         <img src={plantHands} alt="Hands holding plant" />
       </div>
+
+      {/* Modal */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2>GreenCycle Collection Request</h2>
+        <p>Fill out the form to request a waste collection and earn eco-points!</p>
+        {/* You can add form fields here later */}
+      </Modal>
     </section>
   );
 };

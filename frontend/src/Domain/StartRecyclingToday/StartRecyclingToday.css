@@ -1,0 +1,39 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;              /* ✅ Make it responsive */
+  max-width: 1000px;       /* ✅ Wider like screenshot */
+  max-height: 90vh;        /* ✅ Prevent overflow */
+  overflow-y: auto;        /* ✅ Scroll inside modal if content is large */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-close {
+  position: fixed;    /* ✅ stays fixed in place */
+  top: 55px;          /* adjust based on modal padding */
+  right: 160px;        /* adjust based on modal padding */
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;      /* stays above content */
+}
+
+.modal-content {
+  margin-top: 20px;
+}
