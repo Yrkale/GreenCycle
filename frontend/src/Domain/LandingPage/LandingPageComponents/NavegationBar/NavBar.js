@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import logo from "../../LandingPageAssets/logo.png";
-
+import LoginRegisterModal from "../../../User/LoginRegisterModal";
 
 function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <header className="navbar">
@@ -25,15 +26,15 @@ function NavBar() {
         <a href="#Join">Contact</a>
       </nav>
 
-      {/* Right buttons (desktop only) */}
+      {/* Right buttons */}
       <div className="navbar-right">
-  <Link to="/login">
-    <button className="btn ghost">Sign In</button>
-  </Link>
-  <Link to="/register">
-    <button className="btn primary">Get Started</button>
-  </Link>
-</div>
+        <button className="btn ghost" onClick={() => setIsModalOpen(true)}>
+          Sign In
+        </button>
+        <button className="btn primary" onClick={() => setIsModalOpen(true)}>
+          Get Started
+        </button>
+      </div>
 
       {/* Hamburger (mobile only) */}
       <div
@@ -44,6 +45,12 @@ function NavBar() {
         <span></span>
         <span></span>
       </div>
+
+      {/* Modal */}
+      <LoginRegisterModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </header>
   );
 }
