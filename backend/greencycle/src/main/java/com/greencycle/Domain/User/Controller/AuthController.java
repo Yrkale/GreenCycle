@@ -105,13 +105,10 @@ public class AuthController {
                     case "superadmin":
                         roles.add(roleRepository.findByName(ERole.ROLE_SUPER_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
-                        break;  
-                    case "messowner":
-                        roles.add(roleRepository.findByName(ERole.ROLE_MESS_OWNER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
-                        break;  
-                    case "pgowner":
-                        roles.add(roleRepository.findByName(ERole.ROLE_PG_OWNER)
+                        break; 
+                        
+                    case "deliverypartner":
+                        roles.add(roleRepository.findByName(ERole.ROLE_DELIVERY_PARTNER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
                         break;
                          
