@@ -1,41 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Shop.css";
-
-const products = [
-  {
-    id: 1,
-    name: "Recycled Plastic Water Bottle",
-    description:
-      "Durable water bottle made from 100% recycled ocean plastic. BPA-free and dishwasher safe.",
-    points: 150,
-    price: "$25",
-    impact: "Saves 5 plastic bottles from landfills",
-    image:
-      "https://via.placeholder.com/200x200.png?text=Water+Bottle",
-  },
-  {
-    id: 2,
-    name: "Bamboo Fiber Lunch Box",
-    description:
-      "Sustainable lunch container made from bamboo fiber and recycled materials. Microwave safe.",
-    points: 200,
-    price: "$35",
-    impact: "Replaces 100+ single-use containers",
-    image:
-      "https://via.placeholder.com/200x200.png?text=Lunch+Box",
-  },
-  {
-    id: 3,
-    name: "Eco-Friendly Tote Bag",
-    description:
-      "Stylish tote bag made from recycled canvas and featuring natural dyes.",
-    points: 180,
-    price: "$28",
-    impact: "Eliminates need for 500+ plastic bags",
-    image:
-      "https://via.placeholder.com/200x200.png?text=Tote+Bag",
-  },
-];
+import { getProducts } from "./ProductService";
 
 const earnPoints = [
   { id: 1, title: "Recycle 1kg plastic", points: "+50 points", icon: "♻️" },
@@ -45,6 +10,23 @@ const earnPoints = [
 ];
 
 export default function Shop() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await getProducts();
+        setProducts(res.data);
+      } catch (err) {
+        console.error("❌ Failed to load products", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <div id="shop" className="shop-container">
       {/* Header */}
@@ -64,26 +46,28 @@ export default function Shop() {
 
       {/* Product Section */}
       <section className="products">
-        {products.map((item) => (
-          <div key={item.id} className="product-card">
-            <img src={item.image} alt={item.name} />
-            <div className="product-info">
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <div className="points-price">
-                <span className="points">{item.points} pts</span>
-                <span className="price">{item.price}</span>
+        {loading ? (
+          <p>Loading products...</p>
+        ) : products.length > 0 ? (
+          products.map((item) => (
+            <div key={item.id} className="product-card">
+              <img src={item.imageUrl} alt={item.name} />
+              <div className="product-info">
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
+                <div className="points-price">
+                  <span className="points">{item.pointsCost} pts</span>
+                  <span className="price">${item.price}</span>
+                </div>
+                <button className="redeem-btn" disabled>
+                  Sign in to redeem
+                </button>
               </div>
-              <p className="impact">
-                <strong>Impact: </strong>
-                {item.impact}
-              </p>
-              <button className="redeem-btn" disabled>
-                Sign in to redeem
-              </button>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No products available</p>
+        )}
       </section>
 
       {/* Earn Points Section */}
