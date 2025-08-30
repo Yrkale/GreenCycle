@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./LoginRegisterModal.css";
+import React, { useState, useContext } from "react";
+import "./LoginRegisterModal.css";//"/LoginRegisterModal.css";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginRegisterModal = ({ isOpen, onClose }) => {
+  const { login, register } = useContext(AuthContext);
+
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ email: "", password: "", username: "" });
   const [loading, setLoading] = useState(false);
@@ -21,29 +23,19 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
 
     try {
       if (isLogin) {
-        // 🔹 Login API
-        const res = await axios.post("http://localhost:8080/api/auth/login", {
-          email: formData.email,
-          password: formData.password,
-        });
-
-        localStorage.setItem("token", res.data.token);
-        alert("✅ Logged in as " + res.data.username);
+        await login({ email: formData.email, password: formData.password });
+        alert("✅ Logged in successfully");
       } else {
-        // 🔹 Register API
-        await axios.post("http://localhost:8080/api/auth/signup", {
+        await register({
           username: formData.username,
           email: formData.email,
           password: formData.password,
         });
-
         alert("🎉 Registered successfully! Now login.");
         setIsLogin(true);
       }
-
       onClose();
     } catch (err) {
-      console.error(err);
       setError(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
@@ -52,9 +44,8 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      {/* Stop click bubbling inside modal */}
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}></button>
+        <button className="modal-close" onClick={onClose}>✖</button>
         <h2>{isLogin ? "Sign In" : "Register"}</h2>
 
         <form onSubmit={handleSubmit}>
