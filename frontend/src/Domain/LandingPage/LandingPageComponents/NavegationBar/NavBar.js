@@ -20,7 +20,7 @@ function NavBar() {
       {/* Center links */}
       <nav className={`navbar-center ${menuOpen ? "active" : ""}`}>
         <a href="#How-It-Works">How It Works</a>
-        <a href="#shop">Shop</a>
+        <a href="/shop">Shop</a>
         <a href="#impact">Impact</a>
         <a href="#TopContributor">Contributors</a>
         <a href="#LiveContribution">Live Feed</a>

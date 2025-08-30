@@ -1,34 +1,47 @@
+// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import AuthService from "../serviecs/AuthService";//"services/AuthService";
+import { jwtDecode } from "jwt-decode";
+import AuthService from "../services/AuthService"; // ⚠️ check spelling: "services"
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(AuthService.getCurrentUser());
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [user, setUser] = useState(null);
 
-  // Run once when app loads → restore session
+  // Load user profile if token exists
   useEffect(() => {
-    const storedUser = AuthService.getCurrentUser();
-    if (storedUser) setUser(storedUser);
-  }, []);
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUser({ email: decoded.sub, roles: decoded.roles }); // basic info from JWT
 
-  const login = async (credentials) => {
-    const data = await AuthService.login(credentials);
-    setUser(data);
-    return data;
+      // Fetch fresh user profile from backend
+      AuthService.getProfile(token)
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.error("❌ Failed to fetch profile:", err);
+          logout();
+        });
+    }
+  }, [token]);
+
+  // ✅ Login function
+  const login = (jwtToken) => {
+    localStorage.setItem("token", jwtToken);
+    setToken(jwtToken);
   };
 
-  const register = async (info) => {
-    return await AuthService.register(info);
-  };
-
+  // ✅ Logout function
   const logout = () => {
-    AuthService.logout();
+    localStorage.removeItem("token");
+    setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

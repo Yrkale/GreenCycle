@@ -72,6 +72,8 @@ public class AuthController {
     // -------------------- REGISTER ----------------------
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+    	System.out.println("Signup API called");  // ✅ Confirm API is hit
+
 
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity

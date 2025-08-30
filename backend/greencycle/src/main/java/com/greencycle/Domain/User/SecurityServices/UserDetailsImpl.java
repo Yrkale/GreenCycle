@@ -58,10 +58,9 @@ public class UserDetailsImpl implements UserDetails {
         return password;
     }
 
-    // ✅ Returning email as username because login uses email
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

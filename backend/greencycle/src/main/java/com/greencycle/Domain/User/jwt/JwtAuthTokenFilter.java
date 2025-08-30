@@ -40,9 +40,21 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+    	
+    	
+
 
         try {
             String jwt = parseJwt(request);
+            
+            
+            
+            logger.info("JWT Token: " + jwt);
+        	logger.info("Is valid: " + jwtUtils.validateJwtToken(jwt));
+        	
+        	
+        	
+            
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String email = jwtUtils.getUserNameFromJwtToken(jwt); // token stores email
 

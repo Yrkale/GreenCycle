@@ -1,91 +1,138 @@
 import React, { useState, useContext } from "react";
-import "./LoginRegisterModal.css";//"/LoginRegisterModal.css";
+// NOTE: keep this import path exactly as your folder name is spelled.
+// If your folder is "services", change "serviecs" -> "services".
+import AuthService from "../services/AuthService";
 import { AuthContext } from "../context/AuthContext";
+import "./LoginRegisterModal.css";
 
 const LoginRegisterModal = ({ isOpen, onClose }) => {
-  const { login, register } = useContext(AuthContext);
-
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ email: "", password: "", username: "" });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const { login: loginContext } = useContext(AuthContext);
 
   if (!isOpen) return null;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const extractToken = (data) =>
+    data?.accessToken || data?.token || data?.jwt || null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+    setErrorMsg("");
+    setSubmitting(true);
 
     try {
       if (isLogin) {
-        await login({ email: formData.email, password: formData.password });
-        alert("✅ Logged in successfully");
-      } else {
-        await register({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
+        // ---------- LOGIN ----------
+        const res = await AuthService.login({
+          email: email,
+          password: password,
         });
-        alert("🎉 Registered successfully! Now login.");
+
+        // Axios responses always keep payload in res.data
+        const data = res?.data ?? res;
+        console.log("[Login] raw response:", data);
+
+        const token = extractToken(data);
+        if (!token) {
+          // Show full response in console to help debugging
+          console.error("[Login] No token field found in response:", data);
+          throw new Error(
+            "Login succeeded but server did not return a token field."
+          );
+        }
+
+        // Save token & update global auth (AuthContext will call /me)
+        localStorage.setItem("token", token);
+        await loginContext(token);
+
+        // Success → close modal
+        onClose();
+      } else {
+        // ---------- REGISTER ----------
+        const res = await AuthService.register({
+          username,
+          email,
+          password,
+          role: ["user"],
+        });
+        console.log("[Register] raw response:", res?.data ?? res);
+
+        // After successful register, switch to login tab
         setIsLogin(true);
       }
-      onClose();
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong!");
+      console.error("❌ Auth error:", err);
+
+      // Prefer backend message if present
+      const backendMsg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.response?.data?.detail ||
+        err?.message ||
+        "Request failed";
+
+      setErrorMsg(backendMsg);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>✖</button>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+      >
+        <button className="modal-close" onClick={onClose} aria-label="Close"> </button>
+
         <h2>{isLogin ? "Sign In" : "Register"}</h2>
+
+        {/* Inline error */}
+        {errorMsg && <div className="form-error">{errorMsg}</div>}
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <input
               type="text"
-              name="username"
               placeholder="Username"
-              value={formData.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           )}
+
           <input
             type="email"
-            name="email"
             placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
+            autoComplete="username"
           />
 
-          <button type="submit" className="btn primary" disabled={loading}>
-            {loading ? "Please wait..." : isLogin ? "Login" : "Register"}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete={isLogin ? "current-password" : "new-password"}
+          />
+
+          <button type="submit" className="btn primary" disabled={submitting}>
+            {submitting ? (isLogin ? "Logging in..." : "Registering...") : isLogin ? "Login" : "Register"}
           </button>
         </form>
 
-        {error && <p className="error-text">{error}</p>}
-
         <p className="toggle-text">
           {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
-          <span onClick={() => setIsLogin(!isLogin)}>
+          <span onClick={() => { setIsLogin(!isLogin); setErrorMsg(""); }}>
             {isLogin ? "Register" : "Login"}
           </span>
         </p>

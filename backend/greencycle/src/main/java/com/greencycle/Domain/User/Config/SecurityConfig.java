@@ -20,17 +20,18 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthTokenFilter jwtAuthTokenFilter;
+	@Autowired
+	private JwtAuthTokenFilter jwtAuthTokenFilter;
 
-    @Bean
+	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors()
             .and()
             .csrf().disable()
             .authorizeHttpRequests()
-            .antMatchers("/api/auth/**", "/api/pickup-requests/**", "/api/products/**", "/api/test/public").permitAll()
+            .antMatchers("/api/auth/**", "/api/pickup-requests/**", "/api/products/**", "/api/test/**").permitAll()
+            .antMatchers("/api/user/me").authenticated() // only logged in users
             .anyRequest().authenticated();
 
         // Add our JWT filter before UsernamePasswordAuthenticationFilter
@@ -39,26 +40,26 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowCredentials(true);
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		config.setAllowedHeaders(Arrays.asList("*"));
+		config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
+	}
 }
