@@ -1,25 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getRecyclableItems } from "./RecyclableItemService";
 import "./Product.css";
 
-const products = [
-  { id: 1, title: "Plastic Bottles", description: "PET bottles, water bottles, soda bottles", points: 5 },
-  { id: 2, title: "Glass Containers", description: "Jars, bottles, food containers", points: 8 },
-  { id: 3, title: "Aluminum Cans", description: "Beverage cans, food cans", points: 10 },
-  { id: 4, title: "Cardboard & Paper", description: "Boxes, newspapers, magazines", points: 3 },
-  { id: 5, title: "Electronics", description: "Old phones, batteries, small appliances", points: 15 },
-  { id: 6, title: "Textiles", description: "Old clothes, fabric scraps, shoes", points: 7 },
-  { id: 7, title: "Organic Waste & Seeds", description: "Fruit peels, vegetable scraps, seeds", points: 5 },
-  { id: 8, title: "Metal Items", description: "Wire, small metal objects, hardware", points: 12 },
-];
-
-const Product = () => {
+const Product = ({ onSelectionChange }) => {
+  const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await getRecyclableItems();
+        setProducts(res.data);
+      } catch (err) {
+        console.error("❌ Failed to fetch recyclable items:", err);
+      }
+    };
+    fetchItems();
+  }, []);
 
   const toggleSelect = (id) => {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
+
+  useEffect(() => {
+    // send full objects to parent (PickUpRequest)
+    onSelectionChange(products.filter((p) => selected.includes(p.id)));
+  }, [selected, products, onSelectionChange]);
 
   const selectedItems = products.filter((p) => selected.includes(p.id));
   const totalPoints = selectedItems.reduce((sum, item) => sum + item.points, 0);
@@ -33,8 +41,7 @@ const Product = () => {
       <div className="product-body">
         <h3>What Can We Collect?</h3>
         <p>
-          Select the items you'd like us to collect. Each item type earns you eco-points
-          that can be redeemed in our shop!
+          Select the items you'd like us to collect. Each item type earns you eco-points!
         </p>
 
         <div className="product-grid">
@@ -45,32 +52,10 @@ const Product = () => {
                 key={item.id}
                 className={`product-card ${isSelected ? "selected" : ""}`}
                 onClick={() => toggleSelect(item.id)}
-                role="checkbox"
-                aria-checked={isSelected}
-                tabIndex={0}
-                onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && toggleSelect(item.id)}
               >
-                {/* keep a real checkbox for a11y, but hide it visually */}
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  readOnly
-                  aria-hidden="true"
-                />
-
-                <label>
-                  <div className="image-placeholder">
-                    <span>🖼</span>
-                  </div>
-
-                  <div className="title-row">
-                    <span className="checkbox-round" aria-hidden="true"></span>
-                    <h4>{item.title}</h4>
-                  </div>
-
-                  <p>{item.description}</p>
-                  <span className="eco-points">🌱 {item.points} eco-points</span>
-                </label>
+                <h4>{item.title}</h4>
+                <p>{item.description}</p>
+                <span className="eco-points">🌱 {item.points} eco-points</span>
               </div>
             );
           })}

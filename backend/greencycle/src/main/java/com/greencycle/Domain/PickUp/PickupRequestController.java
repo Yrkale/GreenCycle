@@ -26,8 +26,8 @@ public class PickupRequestController {
     }
 
     @PostMapping
-    public PickupRequest createPickupRequest(@RequestBody PickupRequest pickupRequest) {
-        return pickupRequestService.save(pickupRequest);
+    public PickupRequest createPickupRequest(@RequestBody PickupRequestDTO dto) {
+        return pickupRequestService.saveFromDTO(dto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./PickUpRequest.css";
-import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { createPickupRequest } from "./PickupRequestService";
+import Product from "../Product/Product.js";
+import { AuthContext } from "../../../User/context/AuthContext.js"; // import context
 
 const PickUpRequest = () => {
+  const { user } = useContext(AuthContext); // check if user is logged in
+
   const [formData, setFormData] = useState({
     pickupDate: "",
     pickupTime: "",
@@ -13,6 +17,7 @@ const PickUpRequest = () => {
     description: "",
   });
 
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -21,17 +26,23 @@ const PickUpRequest = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (selectedProducts.length === 0) {
+      setMessage("❌ Please select at least one recyclable product.");
+      return;
+    }
+
     try {
-      // Combine date + time into one LocalDateTime string
       const pickupDateTime = `${formData.pickupDate}T${formData.pickupTime}:00`;
 
       const payload = {
-        userId: 1, // TODO: get actual logged-in user ID from JWT/localStorage
+        userId: user?.id || 0, // ✅ use logged-in user ID
         pickupDate: pickupDateTime,
         address: formData.address,
         city: formData.city,
         postalCode: formData.postalCode,
         description: formData.description,
+        products: selectedProducts.map((p) => p.title), // send product names
       };
 
       await createPickupRequest(payload);
@@ -44,17 +55,33 @@ const PickUpRequest = () => {
         postalCode: "",
         description: "",
       });
+      setSelectedProducts([]);
     } catch (err) {
       console.error(err);
       setMessage("❌ Failed to schedule pickup. Please try again.");
     }
   };
 
+  // ✅ If user is NOT logged in, show login prompt instead of form
+  if (!user) {
+    return (
+      <div className="pickup-container">
+        <h3 className="pickup-header">
+          <FaCalendarAlt className="icon" /> Schedule Your Pickup
+        </h3>
+        <p className="status-message">⚠️ Please <b>login</b> to schedule a pickup.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pickup-container">
       <h3 className="pickup-header">
         <FaCalendarAlt className="icon" /> Schedule Your Pickup
       </h3>
+
+      {/* Product selection */}
+      <Product onSelectionChange={setSelectedProducts} />
 
       <form className="pickup-form" onSubmit={handleSubmit}>
         <div className="form-group">

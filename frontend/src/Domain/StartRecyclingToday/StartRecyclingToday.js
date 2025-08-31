@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "../StartRecyclingToday/StartRecyclingToday.css"; 
-import Product from "./Components/Product/Product"; // ✅ Make sure filename is Product.js
+import Product from "./Components/Product/Product"; 
 import PickUpRequest from "./Components/PickUpRequest/PickUpRequest";
 import NeedHelp from "./Components/NeedHelp/NeedHelp";
 
 const Modal = ({ isOpen, onClose }) => {
+  const [selectedProducts, setSelectedProducts] = useState([]); // ✅ shared state
+
   if (!isOpen) return null;
 
   return (
@@ -16,19 +18,12 @@ const Modal = ({ isOpen, onClose }) => {
         </button>       
 
         {/* Product grid (your collection request cards) */}
-        <Product />
-
-        <PickUpRequest/>
-
-        <NeedHelp/>
-
-
         
 
+        {/* Pass selected products into pickup request */}
+        <PickUpRequest selectedProducts={selectedProducts} />
 
-
-
-
+        <NeedHelp/>
       </div>
     </div>
   );
