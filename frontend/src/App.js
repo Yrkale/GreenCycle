@@ -5,7 +5,7 @@ import LoginForm from './Domain/User/UserLoginForm';
 import RegisterForm from './Domain/User/UserRegisterForm';
 import LandingPage from './Domain/LandingPage/LandingPage'; // Import Landing Page
 import Shop from "./Domain/Shop/Shop"; 
-import Aboutus from "./Domain/Aboutus/aboutus.js";
+import Aboutus from "./Domain/LandingPage/LandingPageComponents/Aboutus/aboutus.js";
 
 function App() {
   return (
