@@ -1,9 +1,9 @@
 // src/components/LandingPage/AboutUs/AboutUs.js
 import React from "react";
-import "./Aboutus.css";
-import teamImg from "../../LandingPageAssets/logo.png"; // add an image for your team/mission
+import "./AboutUs.css";
+import teamImg from "./team.jpg"; // add an image for your team/mission
 
-const Aboutus = () => {
+const AboutUs = () => {
   return (
     <section className="about">
       <div className="about-text">
@@ -45,4 +45,4 @@ const Aboutus = () => {
   );
 };
 
-export default Aboutus;
+export default AboutUs;

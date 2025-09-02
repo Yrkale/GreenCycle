@@ -25,7 +25,7 @@ function NavBar() {
         <a href="#TopContributor">Contributors</a>
         <a href="#LiveContribution">Live Feed</a>
         <a href="#Join">Contact</a>
-        <a href="/aboutus">AboutUs</a>
+        <a href="/AboutUs">AboutUs</a>
       </nav>
 
       {/* Right side */}

@@ -5,7 +5,7 @@ import LoginForm from './Domain/User/UserLoginForm';
 import RegisterForm from './Domain/User/UserRegisterForm';
 import LandingPage from './Domain/LandingPage/LandingPage'; // Import Landing Page
 import Shop from "./Domain/Shop/Shop"; 
-import Aboutus from "./Domain/LandingPage/LandingPageComponents/Aboutus/aboutus.js";
+import AboutUs from "./Domain/LandingPage/LandingPageComponents/AboutUs/AboutUs.js";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />        
         <Route path="/shop" element={<Shop />} />
-        <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
          
       </Routes>
       
