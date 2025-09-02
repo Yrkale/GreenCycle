@@ -5,6 +5,8 @@ import AuthService from "../services/AuthService";
 import { AuthContext } from "../context/AuthContext";
 import "./LoginRegisterModal.css";
 
+
+
 const LoginRegisterModal = ({ isOpen, onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
@@ -37,6 +39,11 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
         // Axios responses always keep payload in res.data
         const data = res?.data ?? res;
         console.log("[Login] raw response:", data);
+        console.log("pxpx",data.roles)
+
+        
+
+
 
         const token = extractToken(data);
         if (!token) {

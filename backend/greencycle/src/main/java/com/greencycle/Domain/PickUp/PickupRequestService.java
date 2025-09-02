@@ -12,9 +12,6 @@ public class PickupRequestService {
     @Autowired
     private PickupRequestRepository pickupRequestRepository;
 
-    @Autowired
-    private RecyclableItemRepository recyclableItemRepository;
-
     public List<PickupRequest> findAll() {
         return pickupRequestRepository.findAll();
     }
@@ -27,26 +24,22 @@ public class PickupRequestService {
         return pickupRequestRepository.save(pickupRequest);
     }
 
-    // New method: save from DTO
     public PickupRequest saveFromDTO(PickupRequestDTO dto) {
-        PickupRequest pickupRequest = new PickupRequest();
-        pickupRequest.setUserId(dto.getUserId());
-        pickupRequest.setPickupDate(dto.getPickupDate());
-        pickupRequest.setAddress(dto.getAddress());
-        pickupRequest.setCity(dto.getCity());
-        pickupRequest.setPostalCode(dto.getPostalCode());
-        pickupRequest.setDescription(dto.getDescription());
-
-        // fetch items from DB
-        if (dto.getItemIds() != null && !dto.getItemIds().isEmpty()) {
-            List<RecyclableItem> items = recyclableItemRepository.findAllById(dto.getItemIds());
-            pickupRequest.setItems(items);
-        }
-
-        return pickupRequestRepository.save(pickupRequest);
+        PickupRequest request = new PickupRequest();
+        request.setUserId(dto.getUserId());
+        request.setPickupDate(dto.getPickupDate());
+        request.setAddress(dto.getAddress());
+        request.setCity(dto.getCity());
+        request.setPostalCode(dto.getPostalCode());
+        request.setDescription(dto.getDescription());
+        return pickupRequestRepository.save(request);
     }
 
     public void deleteById(Long id) {
         pickupRequestRepository.deleteById(id);
+    }
+
+    public List<PickupRequest> findByAssignedTo(Long partnerId) {
+        return pickupRequestRepository.findByAssignedTo(partnerId);
     }
 }

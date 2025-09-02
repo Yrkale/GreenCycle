@@ -1,13 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./NavBar.css";
-import { AuthContext } from "../../../User/context/AuthContext";//"Domain/User/context/AuthContext";
-import LoginRegisterModal from "../../../User/components/LoginRegisterModal"; //"Domain/User/components/LoginRegisterModal";
+import LoginRegisterModal from "../../../User/components/LoginRegisterModal";
 import logo from "../../LandingPageAssets/logo.png";
+import { useAuth } from "../../../User/context/AuthContext"; 
 
 function NavBar() {
+  const { user, hasRole, logout } = useAuth();
+
+  console.log("👤 User in Navbar:", user);
+  console.log("🎭 Roles:", user?.roles);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
 
   return (
     <header className="navbar">
@@ -25,15 +29,33 @@ function NavBar() {
         <a href="#TopContributor">Contributors</a>
         <a href="#LiveContribution">Live Feed</a>
         <a href="#Join">Contact</a>
-        <a href="/AboutUs">AboutUs</a>
+        <a href="/AboutUs">About Us</a>
+
+        {/* 👤 Normal User */}
+        {hasRole("ROLE_USER") && <a href="/pickup">Schedule Pickup</a>}
+
+        {/* 🚚 Delivery Partner */}
+        {hasRole("ROLE_DELIVERY_PARTNER") && (
+          <>
+            <a href="/DeliveryPartnerDashboard">Dashboard</a>
+            
+          </>
+        )}
+
+        {/* 🛠 Admin */}
+        {hasRole("ROLE_SUPER_ADMIN") && <a href="/AdminDashboard">Admin Dashboard</a>}
       </nav>
 
       {/* Right side */}
       <div className="navbar-right">
         {user ? (
           <>
-            <span className="welcome">👋 Hi, {user.username}</span>
-            <button className="btn ghost" onClick={logout}>Logout</button>
+            <span className="welcome">
+              👋 Hi, {user.username || user.email?.split("@")[0]}
+            </span>
+            <button className="btn ghost" onClick={logout}>
+              Logout
+            </button>
           </>
         ) : (
           <button className="btn ghost" onClick={() => setIsModalOpen(true)}>
@@ -47,11 +69,16 @@ function NavBar() {
         className={`hamburger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
       >
-        <span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
 
       {/* Login/Register Modal */}
-      <LoginRegisterModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <LoginRegisterModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </header>
   );
 }

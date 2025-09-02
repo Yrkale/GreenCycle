@@ -3,7 +3,11 @@ package com.greencycle.Domain.PickUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,8 +33,10 @@ public class RecyclableItemController {
 
     // POST (create new item)
     @PostMapping
-    public RecyclableItem createItem(@RequestBody RecyclableItem item) {
-        return recyclableItemRepository.save(item);
+    public ResponseEntity<RecyclableItem> createItem(@RequestBody RecyclableItem item) {
+        RecyclableItem savedItem = recyclableItemRepository.save(item);
+        return ResponseEntity.created(URI.create("/api/recyclable-items/" + savedItem.getId()))
+                             .body(savedItem);
     }
 
     // PUT (update existing item)
@@ -48,6 +54,18 @@ public class RecyclableItemController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+ // DELETE by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
+        return recyclableItemRepository.findById(id)
+                .map(item -> {
+                    recyclableItemRepository.delete(item);
+                    return ResponseEntity.noContent().<Void>build(); // ✅ enforce Void
+                })
+                .orElseGet(() -> ResponseEntity.notFound().<Void>build()); // ✅ enforce Void
+    }
+
 
 
 }

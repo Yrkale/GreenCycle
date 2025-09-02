@@ -1,7 +1,7 @@
-// src/context/AuthContext.js
-import React, { createContext, useState, useEffect } from "react";
+// AuthContext.js
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
-import AuthService from "../services/AuthService"; // ⚠️ check spelling: "services"
+import AuthService from "../services/AuthService";
 
 export const AuthContext = createContext();
 
@@ -9,33 +9,55 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(null);
 
-  // Load user profile if token exists
   useEffect(() => {
     if (token) {
-      const decoded = jwtDecode(token);
-      setUser({ email: decoded.sub, roles: decoded.roles }); // basic info from JWT
+      try {
+        const decoded = jwtDecode(token);
+        console.log("🔑 Decoded JWT:", decoded);
 
-      // Fetch fresh user profile from backend
-      AuthService.getProfile(token)
-        .then((res) => {
-          setUser(res.data);
-        })
-        .catch((err) => {
-          console.error("❌ Failed to fetch profile:", err);
-          logout();
+        // ✅ Set basic user object from JWT
+        setUser({
+          email: decoded.sub,
+          roles: decoded.roles || [], // fallback if present in JWT
+          username: decoded.username || decoded.sub?.split("@")[0] || null,
         });
+
+        // ✅ Fetch fresh profile from backend
+        AuthService.getProfile()
+          .then((res) => {
+            console.log("🌍 Backend profile:", res.data);
+
+            // Normalize authorities -> roles
+            const roles =
+              res.data.authorities?.map((a) => a.authority) || decoded.roles || [];
+
+            const normalizedUser = {
+              ...res.data,
+              roles, // 👈 now always available
+            };
+
+            setUser(normalizedUser);
+            localStorage.setItem("user", JSON.stringify(normalizedUser));
+          })
+          .catch((err) => {
+            console.error("❌ Failed to fetch profile:", err);
+            logout();
+          });
+      } catch (e) {
+        console.error("❌ Invalid token:", e);
+        logout();
+      }
     }
   }, [token]);
 
-  // ✅ Login function
   const login = (jwtToken) => {
     localStorage.setItem("token", jwtToken);
     setToken(jwtToken);
   };
 
-  // ✅ Logout function
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
     setUser(null);
   };
@@ -45,4 +67,13 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used inside AuthProvider");
+
+  const hasRole = (role) => context?.user?.roles?.includes(role);
+
+  return { ...context, hasRole };
 };

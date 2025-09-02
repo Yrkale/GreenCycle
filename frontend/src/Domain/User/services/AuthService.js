@@ -1,3 +1,4 @@
+// AuthService.js
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
@@ -63,6 +64,7 @@ const getCurrentUser = () => {
 // ---------------- LOGOUT ----------------
 const logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
 export default {
