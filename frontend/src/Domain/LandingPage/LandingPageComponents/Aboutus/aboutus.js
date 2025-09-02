@@ -1,7 +1,7 @@
 // src/components/LandingPage/AboutUs/AboutUs.js
 import React from "react";
 import "./Aboutus.css";
-import teamImg from "./team.jpg"; // add an image for your team/mission
+import teamImg from "../../LandingPageAssets/logo.png"; // add an image for your team/mission
 
 const Aboutus = () => {
   return (
