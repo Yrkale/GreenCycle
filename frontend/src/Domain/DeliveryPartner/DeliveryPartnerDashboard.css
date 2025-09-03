@@ -1,0 +1,80 @@
+.partner-dashboard {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #2e3d29; /* dark eco green for text */
+  background-color: #f9faf9; /* light neutral background */
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* Header */
+.partner-dashboard h1 {
+  color: #1b5e20; /* deep green */
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.partner-dashboard p {
+  color: #4f5d47;
+  margin-bottom: 2rem;
+}
+
+/* Stats cards */
+.stat-card {
+  flex: 1;
+  background: #ffffff;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  border-left: 5px solid #4caf50; /* green accent bar */
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card h3 {
+  font-size: 1rem;
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1b5e20;
+}
+
+/* Panels */
+.panel {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.panel:hover {
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+}
+
+.panel h2 {
+  font-size: 1.25rem;
+  color: #1b5e20;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e0f2f1;
+  padding-bottom: 0.5rem;
+}
+
+/* Grid layout */
+.partner-dashboard .stats-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.partner-dashboard .panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}

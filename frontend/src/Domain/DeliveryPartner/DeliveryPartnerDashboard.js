@@ -1,48 +1,45 @@
-import React, { useState } from "react";
-import PickupRequestsList from "../DeliveryPartner/Component/PickupRequestsList";
-import MyAssignedRequests from "../DeliveryPartner/Component/MyAssignedRequests";
+import React from "react";
+import MyAssignedRequests from "./Component/MyAssignedRequests";
+import PickupRequestsList from "./Component/PickupRequestsList";
 import { useAuth } from "../User/context/AuthContext";
+import "./DeliveryPartnerDashboard.css"
 
 const DeliveryPartnerDashboard = () => {
-  const { hasRole } = useAuth();
-  const [activeTab, setActiveTab] = useState("available");
-
-  // ✅ Role guard
-  if (!hasRole("ROLE_DELIVERY_PARTNER")) {
-    return <p>❌ Access Denied. Delivery Partner role required.</p>;
-  }
+  const { user } = useAuth();
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">🚚 Delivery Partner Dashboard</h1>
+    <div className="partner-dashboard" style={{ padding: "20px" }}>
+      {/* Header */}
+      <h1>Welcome, {user?.username || "Delivery Partner"} 👋</h1>
+      <p>Here’s an overview of your delivery tasks.</p>
 
-      {/* Tab buttons */}
-      <div className="flex space-x-4 mb-6">
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === "available"
-              ? "bg-green-600 text-white"
-              : "bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("available")}
-        >
-          Available Requests
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === "assigned"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200"
-          }`}
-          onClick={() => setActiveTab("assigned")}
-        >
-          My Assigned Requests
-        </button>
+      {/* Stats Section */}
+      <div style={{ display: "flex", gap: "20px", margin: "20px 0" }}>
+        <div className="stat-card">
+          <h3>Assigned Requests</h3>
+          <p>5</p> {/* replace with dynamic count */}
+        </div>
+        <div className="stat-card">
+          <h3>Completed Pickups</h3>
+          <p>12</p> {/* replace with backend data */}
+        </div>
+        <div className="stat-card">
+          <h3>Pending Requests</h3>
+          <p>3</p>
+        </div>
       </div>
 
-      {/* Tab content */}
-      {activeTab === "available" && <PickupRequestsList />}
-      {activeTab === "assigned" && <MyAssignedRequests />}
+      {/* Panels */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+        <div className="panel">
+          <h2>My Assigned Requests</h2>
+          <MyAssignedRequests />
+        </div>
+        <div className="panel">
+          <h2>Available Pickup Requests</h2>
+          <PickupRequestsList />
+        </div>
+      </div>
     </div>
   );
 };
