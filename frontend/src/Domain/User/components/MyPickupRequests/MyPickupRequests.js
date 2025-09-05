@@ -68,14 +68,16 @@ const MyPickupRequests = () => {
 
   {/* ✅ Show Items */}
   {req.items && req.items.length > 0 && (
-    <div className="items-list">
-      <strong>Items:</strong>
-      <ul>
-        {req.items.map((item) => (
-          <li key={item.id}>{item.title}</li>
-        ))}
-      </ul>
-    </div>
+  <div className="items-list">
+    <strong>Items:</strong>
+    <ul>
+      {req.items.map((item) => (
+        <li key={item.id}>
+          {item.title} <span className="points">({item.points} pts)</span>
+        </li>
+      ))}
+    </ul>
+  </div>
   )}
 
   {req.status === "PENDING" && (
