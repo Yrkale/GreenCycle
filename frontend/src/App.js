@@ -18,6 +18,8 @@ import MyAssignedRequests from "./Domain/DeliveryPartner/Component/MyAssignedReq
 import DeliveryPartnerDashboard from './Domain/DeliveryPartner/DeliveryPartnerDashboard.js';
 import AdminDashboard from "./Domain/Admin/AdminDashboard.js";
 
+import MyPickUp from "./Domain/User/components/MyPickupRequests/MyPickupRequests.js"
+
 
 // 🔒 Protected route wrapper for Delivery Partner
 const PartnerRoute = ({ children }) => {
@@ -48,6 +50,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/DeliveryPartnerDashboard" element={<DeliveryPartnerDashboard/>}/>
           <Route path="/AdminDashboard" element={<AdminDashboard/>}/>
+          <Route path="/MyPickUp" element={<MyPickUp/>}/>
 
           {/* 🚚 Delivery Partner Routes (Protected) */}
           <Route 

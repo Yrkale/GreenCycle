@@ -12,6 +12,9 @@ public class PickupRequestService {
     @Autowired
     private PickupRequestRepository pickupRequestRepository;
 
+    @Autowired
+    private RecyclableItemRepository recyclableItemRepository; // ✅ to fetch items
+
     public List<PickupRequest> findAll() {
         return pickupRequestRepository.findAll();
     }
@@ -24,14 +27,24 @@ public class PickupRequestService {
         return pickupRequestRepository.save(pickupRequest);
     }
 
+    // ✅ Save pickup request from DTO (with userId + itemIds)
     public PickupRequest saveFromDTO(PickupRequestDTO dto) {
         PickupRequest request = new PickupRequest();
+
+        // Set simple fields
         request.setUserId(dto.getUserId());
         request.setPickupDate(dto.getPickupDate());
         request.setAddress(dto.getAddress());
         request.setCity(dto.getCity());
         request.setPostalCode(dto.getPostalCode());
         request.setDescription(dto.getDescription());
+
+        // Handle items (ManyToMany join table)
+        if (dto.getItemIds() != null && !dto.getItemIds().isEmpty()) {
+            List<RecyclableItem> items = recyclableItemRepository.findAllById(dto.getItemIds());
+            request.setItems(items);
+        }
+
         return pickupRequestRepository.save(request);
     }
 

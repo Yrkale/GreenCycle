@@ -32,21 +32,27 @@ const PickUpRequest = () => {
       return;
     }
 
+    console.log("Selected products:", selectedProducts);
+
+
     try {
       const pickupDateTime = `${formData.pickupDate}T${formData.pickupTime}:00`;
 
       const payload = {
-        userId: user?.id || 0, // ✅ use logged-in user ID
-        pickupDate: pickupDateTime,
-        address: formData.address,
-        city: formData.city,
-        postalCode: formData.postalCode,
-        description: formData.description,
-        products: selectedProducts.map((p) => p.title), // send product names
-      };
+  userId: user?.id, // ✅ logged-in user ID
+  pickupDate: pickupDateTime,
+  address: formData.address,
+  city: formData.city,
+  postalCode: formData.postalCode,
+  description: formData.description,
+  itemIds: selectedProducts.map((p) => p.id), // ✅ send item IDs, not names
+};
 
-      await createPickupRequest(payload);
+console.log("Submitting pickup request with payload:", payload);
+
+      await createPickupRequest(payload);  
       setMessage("✅ Pickup request scheduled successfully!");
+      // this method reset everything
       setFormData({
         pickupDate: "",
         pickupTime: "",
@@ -150,7 +156,10 @@ const PickUpRequest = () => {
           ></textarea>
         </div>
 
+       
+
         <div className="form-actions">
+          
           <button type="submit" className="submit-btn">
             Schedule Pickup
           </button>

@@ -32,7 +32,7 @@ function NavBar() {
         <a href="/AboutUs">About Us</a>
 
         {/* 👤 Normal User */}
-        {hasRole("ROLE_USER") && <a href="/pickup">Schedule Pickup</a>}
+        {hasRole("ROLE_USER") && <a href="/MyPickUp">Schedule Pickup</a>}
 
         {/* 🚚 Delivery Partner */}
         {hasRole("ROLE_DELIVERY_PARTNER") && (

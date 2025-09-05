@@ -2,7 +2,10 @@ package com.greencycle.Domain.PickUp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +33,10 @@ public class PickupRequestController {
 
     // 🔹 Create a new pickup request
     @PostMapping
-    public PickupRequest createPickupRequest(@RequestBody PickupRequestDTO dto) {
+    public PickupRequest createPickupRequest(@RequestBody PickupRequestDTO dto,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        dto.setUserId(userDetails.getId()); // ✅ force userId from logged-in user
+        System.out.println("Received DTO with userId: " + dto.getUserId());
         return pickupRequestService.saveFromDTO(dto);
     }
 
@@ -40,6 +46,9 @@ public class PickupRequestController {
         pickupRequestService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    
+    //  // Delivery partner api
+    
 
     // 🔹 Delivery Partner: Accept a request
     @PutMapping("/{id}/accept")
@@ -71,4 +80,30 @@ public class PickupRequestController {
     public List<PickupRequest> getAssignedRequests(@PathVariable Long partnerId) {
         return pickupRequestService.findByAssignedTo(partnerId);
     }
+    
+ 
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<PickupRequest> completeRequest(@PathVariable Long id) {
+        return pickupRequestService.findById(id)
+                .map(req -> {
+                    req.setStatus("COMPLETED");
+                    return ResponseEntity.ok(pickupRequestService.save(req));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/partner/{partnerId}")
+    public List<PickupRequest> getAssignedToPartner(@PathVariable Long partnerId) {
+        return pickupRequestService.findAll().stream()
+                .filter(r -> partnerId.equals(r.getAssignedTo()))
+                .toList();
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<PickupRequest> getForUser(@PathVariable Long userId) {
+        return pickupRequestService.findAll().stream()
+                .filter(r -> userId.equals(r.getUserId()))
+                .toList();
+    }
+
 }

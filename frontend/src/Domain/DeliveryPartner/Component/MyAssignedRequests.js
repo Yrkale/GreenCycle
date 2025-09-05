@@ -1,44 +1,48 @@
-import React, { useEffect, useState } from "react";
+// src/Domain/DeliveryPartner/Component/MyAssignedRequests.js
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../../User/context/AuthContext";
 
+const REFRESH_MS = 5000;
+
 const MyAssignedRequests = () => {
   const [requests, setRequests] = useState([]);
-  const { user, token, hasRole } = useAuth(); // ✅ pull hasRole and token from context
-
-  useEffect(() => {
-    if (hasRole("ROLE_DELIVERY_PARTNER")) {
-      fetchAssigned();
-    }
-  }, [user]);
+  const { user, token, hasRole } = useAuth();
+  const intervalRef = useRef(null);
 
   const fetchAssigned = async () => {
     try {
+      // You can also call /api/pickup-requests/partner/{partnerId}
       const res = await axios.get("/api/pickup-requests", {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ send token
+        headers: { Authorization: `Bearer ${token}` },
       });
-      // filter assigned to current partner
       setRequests(res.data.filter((r) => r.assignedTo === user?.id));
     } catch (err) {
       console.error("Error fetching assigned requests", err);
     }
   };
 
+  useEffect(() => {
+    if (!hasRole("ROLE_DELIVERY_PARTNER")) return;
+
+    fetchAssigned(); // initial
+    intervalRef.current = setInterval(fetchAssigned, REFRESH_MS);
+    return () => clearInterval(intervalRef.current);
+  }, [token, hasRole]);
+
   const completeRequest = async (id) => {
     try {
       await axios.put(
         `/api/pickup-requests/${id}/complete`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } } // ✅ secure request
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Request marked as completed!");
       fetchAssigned();
     } catch (err) {
       alert("Failed to complete request.");
     }
   };
 
-  // ✅ Role guard
   if (!hasRole("ROLE_DELIVERY_PARTNER")) {
     return <p>❌ Access Denied. Delivery Partner role required.</p>;
   }
@@ -51,15 +55,9 @@ const MyAssignedRequests = () => {
       ) : (
         requests.map((req) => (
           <div key={req.id} className="p-4 border rounded mb-2 shadow">
-            <p>
-              <strong>Address:</strong> {req.address}, {req.city}
-            </p>
-            <p>
-              <strong>Date:</strong> {req.pickupDate}
-            </p>
-            <p>
-              <strong>Status:</strong> {req.status}
-            </p>
+            <p><strong>Address:</strong> {req.address}, {req.city}</p>
+            <p><strong>Date:</strong> {req.pickupDate}</p>
+            <p><strong>Status:</strong> {req.status}</p>
             {req.status === "ASSIGNED" && (
               <button
                 className="bg-blue-600 text-white px-3 py-1 rounded mt-2"
