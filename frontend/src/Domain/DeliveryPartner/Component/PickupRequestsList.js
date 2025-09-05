@@ -11,12 +11,15 @@ const PickupRequestsList = () => {
   const [loading, setLoading] = useState(true);
   const intervalRef = useRef(null);
 
+  // Fetch all pickup requests
   const fetchAll = async () => {
     try {
-      const res = await axios.get("/api/pickup-requests", {
+      const res = await axios.get("http://localhost:8080/api/pickup-requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setRequests(res.data);
+      //console.log("Fetched pickup requests:", res.data); // Debug
+      // ✅ Only keep pending requests
+      setRequests(res.data.filter((r) => r.status === "PENDING"));
     } catch (err) {
       console.error("Failed to load pickup requests", err);
     } finally {
@@ -27,22 +30,23 @@ const PickupRequestsList = () => {
   useEffect(() => {
     if (!hasRole("ROLE_DELIVERY_PARTNER")) return;
 
-    fetchAll(); // initial
+    fetchAll(); // initial load
     intervalRef.current = setInterval(fetchAll, REFRESH_MS);
     return () => clearInterval(intervalRef.current);
   }, [token, hasRole]);
 
+  // Accept a pickup request
   const accept = async (id) => {
     try {
       await axios.put(
-        `/api/pickup-requests/${id}/accept`,
+        `http://localhost:8080/api/pickup-requests/${id}/accept`,
         {},
         {
-          params: { partnerId: user.id }, // your auth profile has id
+          params: { partnerId: user.id }, // Assign to current partner
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      fetchAll();
+      fetchAll(); // reload list after accepting
     } catch (err) {
       console.error("Accept failed", err);
       alert("❌ Failed to accept request.");
@@ -57,36 +61,22 @@ const PickupRequestsList = () => {
 
   return (
     <div>
-      <h2>All Pickup Requests</h2>
-      {requests.length === 0 ? <p>No requests yet.</p> : null}
-      {requests.map((req) => {
-        const isPending = req.status === "PENDING";
-        const isMine = req.assignedTo === user?.id;
+      <h2>Available Pickup Requests</h2>
+      {requests.length === 0 ? <p>No pending requests right now.</p> : null}
+      {requests.map((req) => (
+        <div key={req.id} className="p-4 border rounded mb-2 shadow">
+          <p><strong>Address:</strong> {req.address}, {req.city}</p>
+          <p><strong>Date:</strong> {req.pickupDate}</p>
+          <p><strong>Status:</strong> {req.status}</p>
 
-        return (
-          <div key={req.id} className="p-4 border rounded mb-2 shadow">
-            <p><strong>Address:</strong> {req.address}, {req.city}</p>
-            <p><strong>Date:</strong> {req.pickupDate}</p>
-            <p><strong>Status:</strong> {req.status}</p>
-            <p><strong>Assigned To:</strong> {req.assignedTo ?? "—"}</p>
-
-            {isPending && (
-              <button
-                className="bg-green-600 text-white px-3 py-1 rounded"
-                onClick={() => accept(req.id)}
-              >
-                Accept
-              </button>
-            )}
-
-            {isMine && req.status === "ASSIGNED" && (
-              <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                You accepted this
-              </span>
-            )}
-          </div>
-        );
-      })}
+          <button
+            className="bg-green-600 text-white px-3 py-1 rounded"
+            onClick={() => accept(req.id)}
+          >
+            Accept
+          </button>
+        </div>
+      ))}
     </div>
   );
 };

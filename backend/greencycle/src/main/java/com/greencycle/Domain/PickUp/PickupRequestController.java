@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -16,6 +18,9 @@ public class PickupRequestController {
 
     @Autowired
     private PickupRequestService pickupRequestService;
+    
+    @Autowired
+    private PickupRequestRepository pickupRequestRepository;
 
     // 🔹 Get all pickup requests
     @GetMapping
@@ -104,6 +109,20 @@ public class PickupRequestController {
         return pickupRequestService.findAll().stream()
                 .filter(r -> userId.equals(r.getUserId()))
                 .toList();
+    }
+    
+    @GetMapping("/stats/{partnerId}")
+    public Map<String, Long> getPartnerStats(@PathVariable Long partnerId) {
+        long assigned = pickupRequestRepository.countByAssignedToAndStatus(partnerId, "ASSIGNED");
+        long completed = pickupRequestRepository.countByAssignedToAndStatus(partnerId, "COMPLETED");
+        long pending = pickupRequestRepository.countByStatus("PENDING");
+
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("assigned", assigned);
+        stats.put("completed", completed);
+        stats.put("pending", pending);
+
+        return stats;
     }
 
 }
