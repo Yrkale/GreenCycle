@@ -5,6 +5,8 @@ import "./AdminDashboard.css";
 function AdminDashboard() {
   const { user, hasRole } = useAuth();
 
+  
+
   if (!user) {
     return <h2 className="error-msg">❌ You must be logged in to view this page.</h2>;
   }
