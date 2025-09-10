@@ -1,61 +1,86 @@
+/* ===============================
+   Delivery Partner Dashboard CSS
+   =============================== */
 .partner-dashboard {
   font-family: "Segoe UI", Arial, sans-serif;
-  color: #2e3d29; /* dark eco green for text */
-  background-color: #f9faf9; /* light neutral background */
+  color: #2e3d29; /* dark eco green */
+  background: linear-gradient(to bottom, #f0f5f0, #f9faf9);
   min-height: 100vh;
   padding: 2rem;
 }
 
 /* Header */
 .partner-dashboard h1 {
-  color: #1b5e20; /* deep green */
-  font-size: 2rem;
+  color: #1b5e20;
+  font-size: 2.2rem;
   margin-bottom: 0.25rem;
+  letter-spacing: 0.5px;
 }
 
 .partner-dashboard p {
   color: #4f5d47;
   margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
-/* Stats cards */
+/* Stats Cards */
+.stats-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
 .stat-card {
   flex: 1;
   background: #ffffff;
-  padding: 1.2rem;
+  padding: 1.5rem 1.2rem;
   border-radius: 1rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
-  border-left: 5px solid #4caf50; /* green accent bar */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-left: 6px solid #4caf50; /* green accent */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
 .stat-card h3 {
   font-size: 1rem;
   color: #2e7d32;
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-card p {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 700;
   color: #1b5e20;
+  margin: 0;
 }
 
 /* Panels */
+.panels-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
 .panel {
   background: #ffffff;
   padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.2s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
 .panel:hover {
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
 .panel h2 {
@@ -64,17 +89,55 @@
   margin-bottom: 1rem;
   border-bottom: 2px solid #e0f2f1;
   padding-bottom: 0.5rem;
+  letter-spacing: 0.5px;
 }
 
-/* Grid layout */
-.partner-dashboard .stats-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+/* Buttons (if any inside panels) */
+button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.partner-dashboard .panels-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+button:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+}
+
+/* Scrollable panel content */
+.panel > div {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Custom scrollbar */
+.panel > div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel > div::-webkit-scrollbar-thumb {
+  background-color: #a5d6a7;
+  border-radius: 4px;
+}
+
+.panel > div::-webkit-scrollbar-track {
+  background: #f0f5f0;
+  border-radius: 4px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .stats-row {
+    flex-direction: column;
+  }
+
+  .panel {
+    padding: 1rem;
+  }
 }
