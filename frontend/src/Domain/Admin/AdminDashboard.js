@@ -1,36 +1,45 @@
 import React from "react";
 import { useAuth } from "../User/context/AuthContext";
+import "./AdminDashboard.css";
 
 function AdminDashboard() {
   const { user, hasRole } = useAuth();
 
+  
+
   if (!user) {
-    return <h2>❌ You must be logged in to view this page.</h2>;
+    return <h2 className="error-msg">❌ You must be logged in to view this page.</h2>;
   }
 
   if (!hasRole("ROLE_SUPER_ADMIN")) {
-    return <h2>🚫 Access Denied: Admins only!</h2>;
+    return <h2 className="error-msg">🚫 Access Denied: Admins only!</h2>;
   }
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>🛠 Admin Dashboard</h1>
-      <p>Welcome, <strong>{user.username || user.email}</strong> 👋</p>
+    <div className="admin-dashboard">
+      <header className="admin-header">
+        <h1>🛠 Admin Dashboard</h1>
+        <p>
+          Welcome, <strong>{user.username || user.email}</strong> 👋
+        </p>
+      </header>
 
-      <section style={{ marginTop: "1.5rem" }}>
+      <section className="overview">
         <h2>📊 Overview</h2>
-        <ul>
-          <li>Total Users: 120</li>
-          <li>Total Pickup Requests: 45</li>
-          <li>Active Delivery Partners: 8</li>
-        </ul>
+        <div className="stats-grid">
+          <div className="stat-card">Total Users: <span>120</span></div>
+          <div className="stat-card">Pickup Requests: <span>45</span></div>
+          <div className="stat-card">Delivery Partners: <span>8</span></div>
+        </div>
       </section>
 
-      <section style={{ marginTop: "1.5rem" }}>
+      <section className="tools">
         <h2>⚙️ Admin Tools</h2>
-        <button style={{ marginRight: "1rem" }}>Manage Users</button>
-        <button style={{ marginRight: "1rem" }}>View Pickup Requests</button>
-        <button>System Settings</button>
+        <div className="btn-group">
+          <button>Manage Users</button>
+          <button>View Pickup Requests</button>
+          <button>System Settings</button>
+        </div>
       </section>
     </div>
   );
