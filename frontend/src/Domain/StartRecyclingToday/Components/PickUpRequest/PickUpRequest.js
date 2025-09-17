@@ -130,6 +130,7 @@ console.log("Submitting pickup request with payload:", payload);
             <input
               type="date"
               name="pickupDate"
+              min={new Date().toISOString().split("T")[0]}
               value={formData.pickupDate}
               onChange={handleChange}
               required

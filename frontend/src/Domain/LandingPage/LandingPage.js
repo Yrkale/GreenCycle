@@ -1,42 +1,46 @@
 import React from "react";
- 
-import Footer from "./LandingPageComponents/Footer/Footer.js"
-import Nav from "./LandingPageComponents/NavegationBar/NavBar.js"
-import BigImpact from "./LandingPageComponents/BigImpactSection/BigImpactSection.js"
+
+import Footer from "./LandingPageComponents/Footer/Footer.js";
+import Nav from "./LandingPageComponents/NavegationBar/NavBar.js";
+import BigImpact from "./LandingPageComponents/BigImpactSection/BigImpactSection.js";
 import HeroSection from "./LandingPageComponents/HeroSection/HeroSection.js";
 import HowItWorks from "./LandingPageComponents/HowItWorks/HowItWorks.js";
 import ImpactResult from "./LandingPageComponents/ImpactResultSection/ImpactResult.js";
-import TopContributor from "./LandingPageComponents/TopContributor/TopContributor.js"
-import LiveContributor from "./LandingPageComponents/LiveContributor/LiveContributor.js"
-import Join from "./LandingPageComponents/Join/Join.js"
+import TopContributor from "./LandingPageComponents/TopContributor/TopContributor.js";
+import LiveContributor from "./LandingPageComponents/LiveContributor/LiveContributor.js";
+import Join from "./LandingPageComponents/Join/Join.js";
+
+// 👇 Import Chatbot
+import Chatbot from "./ChatWidget/ChatWidget.js";
 
 function LandingPage() {
   return (
     <div className="landing">
       {/* Navbar */}
-      <Nav/>      
+      <Nav />
 
-      {/* Hero Section One */}      
-       <HeroSection/>
+      {/* Hero Section One */}
+      <HeroSection />
 
       {/* Hero Section Two Impact */}
-      <BigImpact/>
+      <BigImpact />
 
       {/* Hero Section Three How It Works */}
-      <HowItWorks/>
+      <HowItWorks />
 
-      <ImpactResult/>
+      <ImpactResult />
 
-      <TopContributor/>
+      <TopContributor />
 
-      <LiveContributor/>
+      <LiveContributor />
 
-      <Join/>
-
-
+      <Join />
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
+
+      {/* 👇 Floating Chatbot */}
+      <Chatbot />
     </div>
   );
 }
