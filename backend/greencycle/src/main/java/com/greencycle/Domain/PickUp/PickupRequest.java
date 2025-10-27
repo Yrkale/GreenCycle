@@ -3,6 +3,7 @@ package com.greencycle.Domain.PickUp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "pickups")
@@ -31,6 +32,13 @@ public class PickupRequest {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    // ✅ New Field — OTP Code (6-digit)
+    @Column(length = 10)
+    private String otpCode;
+
+    // ✅ Eco points (after successful verification)
+    private Integer ecoPoints = 0;
+
     // Link with recyclable items
     @ManyToMany
     @JoinTable(
@@ -39,6 +47,13 @@ public class PickupRequest {
         inverseJoinColumns = @JoinColumn(name = "item_id")
     )
     private List<RecyclableItem> items;
+
+    // 🔹 Generate OTP (6 digits)
+    public void generateOtp() {
+        Random random = new Random();
+        int otp = 100000 + random.nextInt(900000); // 6-digit code
+        this.otpCode = String.valueOf(otp);
+    }
 
     // --- Getters and Setters ---
     public Long getId() { return id; }
@@ -73,4 +88,10 @@ public class PickupRequest {
 
     public List<RecyclableItem> getItems() { return items; }
     public void setItems(List<RecyclableItem> items) { this.items = items; }
+
+    public String getOtpCode() { return otpCode; }
+    public void setOtpCode(String otpCode) { this.otpCode = otpCode; }
+
+    public Integer getEcoPoints() { return ecoPoints; }
+    public void setEcoPoints(Integer ecoPoints) { this.ecoPoints = ecoPoints; }
 }

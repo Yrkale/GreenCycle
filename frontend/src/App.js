@@ -20,6 +20,8 @@ import AdminDashboard from "./Domain/Admin/AdminDashboard.js";
 
 import MyPickUp from "./Domain/User/components/MyPickupRequests/MyPickupRequests.js"
 
+import ProfilePage from "./Domain/User/components/Profile/ProfilePage.js";
+
 
 // 🔒 Protected route wrapper for Delivery Partner
 const PartnerRoute = ({ children }) => {
@@ -51,6 +53,7 @@ function App() {
           <Route path="/DeliveryPartnerDashboard" element={<DeliveryPartnerDashboard/>}/>
           <Route path="/AdminDashboard" element={<AdminDashboard/>}/>
           <Route path="/MyPickUp" element={<MyPickUp/>}/>
+          <Route path="/profile" element={<ProfilePage />} />
 
           {/* 🚚 Delivery Partner Routes (Protected) */}
           <Route 

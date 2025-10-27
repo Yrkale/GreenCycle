@@ -45,6 +45,15 @@ public class PickupRequestService {
             request.setItems(items);
         }
 
+        // ✅ Generate OTP when pickup request is created
+        request.generateOtp();
+
+        // ✅ Initialize ecoPoints to 0 (safe default)
+        request.setEcoPoints(0);
+
+        // ✅ Set default status (keep consistent with your flow)
+        request.setStatus("PENDING");
+
         return pickupRequestRepository.save(request);
     }
 

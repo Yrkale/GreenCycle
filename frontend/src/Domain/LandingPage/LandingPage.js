@@ -1,4 +1,3 @@
-import React from "react";
  
 import Footer from "./LandingPageComponents/Footer/Footer.js"
 import Nav from "./LandingPageComponents/NavegationBar/NavBar.js"
@@ -9,6 +8,8 @@ import ImpactResult from "./LandingPageComponents/ImpactResultSection/ImpactResu
 import TopContributor from "./LandingPageComponents/TopContributor/TopContributor.js"
 import LiveContributor from "./LandingPageComponents/LiveContributor/LiveContributor.js"
 import Join from "./LandingPageComponents/Join/Join.js"
+
+ 
 
 function LandingPage() {
   return (
@@ -37,6 +38,10 @@ function LandingPage() {
 
       {/* Footer */}
       <Footer/>
+
+     
+
+
     </div>
   );
 }
