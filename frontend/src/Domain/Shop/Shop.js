@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Shop.css";
 import axios from "axios";
 import { useAuth } from "../User/context/AuthContext";
-import { getShops } from "./ShopService";
+import { getShops, redeemItem, getUserRedemptions } from "./ShopService";
 
 const earnPoints = [
   { id: 1, title: "Recycle 1kg plastic", points: "+50 points", icon: "♻️" },
@@ -17,6 +17,7 @@ export default function Shop() {
   const [loading, setLoading] = useState(true);
   const [ecoPoints, setEcoPoints] = useState(0);
   const [message, setMessage] = useState("");
+  const [redemptions, setRedemptions] = useState([]);
 
   // ✅ Fetch user ecoPoints
   const fetchProfile = async () => {
@@ -43,6 +44,17 @@ export default function Shop() {
     }
   };
 
+  // ✅ Fetch redeemed items
+  const fetchRedemptions = async () => {
+    if (!token) return;
+    try {
+      const res = await getUserRedemptions(token);
+      setRedemptions(res.data);
+    } catch (err) {
+      console.error("❌ Failed to load redemptions:", err);
+    }
+  };
+
   // ✅ Redeem shop item
   const handleRedeem = async (item) => {
     if (ecoPoints < item.pointsCost) {
@@ -51,14 +63,10 @@ export default function Shop() {
     }
 
     try {
-      const res = await axios.post(
-        `http://localhost:8080/api/shop/redeem/${item.id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      await redeemItem(item.id, token);
       setMessage(`✅ Successfully redeemed ${item.name}!`);
-      setEcoPoints((prev) => prev - item.pointsCost);
+      await fetchProfile(); // refresh updated ecoPoints
+      await fetchRedemptions(); // refresh redemption list
     } catch (err) {
       console.error("Redemption failed:", err);
       setMessage("❌ Redemption failed. Please try again later.");
@@ -68,10 +76,12 @@ export default function Shop() {
   useEffect(() => {
     fetchShops();
     fetchProfile();
+    fetchRedemptions();
   }, [token]);
 
   return (
     <div id="shop" className="shop-container">
+      {/* ✅ Header */}
       <header className="shop-header">
         <h1>
           Welcome to the <span className="eco-text">Eco-Rewards Shop</span>
@@ -94,45 +104,74 @@ export default function Shop() {
 
       {message && <p className="shop-message">{message}</p>}
 
-      {/* Shop Items */}
+      {/* ✅ Shop Items */}
       <section className="products">
         {loading ? (
           <p>Loading items...</p>
         ) : shops.length > 0 ? (
-          shops.map((item) => (
-            <div key={item.id} className="product-card">
-              <img src={item.imageUrl} alt={item.name} />
-              <div className="product-info">
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
-                <div className="points-price">
-                  <span className="points">{item.pointsCost} pts</span>
-                  <span className="price">${item.price}</span>
-                </div>
-                {token ? (
+          shops.map((item) => {
+            const canRedeem = token && ecoPoints >= item.pointsCost;
+            return (
+              <div key={item.id} className="product-card">
+                <img src={item.imageUrl} alt={item.name} />
+                <div className="product-info">
+                  <h3>{item.name}</h3>
+                  <p>{item.description}</p>
+                  <div className="points-price">
+                    <span className="points">{item.pointsCost} pts</span>
+                    <span className="price">${item.price}</span>
+                  </div>
+
                   <button
-                    className="redeem-btn"
-                    onClick={() => handleRedeem(item)}
-                    disabled={ecoPoints < item.pointsCost}
+                    className={`redeem-btn ${
+                      canRedeem ? "active" : "disabled"
+                    }`}
+                    onClick={() => canRedeem && handleRedeem(item)}
+                    disabled={!canRedeem}
                   >
-                    {ecoPoints < item.pointsCost
-                      ? "Not enough points"
-                      : "Redeem"}
+                    {token
+                      ? canRedeem
+                        ? "Redeem"
+                        : "Not enough points"
+                      : "Sign in to redeem"}
                   </button>
-                ) : (
-                  <button className="redeem-btn" disabled>
-                    Sign in to redeem
-                  </button>
-                )}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No shop items available</p>
         )}
       </section>
 
-      {/* Earn Points Section */}
+      {/* ✅ My Redeemed Orders Section */}
+      {token && (
+        <section className="my-redemptions">
+          <h2>My Redeemed Orders</h2>
+        {redemptions.length > 0 ? (
+  <div className="redemption-grid">
+    {redemptions.map((r) => (
+      <div key={r.id} className="redemption-card">
+        <h4>{r.shopName ? r.shopName : `Shop #${r.shopId}`}</h4>
+        <p>Points Used: {r.pointsUsed ?? "—"}</p>
+        <p className="date">
+          Redeemed on:{" "}
+          {r.redeemedAt
+            ? new Date(r.redeemedAt).toLocaleString()
+            : "Unknown date"}
+        </p>
+      </div>
+    ))}
+  </div>
+) : (
+  <p>You haven’t redeemed any items yet.</p>
+)}
+
+
+        </section>
+      )}
+
+      {/* ✅ Earn Points Section */}
       <section className="earn-points">
         <h2>Earn More Points</h2>
         <div className="points-grid">
