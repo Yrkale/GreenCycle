@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Shop.css";
-import { getProducts } from "./ProductService";
+import axios from "axios";
+import { useAuth } from "../User/context/AuthContext";
+import { getShops } from "./ShopService";
 
 const earnPoints = [
   { id: 1, title: "Recycle 1kg plastic", points: "+50 points", icon: "♻️" },
@@ -10,46 +12,94 @@ const earnPoints = [
 ];
 
 export default function Shop() {
-  const [products, setProducts] = useState([]);
+  const { token } = useAuth();
+  const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ecoPoints, setEcoPoints] = useState(0);
+  const [message, setMessage] = useState("");
+
+  // ✅ Fetch user ecoPoints
+  const fetchProfile = async () => {
+    if (!token) return;
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setEcoPoints(res.data.ecoPoints);
+    } catch (err) {
+      console.error("Failed to fetch user profile:", err);
+    }
+  };
+
+  // ✅ Fetch shop items
+  const fetchShops = async () => {
+    try {
+      const res = await getShops();
+      setShops(res.data);
+    } catch (err) {
+      console.error("❌ Failed to load shop items", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Redeem shop item
+  const handleRedeem = async (item) => {
+    if (ecoPoints < item.pointsCost) {
+      setMessage("❌ Not enough eco points to redeem this item.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/shop/redeem/${item.id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setMessage(`✅ Successfully redeemed ${item.name}!`);
+      setEcoPoints((prev) => prev - item.pointsCost);
+    } catch (err) {
+      console.error("Redemption failed:", err);
+      setMessage("❌ Redemption failed. Please try again later.");
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await getProducts();
-        setProducts(res.data);
-      } catch (err) {
-        console.error("❌ Failed to load products", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
+    fetchShops();
+    fetchProfile();
+  }, [token]);
 
   return (
     <div id="shop" className="shop-container">
-      {/* Header */}
       <header className="shop-header">
         <h1>
           Welcome to the <span className="eco-text">Eco-Rewards Shop</span>
         </h1>
         <p>
           Redeem your eco-points for sustainable products made from recycled
-          materials. Every purchase supports our circular economy and helps
-          reduce waste.
+          materials. Every purchase supports our circular economy.
         </p>
-        <a href="/" className="signin-link">
-          Sign in to your GreenCycle account to start redeeming eco-points!
-        </a>
+
+        {token ? (
+          <p className="points-balance">
+            🌱 Your Eco Points: <strong>{ecoPoints}</strong>
+          </p>
+        ) : (
+          <a href="/login" className="signin-link">
+            Sign in to redeem eco-points!
+          </a>
+        )}
       </header>
 
-      {/* Product Section */}
+      {message && <p className="shop-message">{message}</p>}
+
+      {/* Shop Items */}
       <section className="products">
         {loading ? (
-          <p>Loading products...</p>
-        ) : products.length > 0 ? (
-          products.map((item) => (
+          <p>Loading items...</p>
+        ) : shops.length > 0 ? (
+          shops.map((item) => (
             <div key={item.id} className="product-card">
               <img src={item.imageUrl} alt={item.name} />
               <div className="product-info">
@@ -59,14 +109,26 @@ export default function Shop() {
                   <span className="points">{item.pointsCost} pts</span>
                   <span className="price">${item.price}</span>
                 </div>
-                <button className="redeem-btn" disabled>
-                  Sign in to redeem
-                </button>
+                {token ? (
+                  <button
+                    className="redeem-btn"
+                    onClick={() => handleRedeem(item)}
+                    disabled={ecoPoints < item.pointsCost}
+                  >
+                    {ecoPoints < item.pointsCost
+                      ? "Not enough points"
+                      : "Redeem"}
+                  </button>
+                ) : (
+                  <button className="redeem-btn" disabled>
+                    Sign in to redeem
+                  </button>
+                )}
               </div>
             </div>
           ))
         ) : (
-          <p>No products available</p>
+          <p>No shop items available</p>
         )}
       </section>
 

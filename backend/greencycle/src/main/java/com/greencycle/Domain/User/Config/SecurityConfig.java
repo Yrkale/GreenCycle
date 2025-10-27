@@ -30,7 +30,7 @@ public class SecurityConfig {
             .and()
             .csrf().disable()
             .authorizeHttpRequests()
-            .antMatchers("/api/auth/**", "/api/pickup-requests/**", "/api/products/**", "/api/test/**","/api/recyclable-items/**" , "/api/admin/**").permitAll()
+            .antMatchers("/api/auth/**", "/api/pickup-requests/**", "/api/products/**", "/api/test/**","/api/recyclable-items/**" , "/api/admin/**" , "/api/shops/**").permitAll()
             .antMatchers("/api/user/me").authenticated() // only logged in users
             .anyRequest().authenticated();
 

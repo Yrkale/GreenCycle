@@ -1,13 +1,13 @@
 package com.greencycle.Domain.Shop;
 
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "shops")
+public class Shop {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,8 +28,7 @@ public class Product {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // getters and setters  
-    
+    // 🟢 Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
