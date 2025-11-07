@@ -144,32 +144,40 @@ export default function Shop() {
         )}
       </section>
 
-      {/* ✅ My Redeemed Orders Section */}
-      {token && (
-        <section className="my-redemptions">
-          <h2>My Redeemed Orders</h2>
-        {redemptions.length > 0 ? (
-  <div className="redemption-grid">
-    {redemptions.map((r) => (
-      <div key={r.id} className="redemption-card">
-        <h4>{r.shopName ? r.shopName : `Shop #${r.shopId}`}</h4>
-        <p>Points Used: {r.pointsUsed ?? "—"}</p>
-        <p className="date">
-          Redeemed on:{" "}
-          {r.redeemedAt
-            ? new Date(r.redeemedAt).toLocaleString()
-            : "Unknown date"}
-        </p>
+     {/* ✅ My Redeemed Orders Section */}
+{token && (
+  <section className="my-redemptions">
+    <h2>My Redeemed Orders</h2>
+
+    {redemptions.length > 0 ? (
+      <div className="redemption-grid">
+        {redemptions.map((r) => (
+          <div key={r.id} className="redemption-card">
+            <div className="redemption-header">
+              <img
+                src={r.imageUrl || "https://cdn-icons-png.flaticon.com/512/711/711769.png"}
+                alt={r.shopName || "Redeemed item"}
+                className="redemption-img"
+              />
+              <div className="redemption-details">
+                <h4>{r.shopName ? r.shopName : `Shop #${r.shopId}`}</h4>
+                <p className="points-used">🪙 {r.pointsUsed ?? "—"} pts used</p>
+              </div>
+            </div>
+            <p className="redeemed-date">
+              🗓️ {r.redeemedAt
+                ? new Date(r.redeemedAt).toLocaleString()
+                : "Unknown date"}
+            </p>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-) : (
-  <p>You haven’t redeemed any items yet.</p>
+    ) : (
+      <p className="no-redemptions">You haven’t redeemed any items yet.</p>
+    )}
+  </section>
 )}
 
-
-        </section>
-      )}
 
       {/* ✅ Earn Points Section */}
       <section className="earn-points">

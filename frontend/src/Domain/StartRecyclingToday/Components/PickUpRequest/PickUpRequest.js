@@ -20,6 +20,19 @@ const PickUpRequest = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [message, setMessage] = useState("");
 
+  const today = new Date().toISOString().split("T")[0]; // restrict date
+
+  // Dropdown data
+  const cities = ["Mumbai", "Pune", "Bangalore", "Delhi", "Hyderabad"];
+  const zipCodes = ["400001", "411001", "560001", "110001", "500001"];
+  const timeSlots = [
+    "08:00 AM - 10:00 AM",
+    "10:00 AM - 12:00 PM",
+    "12:00 PM - 02:00 PM",
+    "02:00 PM - 04:00 PM",
+    "04:00 PM - 06:00 PM",
+  ];
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -32,27 +45,25 @@ const PickUpRequest = () => {
       return;
     }
 
-    console.log("Selected products:", selectedProducts);
-
-
     try {
       const pickupDateTime = `${formData.pickupDate}T${formData.pickupTime}:00`;
 
       const payload = {
-  userId: user?.id, // ✅ logged-in user ID
-  pickupDate: pickupDateTime,
-  address: formData.address,
-  city: formData.city,
-  postalCode: formData.postalCode,
-  description: formData.description,
-  itemIds: selectedProducts.map((p) => p.id), // ✅ send item IDs, not names
-};
+        userId: user?.id,
+        pickupDate: pickupDateTime,
+        address: formData.address,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        description: formData.description,
+        itemIds: selectedProducts.map((p) => p.id),
+      };
 
-console.log("Submitting pickup request with payload:", payload);
+      console.log("Submitting pickup request with payload:", payload);
 
-      await createPickupRequest(payload);  
+      await createPickupRequest(payload);
       setMessage("✅ Pickup request scheduled successfully!");
-      // this method reset everything
+
+      // Reset everything
       setFormData({
         pickupDate: "",
         pickupTime: "",
@@ -68,14 +79,15 @@ console.log("Submitting pickup request with payload:", payload);
     }
   };
 
-  // ✅ If user is NOT logged in, show login prompt instead of form
   if (!user) {
     return (
       <div className="pickup-container">
         <h3 className="pickup-header">
           <FaCalendarAlt className="icon" /> Schedule Your Pickup
         </h3>
-        <p className="status-message">⚠️ Please <b>login</b> to schedule a pickup.</p>
+        <p className="status-message">
+          ⚠️ Please <b>login</b> to schedule a pickup.
+        </p>
       </div>
     );
   }
@@ -102,29 +114,45 @@ console.log("Submitting pickup request with payload:", payload);
         </div>
 
         <div className="form-row">
+          {/* City Dropdown */}
           <div className="form-group">
             <label>City *</label>
-            <input
-              type="text"
+            <select
               name="city"
               value={formData.city}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Select City</option>
+              {cities.map((city, i) => (
+                <option key={i} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {/* ZIP Code Dropdown */}
           <div className="form-group">
             <label>ZIP Code *</label>
-            <input
-              type="text"
+            <select
               name="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Select ZIP Code</option>
+              {zipCodes.map((zip, i) => (
+                <option key={i} value={zip}>
+                  {zip}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
         <div className="form-row">
+          {/* Date Picker - No Past Dates */}
           <div className="form-group">
             <label>Preferred Date *</label>
             <input
@@ -132,18 +160,27 @@ console.log("Submitting pickup request with payload:", payload);
               name="pickupDate"
               value={formData.pickupDate}
               onChange={handleChange}
+              min={today}
               required
             />
           </div>
+
+          {/* Preferred Time Dropdown */}
           <div className="form-group">
             <label>Preferred Time *</label>
-            <input
-              type="time"
+            <select
               name="pickupTime"
               value={formData.pickupTime}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Select Time Slot</option>
+              {timeSlots.map((slot, i) => (
+                <option key={i} value={slot}>
+                  {slot}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -153,13 +190,11 @@ console.log("Submitting pickup request with payload:", payload);
             name="description"
             value={formData.description}
             onChange={handleChange}
+            placeholder="Any specific directions or notes..."
           ></textarea>
         </div>
 
-       
-
         <div className="form-actions">
-          
           <button type="submit" className="submit-btn">
             Schedule Pickup
           </button>

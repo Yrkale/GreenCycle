@@ -54,78 +54,80 @@ const MyPickupRequests = () => {
     );
   }
 
-  return (
+   return (
     <div className="my-pickups-container">
       <h2 className="title">📦 My Pickup Requests</h2>
 
       {requests.length === 0 ? (
-        <p className="no-requests">No requests yet.</p>
+        <p className="no-requests">No pickup requests yet.</p>
       ) : (
-        requests.map((req) => (
-          <div key={req.id} className="pickup-card">
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(req.pickupDate).toLocaleString()}
-            </p>
-            <p>
-              <strong>Address:</strong> {req.address}, {req.city}
-            </p>
-            <p>
-              <strong>Status:</strong>{" "}
-              <span className={`status ${req.status.toLowerCase()}`}>
-                {req.status}
-              </span>
-            </p>
-            <p>
-              <strong>Assigned Partner:</strong>{" "}
-              {req.assignedTo ?? "Not assigned yet"}
-            </p>
-
-            {/* ✅ Show Items */}
-            {req.items && req.items.length > 0 && (
-              <div className="items-list">
-                <strong>Items:</strong>
-                <ul>
-                  {req.items.map((item) => (
-                    <li key={item.id}>
-                      {item.title}{" "}
-                      <span className="points">({item.points} pts)</span>
-                    </li>
-                  ))}
-                </ul>
+        <div className="pickup-grid">
+          {requests.map((req) => (
+            <div key={req.id} className="pickup-card">
+              <div className="pickup-header">
+                <span className="pickup-date">
+                  🗓 {new Date(req.pickupDate).toLocaleDateString()}
+                </span>
+                <span className={`status-badge ${req.status.toLowerCase()}`}>
+                  {req.status}
+                </span>
               </div>
-            )}
 
-            {/* ✅ Show OTP if request is accepted but not completed */}
-            {req.status === "ASSIGNED" && req.otpCode && (
-              <div className="otp-display">
-                <strong>🔐 Your Pickup OTP:</strong>
-                <p className="otp">{req.otpCode}</p>
-                <small>
-                  Share this OTP with the delivery partner when they arrive.
-                </small>
+              <div className="pickup-details">
+                <p>
+                  <strong>📍 Address:</strong> {req.address}, {req.city}
+                </p>
+                <p>
+                  <strong>👤 Assigned Partner:</strong>{" "}
+                  {req.assignedTo ?? "Not assigned yet"}
+                </p>
               </div>
-            )}
 
-            {/* ✅ Cancel option only if pending */}
-            {req.status === "PENDING" && (
-              <button
-                className="cancel-btn"
-                onClick={() => cancelRequest(req.id)}
-              >
-                ❌ Cancel Request
-              </button>
-            )}
+              {/* Items List */}
+              {req.items?.length > 0 && (
+                <div className="pickup-items">
+                  <strong>♻️ Items:</strong>
+                  <ul>
+                    {req.items.map((item) => (
+                      <li key={item.id}>
+                        {item.title}{" "}
+                        <span className="points">({item.points} pts)</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-            {/* ✅ Completion message */}
-            {req.status === "COMPLETED" && (
-              <p className="completed-message">
-                ✅ Pickup Completed — EcoPoints Added:{" "}
-                <strong>{req.ecoPoints ?? "N/A"}</strong>
-              </p>
-            )}
-          </div>
-        ))
+              {/* OTP Section */}
+              {req.status === "ASSIGNED" && req.otpCode && (
+                <div className="otp-section">
+                  <strong>🔐 Your Pickup OTP:</strong>
+                  <p className="otp-code">{req.otpCode}</p>
+                  <small>Share this OTP with the delivery partner.</small>
+                </div>
+              )}
+
+              {/* Buttons or Completion Message */}
+              <div className="pickup-actions">
+                {req.status === "PENDING" && (
+                  <button
+                    className="cancel-btn"
+                    onClick={() => cancelRequest(req.id)}
+                  >
+                    ❌ Cancel Request
+                  </button>
+                )}
+
+                {req.status === "COMPLETED" && (
+                  <p className="completed-message">
+                    ✅ Pickup Completed — EcoPoints Earned:{" "}
+                    <strong>{req.ecoPoints ?? "N/A"}</strong>
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

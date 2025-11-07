@@ -1,34 +1,42 @@
 .pickup-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e0e0e0;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+  transition: 0.3s ease;
+}
+
+.pickup-container:hover {
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.15);
 }
 
 .pickup-header {
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  color: #2e7d32;
 }
 
 .pickup-header .icon {
-  margin-right: 8px;
-  color: #2e7d32;
+  margin-right: 10px;
+  color: #43a047;
 }
 
 .pickup-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .form-row {
   display: flex;
-  gap: 20px;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
 .form-group {
@@ -38,19 +46,30 @@
 }
 
 .form-group label {
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 6px;
   font-size: 14px;
+  color: #333;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f5f5f7;
-  font-size: 14px;
+  padding: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  background: #f8faf8;
+  font-size: 15px;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #66bb6a;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.15);
 }
 
 textarea {
@@ -58,66 +77,47 @@ textarea {
   min-height: 70px;
 }
 
-.guidelines-box {
-  background: #f0f7ff;
-  padding: 15px;
-  border: 1px solid #cce4ff;
-  border-radius: 8px;
-}
-
-.guidelines-box h4 {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.guidelines-box .icon {
-  margin-right: 6px;
-  color: #2e7d32;
-}
-
-.guidelines-box ul {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 14px;
   margin-top: 10px;
 }
 
 .submit-btn {
   flex: 1;
   padding: 12px;
-  background: #81c784;
+  background: linear-gradient(90deg, #66bb6a, #43a047);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 .submit-btn:hover {
-  background: #66bb6a;
+  background: linear-gradient(90deg, #81c784, #43a047);
 }
 
 .cancel-btn {
   padding: 12px 20px;
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
-  color: #333;
+  color: #444;
+  transition: background 0.2s ease;
 }
 
 .cancel-btn:hover {
   background: #f5f5f5;
+}
+
+.status-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: #2e7d32;
 }

@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // 🔹 Keep your existing endpoint (unchanged)
+    
     @GetMapping("/me")
     public UserDetailsImpl getCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userDetails;
