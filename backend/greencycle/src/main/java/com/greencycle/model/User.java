@@ -1,6 +1,10 @@
 package com.greencycle.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +24,9 @@ public class User {
 
     @Column(nullable = false, length = 100)
     private String email;
+    
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
@@ -31,6 +37,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
 
     // Constructors

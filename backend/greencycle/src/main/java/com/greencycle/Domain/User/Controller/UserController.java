@@ -10,9 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -83,4 +85,18 @@ public class UserController {
         response.put("message", "✅ Password changed successfully!");
         return ResponseEntity.ok(response);
     }
+    
+    
+    
+    
+    
+    @GetMapping("/top-contributors")
+    public List<User> getTopContributors() {
+        return userRepository.findTop10ByOrderByEcoPointsDesc();
+    }
+    
+    
+    
+    
+    
 }

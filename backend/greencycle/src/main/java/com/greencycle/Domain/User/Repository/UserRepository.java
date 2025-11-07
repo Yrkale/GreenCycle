@@ -1,5 +1,6 @@
 package com.greencycle.Domain.User.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
  // Counts users who have a role with the given name
     long countByRoles_Name(String roleName);
+    
+    List<User> findTop10ByOrderByEcoPointsDesc();
+    
 }

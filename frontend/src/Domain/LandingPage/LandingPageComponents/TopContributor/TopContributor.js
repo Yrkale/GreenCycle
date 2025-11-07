@@ -1,108 +1,88 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TopContributor.css";
-import profile1 from "../../LandingPageAssets/logo.png"; // replace with actual images
-import profile2 from "../../LandingPageAssets/logo.png";
-import profile3 from "../../LandingPageAssets/logo.png";
-import profile4 from "../../LandingPageAssets/logo.png";
-import profile5 from "../../LandingPageAssets/logo.png";
-
-const contributors = [
-  {
-    id: 1,
-    name: "Sarah Chen",
-    role: "Eco Champion",
-    waste: "2.5 tons",
-    seeds: 350,
-    trees: 45,
-    growth: "+15%",
-    img: profile1,
-    badge: "#1",
-    badgeColor: "gold",
-  },
-  {
-    id: 2,
-    name: "Marcus Johnson",
-    role: "Green Leader",
-    waste: "2.1 tons",
-    seeds: 295,
-    trees: 38,
-    growth: "+12%",
-    img: profile2,
-    badge: "#2",
-    badgeColor: "silver",
-  },
-  {
-    id: 3,
-    name: "Elena Rodriguez",
-    role: "Seed Master",
-    waste: "1.8 tons",
-    seeds: 420,
-    trees: 32,
-    growth: "+18%",
-    img: profile3,
-    badge: "#3",
-    badgeColor: "bronze",
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    role: "Recycling Pro",
-    waste: "1.6 tons",
-    seeds: 180,
-    trees: 28,
-    growth: "+8%",
-    img: profile4,
-    badge: "#4",
-    badgeColor: "green",
-  },
-  {
-    id: 5,
-    name: "Aisha Patel",
-    role: "Community Builder",
-    waste: "1.4 tons",
-    seeds: 225,
-    trees: 25,
-    growth: "+10%",
-    img: profile5,
-    badge: "#5",
-    badgeColor: "green",
-  },
-];
+import axios from "axios";
+//import { Clock, Eye, Share2 } from "lucide-react"; // for icons
+import { Leaf } from 'lucide-react';  
+import defaultImage from "../../LandingPageAssets/logo.png";
 
 const TopContributor = () => {
+  const [contributors, setContributors] = useState([]);
+
+  useEffect(() => {
+    fetchContributors();
+  }, []);
+
+  const fetchContributors = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/top-contributors");
+      setContributors(res.data.slice(0, 4)); // only keep first 4
+    } catch (error) {
+      console.error("❌ Error fetching contributors:", error);
+    }
+  };
+
+  const rankLabels = ["1st", "2nd", "3rd"];
+
   return (
     <section id="TopContributor" className="contributors-container">
-      <h2>
-        Meet Our <span className="highlight">Top Contributors</span>
-      </h2>
+      <h2>Top Contributors</h2>
       <p className="subtitle">
-        These community champions are leading the way in waste reduction and
-        tree planting. Their dedication is making a real difference in our
-        environment.
+        Our community heroes leading the way toward a cleaner, greener planet 🌍
       </p>
 
       <div className="contributors-grid">
-        {contributors.map((c) => (
-          <div key={c.id} className="contributor-card">
-            <div className={`badge ${c.badgeColor}`}>{c.badge}</div>
-            <img src={c.img} alt={c.name} className="avatar" />
-            <h3>{c.name}</h3>
-            <p className="role">{c.role}</p>
+        {contributors.length > 0 ? (
+          contributors.map((c, index) => (
+            <div key={c.id} className="contributor-card">
+              {/* Rank Badge */}
+              <span
+                className={`rank-badge ${
+                  index === 0
+                    ? "gold"
+                    : index === 1
+                    ? "silver"
+                    : index === 2
+                    ? "bronze"
+                    : ""
+                }`}
+              >
+                {rankLabels[index] || `#${index + 1}`}
+              </span>
 
-            <ul className="stats">
-              <li>♻ Waste <span>{c.waste}</span></li>
-              <li>🌱 Seeds <span>{c.seeds}</span></li>
-              <li>🌳 Trees <span>{c.trees}</span></li>
-            </ul>
+              {/* Profile Image */}
+              <img
+                src={c.profileImageUrl || defaultImage}
+                alt={c.username}
+                className="avatar"
+              />
 
-            <div className="growth">
-              <p>Monthly Growth</p>
-              <span>{c.growth}</span>
+              {/* Username */}
+              <h3>{c.username}</h3>
+              <p className="role">
+                {c.roles && c.roles.length > 0
+                  ? c.roles[0].name.replace("ROLE_", "").toLowerCase()
+                  : "Eco Contributor"}
+              </p>
+
+              {/* Tag */}
+              <div className="contributor-tag">Contributor</div>
+
+              {/* Stats Section */}
+              <div className="stats-container">
+                <div className="stat-box">
+                  <Leaf className="stat-icon" />
+                  <span>{c.ecoPoints ?? 0}</span>
+                </div>                 
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No top contributors found yet.</p>
+        )}
       </div>
 
+      {/* Join Banner */}
+      <br></br>
       <div className="join-banner">
         <div>
           <strong>Join the leaderboard!</strong>
