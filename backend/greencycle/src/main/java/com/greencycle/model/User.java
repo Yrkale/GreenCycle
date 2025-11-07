@@ -51,8 +51,19 @@ public class User {
  
     @Column(nullable = false)
     private Integer ecoPoints = 0;
+    
+    @Column(nullable=false)
+    private Integer tillNowEcoPoints;
 
-    // 🟢 Getter and Setter
+    public Integer getTillNowEcoPoints() {
+		return tillNowEcoPoints;
+	}
+
+	public void setTillNowEcoPoints(Integer tillNowEcoPoints) {
+		this.tillNowEcoPoints = tillNowEcoPoints;
+	}
+
+	// 🟢 Getter and Setter
     public Integer getEcoPoints() {
         return ecoPoints;
     }

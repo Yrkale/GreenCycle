@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
  // Counts users who have a role with the given name
     long countByRoles_Name(String roleName);
     
-    List<User> findTop10ByOrderByEcoPointsDesc();
+    List<User> findTop10ByOrderByTillNowEcoPointsDesc();
     
 }

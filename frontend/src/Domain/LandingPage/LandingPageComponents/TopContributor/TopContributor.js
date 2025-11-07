@@ -71,7 +71,7 @@ const TopContributor = () => {
               <div className="stats-container">
                 <div className="stat-box">
                   <Leaf className="stat-icon" />
-                  <span>{c.ecoPoints ?? 0}</span>
+                  <span>{c.tillNowEcoPoints ?? 0}</span>
                 </div>                 
               </div>
             </div>

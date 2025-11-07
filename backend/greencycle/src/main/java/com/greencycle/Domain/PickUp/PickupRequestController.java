@@ -180,6 +180,7 @@ public class PickupRequestController {
             User user = optionalUser.get();
             int updatedPoints = (user.getEcoPoints() == null ? 0 : user.getEcoPoints()) + totalPoints;
             user.setEcoPoints(updatedPoints);
+            user.setTillNowEcoPoints(updatedPoints);
             userRepository.save(user);
         }
 

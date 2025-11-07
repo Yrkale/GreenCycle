@@ -92,7 +92,7 @@ public class UserController {
     
     @GetMapping("/top-contributors")
     public List<User> getTopContributors() {
-        return userRepository.findTop10ByOrderByEcoPointsDesc();
+        return userRepository.findTop10ByOrderByTillNowEcoPointsDesc();
     }
     
     

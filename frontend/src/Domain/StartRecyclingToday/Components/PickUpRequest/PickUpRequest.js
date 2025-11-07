@@ -37,6 +37,16 @@ const PickUpRequest = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // 🧠 Helper: Convert time slot ("12:00 PM - 02:00 PM") → "12:00"
+  const convertTo24Hour = (timeRange) => {
+    const [startTime] = timeRange.split(" - "); // use only start time
+    const [time, modifier] = startTime.split(" ");
+    let [hours, minutes] = time.split(":");
+    if (modifier === "PM" && hours !== "12") hours = String(+hours + 12);
+    if (modifier === "AM" && hours === "12") hours = "00";
+    return `${hours}:${minutes}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +56,9 @@ const PickUpRequest = () => {
     }
 
     try {
-      const pickupDateTime = `${formData.pickupDate}T${formData.pickupTime}:00`;
+      // ✅ Convert pickup time properly to ISO format
+      const time24 = convertTo24Hour(formData.pickupTime);
+      const pickupDateTime = `${formData.pickupDate}T${time24}:00`;
 
       const payload = {
         userId: user?.id,
@@ -74,7 +86,7 @@ const PickUpRequest = () => {
       });
       setSelectedProducts([]);
     } catch (err) {
-      console.error(err);
+      console.error("Pickup request failed:", err);
       setMessage("❌ Failed to schedule pickup. Please try again.");
     }
   };
@@ -198,7 +210,22 @@ const PickUpRequest = () => {
           <button type="submit" className="submit-btn">
             Schedule Pickup
           </button>
-          <button type="button" className="cancel-btn">
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => {
+              setFormData({
+                pickupDate: "",
+                pickupTime: "",
+                address: "",
+                city: "",
+                postalCode: "",
+                description: "",
+              });
+              setSelectedProducts([]);
+              setMessage("");
+            }}
+          >
             Cancel
           </button>
         </div>
