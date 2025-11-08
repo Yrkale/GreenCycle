@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.greencycle.model.ERole;
 import com.greencycle.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -12,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
  // Counts users who have a role with the given name
-    long countByRoles_Name(String roleName);
+    long countByRoles_Name(ERole roleName);
     
     List<User> findTop10ByOrderByTillNowEcoPointsDesc();
     

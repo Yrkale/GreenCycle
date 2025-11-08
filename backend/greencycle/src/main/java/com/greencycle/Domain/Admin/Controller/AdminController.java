@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.greencycle.Domain.PickUp.PickupRequestRepository;
 import com.greencycle.Domain.User.Repository.UserRepository;
+import com.greencycle.model.ERole;
 
  
 
@@ -32,7 +33,7 @@ public class AdminController {
         stats.put("totalUsers", userRepo.count());
 
         // ✅ Count delivery partners by role name (no Role entity needed)
-      //stats.put("totalPartners", userRepo.countByRoles_Name("ROLE_DELIVERY_PARTNER"));
+        stats.put("totalPartners", userRepo.countByRoles_Name(ERole.ROLE_DELIVERY_PARTNER));
 
         stats.put("totalPickups", pickupRepo.count());
         stats.put("pending", pickupRepo.countByStatus("PENDING"));
