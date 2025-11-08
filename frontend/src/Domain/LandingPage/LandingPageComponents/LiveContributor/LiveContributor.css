@@ -10,7 +10,7 @@
 }
 .section-title .dot {
   height: 10px;
-  width: 10px;
+  width: 10px; 
   background: green;
   border-radius: 50%;
   display: inline-block;

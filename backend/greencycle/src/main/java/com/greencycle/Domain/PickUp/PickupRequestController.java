@@ -14,6 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
+//🟢 NEW imports
+import com.greencycle.Domain.LiveContributor.LiveContributor;
+import com.greencycle.Domain.LiveContributor.LiveContributorRepository;
+import java.time.LocalDateTime;
+
+
+
 @RestController
 @RequestMapping("/api/pickup-requests")
 public class PickupRequestController {
@@ -26,6 +34,10 @@ public class PickupRequestController {
     
     @Autowired
     private  UserRepository userRepository;
+    
+    // 🟢 NEW
+    @Autowired
+    private LiveContributorRepository liveContributorRepository;
 
 
     // 🔹 Get all pickup requests
@@ -185,6 +197,15 @@ public class PickupRequestController {
         }
 
         pickupRequestService.save(request);
+        
+        // 🟢 NEW: Store entry in LiveContributor
+        LiveContributor contributor = new LiveContributor();
+        contributor.setUserName(optionalUser.map(User::getUsername).orElse("Unknown"));
+        contributor.setAction("completed a pickup");
+        contributor.setReward("+" + totalPoints + " pts");
+        contributor.setTime(LocalDateTime.now());
+        liveContributorRepository.save(contributor);
+
 
         // ✅ Response payload
         Map<String, Object> response = new HashMap<>();

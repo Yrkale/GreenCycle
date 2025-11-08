@@ -53,7 +53,7 @@ public class User {
     private Integer ecoPoints = 0;
     
     @Column(nullable=false)
-    private Integer tillNowEcoPoints;
+    private Integer tillNowEcoPoints=0;
 
     public Integer getTillNowEcoPoints() {
 		return tillNowEcoPoints;
