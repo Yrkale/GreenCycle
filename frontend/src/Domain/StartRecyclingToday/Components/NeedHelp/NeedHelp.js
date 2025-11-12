@@ -9,7 +9,7 @@ const NeedHelp = () => {
       <div className="needhelp-grid">
         <div className="needhelp-item">
           <FaPhoneAlt className="needhelp-icon" />
-          <span>Call us: (555) 123-4567</span>
+          <span>Call us: (+91) 7558663097</span>
         </div>
         <div className="needhelp-item">
           <FaEnvelope className="needhelp-icon" />
@@ -21,7 +21,7 @@ const NeedHelp = () => {
         </div>
         <div className="needhelp-item">
           <FaMapMarkerAlt className="needhelp-icon" />
-          <span>Service Area: Metro City & Suburbs</span>
+          <span>Service Area: Pune</span>
         </div>
       </div>
     </div>

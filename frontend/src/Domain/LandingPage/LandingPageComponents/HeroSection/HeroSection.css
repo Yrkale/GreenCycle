@@ -94,3 +94,116 @@
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
+
+/* ===================================================== */
+/* ✅ RESPONSIVE DESIGN */
+/* ===================================================== */
+
+/* Large tablets / small laptops */
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .hero-text {
+    max-width: 700px;
+  }
+
+  .hero-text h2 {
+    font-size: 2.4rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .stats {
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .hero-image img {
+    max-width: 400px;
+  }
+}
+
+/* Tablets & mid-sized screens */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 50px 25px;
+  }
+
+  .hero-text h2 {
+    font-size: 2.1rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .btn {
+    font-size: 0.95rem;
+    padding: 12px 22px;
+  }
+
+  .stats {
+    gap: 30px;
+  }
+
+  .stat-number {
+    font-size: 1.6rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .hero-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stat-number {
+    font-size: 1.4rem;
+  }
+
+  .hero-image img {
+    max-width: 320px;
+  }
+}

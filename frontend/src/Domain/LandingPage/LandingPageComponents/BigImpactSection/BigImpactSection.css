@@ -16,7 +16,7 @@
 }
 
 .impact-section .highlight {
-  color: #22c55e; /* Keep green highlight */
+  color: #22c55e; /* Green highlight */
 }
 
 .impact-subtitle {
@@ -79,4 +79,91 @@
   color: #22c55e; /* Green bullets */
   margin-bottom: 6px;
   font-size: 0.9rem;
+}
+
+/* ✅ RESPONSIVE STYLES */
+
+/* For large tablets / small laptops */
+@media (max-width: 1024px) {
+  .impact-section {
+    padding: 60px 15px;
+  }
+
+  .impact-section h2 {
+    font-size: 2.2rem;
+  }
+
+  .impact-subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+
+  .impact-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 800px;
+  }
+}
+
+/* For tablets & mid-sized devices */
+@media (max-width: 768px) {
+  .impact-section {
+    padding: 50px 10px;
+  }
+
+  .impact-section h2 {
+    font-size: 2rem;
+  }
+
+  .impact-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .impact-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .impact-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+  .impact-section {
+    padding: 40px 10px;
+  }
+
+  .impact-section h2 {
+    font-size: 1.7rem;
+  }
+
+  .impact-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+  }
+
+  .impact-cards {
+    grid-template-columns: 1fr; /* single column */
+    gap: 15px;
+    width: 100%;
+  }
+
+  .impact-card {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .impact-icon {
+    font-size: 2rem;
+  }
+
+  .impact-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .impact-card p {
+    font-size: 0.9rem;
+  }
 }

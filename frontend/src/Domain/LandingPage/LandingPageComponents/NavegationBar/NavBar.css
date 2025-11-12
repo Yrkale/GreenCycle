@@ -15,6 +15,7 @@
   background: #eff5ef; /* white navbar */
   border-bottom: 1px solid #e5e7eb; /* subtle divider */
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 /* Logo */
@@ -34,19 +35,22 @@
   font-size: 20px;
   font-weight: bold;
   color: #111827; /* dark brand text */
+  white-space: nowrap;
 }
 
 /* Links */
 .navbar-center {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .navbar-center a {
   color: #374151; /* dark gray */
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
+  transition: color 0.3s;
 }
 
 .navbar-center a:hover {
@@ -65,6 +69,8 @@
   border: none;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.95rem;
+  transition: 0.3s ease;
 }
 
 .btn.primary {
@@ -78,7 +84,7 @@
 
 .btn.ghost {
   background: transparent;
-  color: #374151; /* dark gray text */
+  color: #374151;
   border: 1px solid #d1d5db;
 }
 
@@ -115,38 +121,124 @@
   transform: rotate(-45deg) translateY(-7px);
 }
 
-/* Responsive */
+/* ===================================================== */
+/* ✅ RESPONSIVE DESIGN */
+/* ===================================================== */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 14px 30px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .navbar-center a {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 7px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablets and below */
 @media (max-width: 768px) {
+  .navbar {
+    padding: 14px 24px;
+  }
+
+  /* Hide desktop menus */
   .navbar-center,
   .navbar-right {
-    display: none; /* hide desktop menu */
+    display: none;
   }
 
   .hamburger {
     display: flex;
   }
 
-  /* Mobile menu */
+  /* Mobile dropdown menu */
   .navbar-center.active {
     position: absolute;
-    top: 64px; /* below navbar */
+    top: 64px;
     left: 0;
     width: 100%;
-    background: #f9fafb; /* light background */
+    background: #f9fafb;
     flex-direction: column;
     display: flex;
     padding: 20px;
     gap: 12px;
     border-top: 1px solid #e5e7eb;
+    animation: dropdownFade 0.3s ease;
   }
 
   .navbar-center.active a {
     font-size: 16px;
     padding: 8px 0;
     color: #111827;
+    text-align: center;
   }
 
   .navbar-center.active a:hover {
     color: #22c55e;
+  }
+
+  /* Mobile buttons below menu */
+  .navbar-right.active {
+    position: absolute;
+    top: calc(64px + 230px);
+    left: 0;
+    width: 100%;
+    background: #f9fafb;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0 20px;
+  }
+
+  .navbar-right.active .btn {
+    width: 80%;
+    max-width: 250px;
+  }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 18px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hamburger {
+    width: 22px;
+    height: 16px;
+  }
+
+  .navbar-center.active a {
+    font-size: 15px;
+  }
+}
+
+/* Animation */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

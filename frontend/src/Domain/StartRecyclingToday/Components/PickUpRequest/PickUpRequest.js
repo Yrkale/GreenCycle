@@ -24,11 +24,10 @@ const PickUpRequest = ({ onClose }) =>  {
   const today = new Date().toISOString().split("T")[0]; // restrict date
 
   // Dropdown data
-  const cities = ["Mumbai", "Pune", "Bangalore", "Delhi", "Hyderabad"];
-  const zipCodes = ["400001", "411001", "560001", "110001", "500001"];
+  const cities = ["Akurdi-Pune","Ravet-Pune","Chinchwad-Pune","Nigdi-Pune","Pimpri-Pune"];
+  const zipCodes = ["411033"];
   const timeSlots = [
-    "08:00 AM - 10:00 AM",
-    "10:00 AM - 12:00 PM",
+     "10:00 AM - 12:00 PM",
     "12:00 PM - 02:00 PM",
     "02:00 PM - 04:00 PM",
     "04:00 PM - 06:00 PM",
