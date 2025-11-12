@@ -24,6 +24,8 @@ import ProfilePage from "./Domain/User/components/Profile/ProfilePage.js";
 
 import Shop from "./Domain/Shop/Shop.js";
 
+import LearnMore from "./Domain/LandingPage/LandingPageComponents/HeroSection/component/LearnMore.js";
+
 
 // 🔒 Protected route wrapper for Delivery Partner
 const PartnerRoute = ({ children }) => {
@@ -57,6 +59,7 @@ function App() {
           <Route path="/MyPickUp" element={<MyPickUp/>}/>
           <Route path="/profile" element={<ProfilePage />} />
           <Route path='/Shop' element={<Shop/>}/>
+          <Route path="/learn-more" element={<LearnMore />} />
 
           {/* 🚚 Delivery Partner Routes (Protected) */}
           <Route 

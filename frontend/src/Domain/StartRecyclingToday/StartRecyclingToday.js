@@ -12,16 +12,10 @@ const Modal = ({ isOpen, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        {/* Close button */}
-        <button className="modal-close" onClick={onClose}>
-          ✖
-        </button>       
-
-        {/* Product grid (your collection request cards) */}
         
-
+        
         {/* Pass selected products into pickup request */}
-        <PickUpRequest selectedProducts={selectedProducts} />
+        <PickUpRequest selectedProducts={selectedProducts} onClose={onClose} />
 
         <NeedHelp/>
       </div>

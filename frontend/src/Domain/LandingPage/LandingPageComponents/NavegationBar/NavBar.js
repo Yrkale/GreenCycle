@@ -31,7 +31,7 @@ function NavBar() {
         <a href="/shop">Shop</a>
         <a href="#impact">Impact</a>
         <a href="#TopContributor">Contributors</a>
-        <a href="#LiveContribution">Live Feed</a>
+        <a href="#LiveContributor">Live Feed</a>
         <a href="#Join">Contact</a>
         <a href="/AboutUs">About Us</a>
 

@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import "./HeroSection.css";
 import plantHands from "../../LandingPageAssets/plant-hands.jpg"; 
 import Modal from "../../../StartRecyclingToday/StartRecyclingToday.js";
+import { useNavigate } from "react-router-dom";
+ 
 
 const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const stats = [
     { number: "1,250+", label: "Households Joined" },
@@ -32,7 +35,12 @@ const HeroSection = () => {
           >
             Start Recycling Today
           </button>
-          <button className="btn secondary">Learn More</button>
+         <button
+  className="btn secondary"
+  onClick={() => navigate("/learn-more")}
+>
+  Learn More
+</button>
         </div>
 
         <div className="stats">

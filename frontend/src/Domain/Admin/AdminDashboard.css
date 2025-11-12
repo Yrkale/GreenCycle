@@ -102,3 +102,49 @@
   margin-bottom: 20px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 }
+
+
+.register-partner-btn {
+  background-color: #388e3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+.register-partner-btn:hover {
+  background-color: #08723f;
+}
+
+.partner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f5f9f6;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #d6e9dc;
+  margin-top: 10px;
+}
+
+.partner-form input,
+.partner-form select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.partner-form button {
+  background-color:#4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.partner-form button:hover {
+  background-color: #388e3c;
+}

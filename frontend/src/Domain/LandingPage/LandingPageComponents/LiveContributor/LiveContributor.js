@@ -34,6 +34,9 @@ const LiveContribution = () => {
   };
 
   return (
+
+     <section id="LiveContributor" className="live-contributor-section">
+  
     <div className="live-contribution">
       <h2 className="section-title">
         <span className="dot"></span> Live Contributors <span className="highlight">Activity</span>
@@ -59,9 +62,10 @@ const LiveContribution = () => {
           </div>
         ))}
 
-        {activities.length === 0 && <p>No recent contributions yet.</p>}
+        {activities.length === 0 && <p>No recent contributions yet......</p>}
       </div>
     </div>
+     </section>
   );
 };
 

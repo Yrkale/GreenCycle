@@ -5,8 +5,9 @@ import { createPickupRequest } from "./PickupRequestService";
 import Product from "../Product/Product.js";
 import { AuthContext } from "../../../User/context/AuthContext.js"; // import context
 
-const PickUpRequest = () => {
+const PickUpRequest = ({ onClose }) =>  {
   const { user } = useContext(AuthContext); // check if user is logged in
+  
 
   const [formData, setFormData] = useState({
     pickupDate: "",
@@ -206,29 +207,33 @@ const PickUpRequest = () => {
           ></textarea>
         </div>
 
-        <div className="form-actions">
-          <button type="submit" className="submit-btn">
-            Schedule Pickup
-          </button>
-          <button
-            type="button"
-            className="cancel-btn"
-            onClick={() => {
-              setFormData({
-                pickupDate: "",
-                pickupTime: "",
-                address: "",
-                city: "",
-                postalCode: "",
-                description: "",
-              });
-              setSelectedProducts([]);
-              setMessage("");
-            }}
-          >
-            Cancel
-          </button>
-        </div>
+       <div className="form-actions">
+  <button type="submit" className="submit-btn">
+    Schedule Pickup
+  </button>
+  <button
+    type="button"
+    className="cancel-btn"
+    onClick={() => {
+      setFormData({
+        pickupDate: "",
+        pickupTime: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        description: "",
+      });
+      setSelectedProducts([]);
+      setMessage("");
+
+      // this line closes the modal
+      if (onClose) onClose();
+    }}
+  >
+    Cancel
+  </button>
+</div>
+
       </form>
 
       {message && <p className="status-message">{message}</p>}

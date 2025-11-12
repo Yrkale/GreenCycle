@@ -102,17 +102,17 @@ textarea {
 
 .cancel-btn {
   padding: 12px 20px;
-  background: #fff;
+  background: #b74040;
   border: 1px solid #ddd;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
-  color: #444;
+  color: #ffffff;
   transition: background 0.2s ease;
 }
 
 .cancel-btn:hover {
-  background: #f5f5f5;
+  background: #d36363;
 }
 
 .status-message {
