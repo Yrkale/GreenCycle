@@ -3,6 +3,10 @@ import "./NavBar.css";
 import LoginRegisterModal from "../../../User/components/LoginRegisterModal";
 import logo from "../../LandingPageAssets/logo.png";
 import { useAuth } from "../../../User/context/AuthContext"; 
+import { Link } from "react-router-dom";
+
+ 
+
 
 function NavBar() {
   const { user, hasRole, logout } = useAuth();
@@ -32,7 +36,13 @@ function NavBar() {
         <a href="/AboutUs">About Us</a>
 
         {/* 👤 Normal User */}
-        {hasRole("ROLE_USER") && <a href="/MyPickUp">Schedule Pickup</a>}
+       {hasRole("ROLE_USER") && (
+  <>
+    <Link to="/MyPickUp">Schedule Pickup</Link>
+    <a href="/profile">Profile</a>
+
+  </>
+)}
 
         {/* 🚚 Delivery Partner */}
         {hasRole("ROLE_DELIVERY_PARTNER") && (

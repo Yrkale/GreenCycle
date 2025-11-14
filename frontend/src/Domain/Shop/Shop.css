@@ -94,13 +94,30 @@
   border-radius: 5px;
 }
 
+/* ✅ Redeem Button Styling */
 .redeem-btn {
-  background: #ccc;
   border: none;
   padding: 10px;
   width: 100%;
   border-radius: 5px;
-  cursor: not-allowed;
+  font-weight: bold;
+  color: white;
+  background-color: #28a745; /* Green default */
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+/* 🟩 Active Redeem button (hover effect) */
+.redeem-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* ⚪️ Disabled state (gray, no red cross cursor) */
+.redeem-btn:disabled {
+  background-color: #b5b5b5;
+  color: #eee;
+  cursor: default; /* Removes the red “no” icon */
+  opacity: 0.8;
 }
 
 /* Earn Points */

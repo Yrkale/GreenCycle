@@ -31,3 +31,20 @@
   font-size: 14px;
   color: #444;
 }
+
+
+.otp-display {
+  background: #fff8e1;
+  border: 2px dashed #ffc107;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.otp-display .otp {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ff9800;
+  letter-spacing: 2px;
+}

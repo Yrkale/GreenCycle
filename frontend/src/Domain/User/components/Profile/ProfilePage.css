@@ -1,0 +1,83 @@
+.profile-page {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  font-family: "Inter", sans-serif;
+}
+
+.profile-page h2 {
+  text-align: center;
+  color: #2e7d32;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.eco-points {
+  color: #388e3c;
+  font-weight: bold;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.password-form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.password-form button {
+  background: #43a047;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.password-form button:hover {
+  background: #2e7d32;
+}
+
+.status-msg {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-msg.success {
+  color: #2e7d32;
+}
+
+.status-msg.error {
+  color: #c62828;
+}
+
+.logout-btn {
+  display: block;
+  margin: 20px auto 0;
+  background: #ef5350;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c62828;
+}

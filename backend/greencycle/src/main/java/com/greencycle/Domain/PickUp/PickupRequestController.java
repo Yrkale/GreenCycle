@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.greencycle.Domain.User.Repository.UserRepository;
 import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
+import com.greencycle.model.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +20,13 @@ public class PickupRequestController {
 
     @Autowired
     private PickupRequestService pickupRequestService;
-    
+
     @Autowired
     private PickupRequestRepository pickupRequestRepository;
+    
+    @Autowired
+    private  UserRepository userRepository;
+
 
     // 🔹 Get all pickup requests
     @GetMapping
@@ -51,11 +57,12 @@ public class PickupRequestController {
         pickupRequestService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    
-    //  // Delivery partner api
-    
 
-    // 🔹 Delivery Partner: Accept a request
+    // ===========================================================
+    // ✅ DELIVERY PARTNER ENDPOINTS
+    // ===========================================================
+
+    // 🔹 Delivery Partner: Accept a request (generate OTP)
     @PutMapping("/{id}/accept")
     public ResponseEntity<PickupRequest> acceptRequest(
             @PathVariable Long id,
@@ -69,24 +76,27 @@ public class PickupRequestController {
 
         PickupRequest request = optionalRequest.get();
 
-        if (!request.getStatus().equals("PENDING")) {
+        if (!request.getStatus().equalsIgnoreCase("PENDING")) {
             return ResponseEntity.badRequest().build();
         }
 
+        // ✅ Assign partner and generate OTP
         request.setAssignedTo(partnerId);
         request.setStatus("ASSIGNED");
-        return ResponseEntity.ok(pickupRequestService.save(request));
+        request.generateOtp(); // Generate 6-digit OTP
+
+        pickupRequestService.save(request);
+
+        return ResponseEntity.ok(request);
     }
-
-
 
     // 🔹 Delivery Partner: Get all assigned requests for themselves
     @GetMapping("/assigned/{partnerId}")
     public List<PickupRequest> getAssignedRequests(@PathVariable Long partnerId) {
         return pickupRequestService.findByAssignedTo(partnerId);
     }
-    
- 
+
+    // 🔹 Complete request manually (fallback)
     @PutMapping("/{id}/complete")
     public ResponseEntity<PickupRequest> completeRequest(@PathVariable Long id) {
         return pickupRequestService.findById(id)
@@ -97,6 +107,7 @@ public class PickupRequestController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 🔹 Get all pickups assigned to a specific partner
     @GetMapping("/partner/{partnerId}")
     public List<PickupRequest> getAssignedToPartner(@PathVariable Long partnerId) {
         return pickupRequestService.findAll().stream()
@@ -104,13 +115,15 @@ public class PickupRequestController {
                 .toList();
     }
 
+    // 🔹 Get all pickups for a specific user
     @GetMapping("/user/{userId}")
     public List<PickupRequest> getForUser(@PathVariable Long userId) {
         return pickupRequestService.findAll().stream()
                 .filter(r -> userId.equals(r.getUserId()))
                 .toList();
     }
-    
+
+    // 🔹 Partner stats (assigned, completed, pending)
     @GetMapping("/stats/{partnerId}")
     public Map<String, Long> getPartnerStats(@PathVariable Long partnerId) {
         long assigned = pickupRequestRepository.countByAssignedToAndStatus(partnerId, "ASSIGNED");
@@ -123,6 +136,62 @@ public class PickupRequestController {
         stats.put("pending", pending);
 
         return stats;
+    }
+
+    // ===========================================================
+    // ✅ VERIFY OTP ENDPOINT
+    // ===========================================================
+    @PostMapping("/{id}/verify-otp")
+    public ResponseEntity<?> verifyOtp(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> payload) {
+
+        String enteredOtp = payload.get("otp");
+        Optional<PickupRequest> optionalRequest = pickupRequestService.findById(id);
+
+        if (optionalRequest.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        PickupRequest request = optionalRequest.get();
+
+        // ✅ Verify OTP
+        if (request.getOtpCode() == null || !request.getOtpCode().equals(enteredOtp)) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "❌ Invalid OTP");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // ✅ Mark as completed
+        request.setStatus("COMPLETED");
+
+        // ✅ Calculate ecoPoints (sum of all item points)
+        int totalPoints = request.getItems() != null
+                ? request.getItems().stream().mapToInt(RecyclableItem::getPoints).sum()
+                : 0;
+
+
+        request.setEcoPoints(totalPoints);
+
+        // ✅ Add EcoPoints to user's profile
+        Long userId = request.getUserId(); // Assuming PickupRequest has userId field
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            int updatedPoints = (user.getEcoPoints() == null ? 0 : user.getEcoPoints()) + totalPoints;
+            user.setEcoPoints(updatedPoints);
+            userRepository.save(user);
+        }
+
+        pickupRequestService.save(request);
+
+        // ✅ Response payload
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "✅ Pickup verified and completed!");
+        response.put("earnedPoints", totalPoints);
+        response.put("totalUserPoints", optionalUser.map(User::getEcoPoints).orElse(totalPoints));
+
+        return ResponseEntity.ok(response);
     }
 
 }

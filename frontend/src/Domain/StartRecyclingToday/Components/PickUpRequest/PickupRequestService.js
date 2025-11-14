@@ -19,7 +19,7 @@ export const getAllPickupRequests = async () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
-};
+}; 
 
 // 🔹 Get a pickup request by ID
 export const getPickupRequestById = async (id) => {

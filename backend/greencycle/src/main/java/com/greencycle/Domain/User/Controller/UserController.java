@@ -1,15 +1,86 @@
 package com.greencycle.Domain.User.Controller;
 
+import com.greencycle.Domain.User.Repository.UserRepository;
 import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
+import com.greencycle.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // 🔹 Keep your existing endpoint (unchanged)
     @GetMapping("/me")
     public UserDetailsImpl getCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userDetails;  // ✅ returns logged in user info
+        return userDetails;
+    }
+
+    // ============================================================
+    // ✅ NEW PROFILE ENDPOINT FOR FRONTEND PROFILE PAGE
+    // ============================================================
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Optional<User> optionalUser = userRepository.findById(userDetails.getId());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = optionalUser.get();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", user.getId());
+        response.put("username", user.getUsername());
+        response.put("email", user.getEmail());
+        response.put("ecoPoints", user.getEcoPoints());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // ============================================================
+    // ✅ CHANGE PASSWORD ENDPOINT
+    // ============================================================
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody Map<String, String> passwordRequest) {
+
+        String oldPassword = passwordRequest.get("oldPassword");
+        String newPassword = passwordRequest.get("newPassword");
+
+        Optional<User> optionalUser = userRepository.findById(userDetails.getId());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = optionalUser.get();
+
+        // ❌ Invalid old password
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "❌ Incorrect current password!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // ✅ Update password
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "✅ Password changed successfully!");
+        return ResponseEntity.ok(response);
     }
 }

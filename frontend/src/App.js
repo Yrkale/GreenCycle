@@ -9,7 +9,7 @@ import { AuthProvider, useAuth } from './Domain/User/context/AuthContext';
 import LoginForm from './Domain/User/UserLoginForm';
 import RegisterForm from './Domain/User/UserRegisterForm';
 import LandingPage from './Domain/LandingPage/LandingPage'; 
-import Shop from "./Domain/Shop/Shop"; 
+ 
 import AboutUs from "./Domain/LandingPage/LandingPageComponents/AboutUs/AboutUs.js";
 
 // Delivery Partner Pages
@@ -19,6 +19,10 @@ import DeliveryPartnerDashboard from './Domain/DeliveryPartner/DeliveryPartnerDa
 import AdminDashboard from "./Domain/Admin/AdminDashboard.js";
 
 import MyPickUp from "./Domain/User/components/MyPickupRequests/MyPickupRequests.js"
+
+import ProfilePage from "./Domain/User/components/Profile/ProfilePage.js";
+
+import Shop from "./Domain/Shop/Shop.js";
 
 
 // 🔒 Protected route wrapper for Delivery Partner
@@ -51,6 +55,8 @@ function App() {
           <Route path="/DeliveryPartnerDashboard" element={<DeliveryPartnerDashboard/>}/>
           <Route path="/AdminDashboard" element={<AdminDashboard/>}/>
           <Route path="/MyPickUp" element={<MyPickUp/>}/>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path='/Shop' element={<Shop/>}/>
 
           {/* 🚚 Delivery Partner Routes (Protected) */}
           <Route 

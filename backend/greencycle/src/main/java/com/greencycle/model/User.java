@@ -40,7 +40,20 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }    
+ 
+    @Column(nullable = false)
+    private Integer ecoPoints = 0;
+
+    // 🟢 Getter and Setter
+    public Integer getEcoPoints() {
+        return ecoPoints;
     }
+
+    public void setEcoPoints(Integer ecoPoints) {
+        this.ecoPoints = ecoPoints;
+    }
+
 
     // Getters & Setters
     public Long getId() {
