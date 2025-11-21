@@ -9,7 +9,6 @@ import TopContributor from "./LandingPageComponents/TopContributor/TopContributo
 import LiveContributor from "./LandingPageComponents/LiveContributor/LiveContributor.js"
 import Join from "./LandingPageComponents/Join/Join.js"
 
- 
 
 function LandingPage() {
   return (
