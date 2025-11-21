@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 // NOTE: keep this import path exactly as your folder name is spelled.
 // If your folder is "services", change "serviecs" -> "services".
 import AuthService from "../services/AuthService";
@@ -17,6 +18,7 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const { login: loginContext } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -60,6 +62,14 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
 
         // Success → close modal
         onClose();
+        // Use roles from the direct login response for immediate redirection
+        // Let's check the username directly from the login response data.
+        // This is a more direct way to identify the specific admin user.
+        if (data?.username === 'Admin' || data?.username === 'SuperAdmin') {
+          navigate("/AdminDashboard"); // Redirect to admin dashboard
+        } else {
+          navigate("/"); // Redirect to the landing page
+        }
       } else {
         // ---------- REGISTER ----------
         const res = await AuthService.register({
