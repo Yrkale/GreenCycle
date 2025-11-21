@@ -31,7 +31,7 @@ const AdminDashboard = () => {
     email: "",
     password: "",
     phone: "",
-    role: "deliverypartner", // default
+    role: "DELIVERY_PARTNER", // default
   });
 
   // ✅ Fetch dashboard stats
@@ -106,10 +106,10 @@ const AdminDashboard = () => {
         email: partnerData.email,
         password: partnerData.password,
         phone: partnerData.phone,
-        role: [partnerData.role], // dynamic role selection
+        role: partnerData.role, // dynamic role selection
       };
 
-      await axios.post("http://localhost:8080/api/auth/signup", payload, {
+      await axios.post("http://localhost:8080/api/auth/register", payload, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
         email: "",
         password: "",
         phone: "",
-        role: "deliverypartner",
+        role: "DELIVERY_PARTNER",
       });
       setShowPartnerForm(false);
       fetchStats(); // refresh stats after registration
@@ -231,9 +231,9 @@ const AdminDashboard = () => {
               }
               required
             >
-              <option value="deliverypartner">Delivery Partner</option>
-              <option value="user">User</option>
-              <option value="superadmin">Admin</option>
+              <option value="DELIVERY_PARTNER">Delivery Partner</option>
+              <option value="USER">User</option>
+              <option value="SUPER_ADMIN">Admin</option>
             </select>
 
             <button type="submit">Register</button>

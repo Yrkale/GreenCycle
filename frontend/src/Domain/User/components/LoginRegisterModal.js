@@ -76,7 +76,7 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
           username,
           email,
           password,
-          role: ["user"],
+          role: "USER",
         });
         console.log("[Register] raw response:", res?.data ?? res);
 

@@ -9,14 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.greencycle.model.ERole;
-import com.greencycle.model.Role;
+//import com.greencycle.model.ERole;
+//import com.greencycle.model.Role;
 import com.greencycle.model.User;
 import com.greencycle.Domain.User.DTO.JwtResponse;
 import com.greencycle.Domain.User.DTO.LoginRequest;
 import com.greencycle.Domain.User.DTO.MessageResponse;
 import com.greencycle.Domain.User.DTO.SignupRequest;
-import com.greencycle.Domain.User.Repository.RoleRepository;
+//import com.greencycle.Domain.User.Repository.RoleRepository;
 import com.greencycle.Domain.User.Repository.UserRepository;
 import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
 import com.greencycle.Domain.User.jwt.JwtUtils;
@@ -33,9 +33,7 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
+ 
 
     @Autowired
     PasswordEncoder encoder;
@@ -65,14 +63,14 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                userDetails.getAuthorities()));
+                userDetails.getRole()));
     }
 
 
     // -------------------- REGISTER ----------------------
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
-    	System.out.println("Signup API called");  // ✅ Confirm API is hit
+    	System.out.println("Register API called");  // ✅ Confirm API is hit
 
 
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -93,36 +91,13 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                              signUpRequest.getEmail(),
                              encoder.encode(signUpRequest.getPassword()));
+        
+        
+        
+        user.setRole(signUpRequest.getRole() != null ? signUpRequest.getRole() : "USER");
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null || strRoles.isEmpty()) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role.toLowerCase()) {
-                    case "superadmin":
-                        roles.add(roleRepository.findByName(ERole.ROLE_SUPER_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
-                        break; 
-                        
-                    case "deliverypartner":
-                        roles.add(roleRepository.findByName(ERole.ROLE_DELIVERY_PARTNER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
-                        break;
-                         
-                    default:
-                        roles.add(roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role not found.")));
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        Set<Role> r=user.getRoles();
+     
         userRepository.save(user);
 
         return ResponseEntity

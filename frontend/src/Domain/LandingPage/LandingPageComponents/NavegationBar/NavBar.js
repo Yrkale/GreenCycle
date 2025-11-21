@@ -12,7 +12,9 @@ function NavBar() {
   const { user, hasRole, logout } = useAuth();
 
   console.log("👤 User in Navbar:", user);
-  console.log("🎭 Roles:", user?.roles);
+  console.log("🎭 Role:", user?.role);
+  console.log("🧪 Actual role:", user?.role);
+
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +38,7 @@ function NavBar() {
         <a href="/AboutUs">About Us</a>
 
         {/* 👤 Normal User */}
-       {hasRole("ROLE_USER") && (
+       {hasRole("USER") && (
   <>
     <Link to="/MyPickUp">Schedule Pickup</Link>
     <a href="/profile">Profile</a>
@@ -45,7 +47,7 @@ function NavBar() {
 )}
 
         {/* 🚚 Delivery Partner */}
-        {hasRole("ROLE_DELIVERY_PARTNER") && (
+        {hasRole("DELIVERY_PARTNER") && (
           <>
             <a href="/DeliveryPartnerDashboard">Dashboard</a>
             
@@ -53,7 +55,7 @@ function NavBar() {
         )}
 
         {/* 🛠 Admin */}
-        {hasRole("ROLE_SUPER_ADMIN") && <a href="/AdminDashboard">Admin Dashboard</a>}
+        {hasRole("SUPER_ADMIN") && <a href="/AdminDashboard">Admin Dashboard</a>}
       </nav>
 
       {/* Right side */}

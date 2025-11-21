@@ -10,34 +10,56 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
+    public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	private static final long serialVersionUID = 1L;
 
     private Long id;
     private String username;
     private String email;
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private String role;
 
     public UserDetailsImpl(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                            String role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.authorities = authorities;
+        this.role = role;
     }
 
+//    public static UserDetailsImpl build(User user) {
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+//                .collect(Collectors.toList());
+//
+//        return new UserDetailsImpl(
+//                user.getId(),
+//                user.getUsername(),
+//                user.getEmail(),
+//                user.getPassword(),
+//                authorities);
+//    }
+    
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
+    	
+       // SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 
+        // 🔥 No role conversion
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                user.getRole()
+        );
     }
 
     public Long getId() {
@@ -48,10 +70,7 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+    
 
     @Override
     public String getPassword() {
@@ -82,4 +101,10 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

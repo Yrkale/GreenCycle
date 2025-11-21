@@ -20,7 +20,7 @@ const LiveContribution = () => {
     }
   };
 
-  // ✅ Utility: Convert timestamp → "x minutes ago"
+  //  Utility: Convert timestamp → "x minutes ago"
   const timeAgo = (dateTime) => {
     const now = new Date();
     const diffMs = now - new Date(dateTime);

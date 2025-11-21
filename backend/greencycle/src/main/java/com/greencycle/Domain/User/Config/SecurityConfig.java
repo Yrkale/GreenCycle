@@ -4,6 +4,7 @@ import com.greencycle.Domain.User.jwt.JwtAuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +31,7 @@ public class SecurityConfig {
             .and()
             .csrf().disable()
             .authorizeHttpRequests()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers("/api/auth/**", "/api/pickup-requests/**", "/api/products/**", "/api/test/**","/api/recyclable-items/**" , "/api/admin/**" , "/api/shops/**" , "/api/redemption/**" , "/api/user/top-contributors" , "/api/live-contributors/**").permitAll()
             .antMatchers("/api/user/me").authenticated() // only logged in users
             .anyRequest().authenticated();
@@ -53,7 +55,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+		config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(Arrays.asList("*"));
 		config.setAllowCredentials(true);
