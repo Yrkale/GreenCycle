@@ -181,3 +181,18 @@ textarea {
 .admin-back-btn:hover {
   background: #45a049; /* Darker green on hover */
 }
+
+/* Styles for the welcome message in the navbar */
+.navbar-right span {
+  font-size: 18px; /* Larger font size */
+  font-weight: 600; /* Bolder text */
+  color: #2e7d32; /* A nice, dark green from your theme */
+  margin-right: 12px; /* Add some space between the text and the logout button */
+}
+
+/* Ensure vertical alignment with the button */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
