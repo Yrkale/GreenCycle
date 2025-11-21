@@ -3,10 +3,12 @@ import "./PickUpRequest.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import { createPickupRequest } from "./PickupRequestService";
 import Product from "../Product/Product.js";
-import { AuthContext } from "../../../User/context/AuthContext.js"; // import context
+import { AuthContext } from "../../../User/context/AuthContext.js";
+import LoginRegisterModal from "../../../User/components/LoginRegisterModal.js";
 
 const PickUpRequest = ({ onClose }) =>  {
   const { user } = useContext(AuthContext); // check if user is logged in
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   
 
   const [formData, setFormData] = useState({
@@ -93,28 +95,41 @@ const PickUpRequest = ({ onClose }) =>  {
 
   if (!user) {
     return (
-      <div className="pickup-container">
-        <h3 className="pickup-header">
-          <FaCalendarAlt className="icon" /> Schedule Your Pickup
-        </h3>
-        <p className="status-message">
-          ⚠️ Please <b>login</b> to schedule a pickup.
-        </p>
-      </div>
+      <>
+        <div className="pickup-container">
+          {onClose && (
+            <button className="pickup-close-btn" onClick={onClose} aria-label="Close">&times;</button>
+          )}
+          <h3 className="pickup-header">
+            <FaCalendarAlt className="icon" /> Schedule Your Pickup
+          </h3>
+          <div className="status-message login-prompt">
+            ⚠️ Please
+            <button className="login-prompt-btn" onClick={() => setLoginModalOpen(true)}>
+              Login
+            </button>
+            to schedule a pickup.
+          </div>
+        </div>
+
+        <LoginRegisterModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      </>
     );
   }
 
   return (
     <div className="pickup-container">
-      <h3 className="pickup-header">
-        <FaCalendarAlt className="icon" /> Schedule Your Pickup
-      </h3>
+      {onClose && (
+        <button className="pickup-close-btn" onClick={onClose} aria-label="Close">&times;</button>
+      )}
 
       {/* Product selection */}
       <Product onSelectionChange={setSelectedProducts} />
 
       <form className="pickup-form" onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-section">
+          <h3 className="form-section-title">Your Address</h3>
+          <div className="form-group">
           <label>Street Address *</label>
           <input
             type="text"
@@ -123,9 +138,9 @@ const PickUpRequest = ({ onClose }) =>  {
             onChange={handleChange}
             required
           />
-        </div>
+        </div></div>
 
-        <div className="form-row">
+        <div className="form-row"> 
           {/* City Dropdown */}
           <div className="form-group">
             <label>City *</label>
@@ -163,7 +178,9 @@ const PickUpRequest = ({ onClose }) =>  {
           </div>
         </div>
 
-        <div className="form-row">
+        <div className="form-section">
+          <h3 className="form-section-title">Pickup Time</h3>
+          <div className="form-row">
           {/* Date Picker - No Past Dates */}
           <div className="form-group">
             <label>Preferred Date *</label>
@@ -194,8 +211,9 @@ const PickUpRequest = ({ onClose }) =>  {
               ))}
             </select>
           </div>
-        </div>
+        </div></div>
 
+        <div className="form-section">
         <div className="form-group">
           <label>Special Instructions</label>
           <textarea
@@ -204,32 +222,11 @@ const PickUpRequest = ({ onClose }) =>  {
             onChange={handleChange}
             placeholder="Any specific directions or notes..."
           ></textarea>
-        </div>
+        </div></div>
 
        <div className="form-actions">
   <button type="submit" className="submit-btn">
     Schedule Pickup
-  </button>
-  <button
-    type="button"
-    className="cancel-btn"
-    onClick={() => {
-      setFormData({
-        pickupDate: "",
-        pickupTime: "",
-        address: "",
-        city: "",
-        postalCode: "",
-        description: "",
-      });
-      setSelectedProducts([]);
-      setMessage("");
-
-      // this line closes the modal
-      if (onClose) onClose();
-    }}
-  >
-    Cancel
   </button>
 </div>
 

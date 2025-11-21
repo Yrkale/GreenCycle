@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../User/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const { token, user } = useAuth();
+  const navigate = useNavigate();
 
   // Form states
   const [title, setTitle] = useState("");
@@ -129,6 +131,9 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
+      <button className="admin-back-btn" onClick={() => navigate("/")}>
+        Go to Homepage
+      </button>
       <h1>Welcome, {user?.username || "Admin"} 👋</h1>
       <p>Manage recyclable items and register users in GreenCycle.</p>
 
