@@ -12,18 +12,16 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String email;
-    private List<String> roles;
+    private String role;
 
-    // Updated constructor to accept Collection<? extends GrantedAuthority>
+ 
     public JwtResponse(String token, Long id, String username, String email,
-                       Collection<? extends GrantedAuthority> authorities) {
+                       String role) {
         this.token = token;
         this.id = id;
         this.username = username;
         this.email = email;
-        this.roles = authorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList());
+        this.role = role;
     }
 
     // Getters and Setters
@@ -68,11 +66,11 @@ public class JwtResponse {
         this.email = email;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRoles(String role) {
+        this.role = role;
     }
 }

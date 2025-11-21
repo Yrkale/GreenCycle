@@ -119,7 +119,7 @@ export default function Shop() {
                   <p>{item.description}</p>
                   <div className="points-price">
                     <span className="points">{item.pointsCost} pts</span>
-                    <span className="price">${item.price}</span>
+                    <span className="price">₹{item.price}</span>
                   </div>
 
                   <button

@@ -10,10 +10,10 @@ const register = async (userData) => {
     username: userData.username?.trim(),
     email: userData.email?.trim(),
     password: userData.password,
-    role: userData.role || ["user"], // default role if not provided
+    role: userData.role || "USER", // default role if not provided
   };
 
-  return axios.post(`${API_URL}/signup`, payload, {
+  return axios.post(`${API_URL}/register`, payload, {
     headers: { "Content-Type": "application/json" },
   });
 };

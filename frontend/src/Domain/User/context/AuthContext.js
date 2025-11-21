@@ -73,7 +73,14 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used inside AuthProvider");
 
-  const hasRole = (role) => context?.user?.roles?.includes(role);
+  //const hasRole = (role) => context?.user?.roles?.includes(role);
+
+  const { user } = context;
+
+ const hasRole = (roleName) => {
+  return user && user.role === roleName;
+};
+
 
   return { ...context, hasRole };
 };

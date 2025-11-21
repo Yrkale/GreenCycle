@@ -46,7 +46,7 @@ const MyPickupRequests = () => {
     return () => clearInterval(intervalRef.current);
   }, [token, user]);
 
-  if (!user || !hasRole("ROLE_USER")) {
+  if (!user || !hasRole("USER")) {
     return (
       <p className="error-message">
         ❌ Please log in as a user to view your pickup requests.
