@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.greencycle.Domain.Shop.Shop;
 import com.greencycle.Domain.Shop.ShopRepository;
- 
+import com.greencycle.Domain.User.Model.User;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.model.User;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.greencycle.Domain.LiveContributor;
+package com.greencycle.Domain.LiveContributor.Model;
  
 import javax.persistence.*;
 import java.time.LocalDateTime;

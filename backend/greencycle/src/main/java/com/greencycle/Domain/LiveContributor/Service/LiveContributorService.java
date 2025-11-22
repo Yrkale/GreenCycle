@@ -1,7 +1,11 @@
-package com.greencycle.Domain.LiveContributor;
+package com.greencycle.Domain.LiveContributor.Service;
 
  
 import org.springframework.stereotype.Service;
+
+import com.greencycle.Domain.LiveContributor.Model.LiveContributor;
+import com.greencycle.Domain.LiveContributor.Repository.LiveContributorRepository;
+
 import java.util.List;
 
 @Service

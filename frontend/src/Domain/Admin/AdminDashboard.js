@@ -1,7 +1,9 @@
+// src/Domain/Admin/AdminDashboard.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../User/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaUsers, FaRecycle, FaTruck, FaSignOutAlt, FaPlus } from "react-icons/fa";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -14,7 +16,6 @@ const AdminDashboard = () => {
   const [points, setPoints] = useState("");
   const [products, setProducts] = useState([]);
 
-  // Dashboard stats
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalPartners: 0,
@@ -24,17 +25,16 @@ const AdminDashboard = () => {
     assigned: 0,
   });
 
-  // Partner registration states
   const [showPartnerForm, setShowPartnerForm] = useState(false);
   const [partnerData, setPartnerData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
-    role: "DELIVERY_PARTNER", // default
+    role: "DELIVERY_PARTNER",
   });
 
-  // ✅ Fetch dashboard stats
+  // Fetch stats
   const fetchStats = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/stats", {
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
     if (token) fetchStats();
   }, [token]);
 
-  // ✅ Fetch all recyclable items
+  // Fetch recyclable items
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/recyclable-items", {
@@ -62,7 +62,11 @@ const AdminDashboard = () => {
     }
   };
 
-  // ✅ Add new recyclable item
+  useEffect(() => {
+    if (token) fetchProducts();
+  }, [token]);
+
+  // Add product
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
@@ -77,11 +81,11 @@ const AdminDashboard = () => {
       setPoints("");
       fetchProducts();
     } catch (err) {
-      console.error("❌ Failed to add recyclable item:", err);
+      console.error("❌ Failed:", err);
     }
   };
 
-  // ✅ Delete product
+  // Delete product
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/recyclable-items/${id}`, {
@@ -89,31 +93,24 @@ const AdminDashboard = () => {
       });
       fetchProducts();
     } catch (err) {
-      console.error("❌ Failed to delete recyclable item:", err);
+      console.error("❌ Failed to delete:", err);
     }
   };
 
-  useEffect(() => {
-    if (token) fetchProducts();
-  }, [token]);
-
-  // ✅ Register user (Delivery Partner / User / Admin)
+  // Register partner
   const handleRegisterPartner = async (e) => {
     e.preventDefault();
     try {
-      const payload = {
+      await axios.post("http://localhost:8080/api/auth/register", {
         username: partnerData.name,
         email: partnerData.email,
         password: partnerData.password,
         phone: partnerData.phone,
-        role: partnerData.role, // dynamic role selection
-      };
-
-      await axios.post("http://localhost:8080/api/auth/register", payload, {
-        headers: { "Content-Type": "application/json" },
+        role: partnerData.role,
       });
 
-      alert(`✅ ${partnerData.role} registered successfully!`);
+      alert("Registered successfully!");
+
       setPartnerData({
         name: "",
         email: "",
@@ -121,185 +118,172 @@ const AdminDashboard = () => {
         phone: "",
         role: "DELIVERY_PARTNER",
       });
+
       setShowPartnerForm(false);
-      fetchStats(); // refresh stats after registration
+      fetchStats();
     } catch (err) {
-      console.error("❌ Failed to register:", err);
-      alert("❌ Registration failed. Try again.");
+      alert("❌ Registration failed!");
     }
   };
 
-  const handleLogout = () => {
-    logout(); // This function from your AuthContext should clear the user's session
-    navigate("/"); // Redirect to the homepage after logout
-  };
-
   return (
-    <div className="admin-dashboard">
-      <button className="admin-back-btn" onClick={handleLogout}>
-        Logout
-      </button>
-      <h1>Welcome, {user?.username || "Admin"} 👋</h1>
-      <p>Manage recyclable items and register users in GreenCycle.</p>
+    <div className="admin-layout">
 
-      {/* Summary Cards */}
-      <div className="stats-grid">
-        <div className="card">
-          <h3>Total Users</h3>
-          <p>{stats.totalUsers}</p>
+      {/* ---------------------- SIDEBAR ---------------------- */}
+      <aside className="admin-sidebar">
+
+        <h2 className="admin-logo">GreenCycle Admin</h2>
+
+        <div className="sidebar-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><FaUsers /> Dashboard Overview</li>
+            <li><FaRecycle /> Manage Recyclable Items</li>
+            <li><FaTruck /> Delivery Partners</li>
+          </ul>
         </div>
 
-        <div className="card">
-          <h3>Delivery Partners</h3>
-          <p>{stats.totalPartners}</p>
-        </div>
-
-        <div className="card">
-          <h3>Total Pickups</h3>
-          <p>{stats.totalPickups}</p>
-        </div>
-
-        <div className="card">
-          <h3>Pending</h3>
-          <p>{stats.pending}</p>
-        </div>
-
-        <div className="card">
-          <h3>Assigned</h3>
-          <p>{stats.assigned}</p>
-        </div>
-
-        <div className="card">
-          <h3>Completed</h3>
-          <p>{stats.completed}</p>
-        </div>
-      </div>
-
-      {/* 🧍 Register User / Partner / Admin */}
-      <div className="panel">
-        <h2> 👤 Add New User</h2>
-        <button
-          className="register-partner-btn"
-          onClick={() => setShowPartnerForm(!showPartnerForm)}
-        >
-          {showPartnerForm ? "Cancel" : "Register New Account"}
+        {/* Logout */}
+        <button className="logout-btn" onClick={() => { logout(); navigate("/"); }}>
+          <FaSignOutAlt /> Logout
         </button>
+      </aside>
 
-        {showPartnerForm && (
-          <form className="partner-form" onSubmit={handleRegisterPartner}>
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={partnerData.name}
-              onChange={(e) =>
-                setPartnerData({ ...partnerData, name: e.target.value })
-              }
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={partnerData.email}
-              onChange={(e) =>
-                setPartnerData({ ...partnerData, email: e.target.value })
-              }
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={partnerData.password}
-              onChange={(e) =>
-                setPartnerData({ ...partnerData, password: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={partnerData.phone}
-              onChange={(e) =>
-                setPartnerData({ ...partnerData, phone: e.target.value })
-              }
+      {/* ---------------------- MAIN CONTENT ---------------------- */}
+      <main className="admin-main">
+
+        <h1>Welcome, {user?.username} 👋</h1>
+        <p>Here’s the complete overview of Greencycle operations.</p>
+
+        {/* ----------- Dashboard Stats ----------- */}
+        <div className="stats-grid">
+
+          <div className="stat-card green">
+            <FaUsers className="stat-icon" />
+            <h3>Total Users</h3>
+            <p>{stats.totalUsers}</p>
+          </div>
+
+          <div className="stat-card blue">
+            <FaTruck className="stat-icon" />
+            <h3>Delivery Partners</h3>
+            <p>{stats.totalPartners}</p>
+          </div>
+
+          <div className="stat-card purple">
+            <FaRecycle className="stat-icon" />
+            <h3>Total Pickups</h3>
+            <p>{stats.totalPickups}</p>
+          </div>
+
+          <div className="stat-card orange">
+            <h3>Pending</h3>
+            <p>{stats.pending}</p>
+          </div>
+
+          <div className="stat-card yellow">
+            <h3>Assigned</h3>
+            <p>{stats.assigned}</p>
+          </div>
+
+          <div className="stat-card teal">
+            <h3>Completed</h3>
+            <p>{stats.completed}</p>
+          </div>
+
+        </div>
+
+        {/* --------------- Register Account Panel --------------- */}
+        <div className="panel">
+          <h2>👤 Register New Account</h2>
+
+          <button
+            className="toggle-btn"
+            onClick={() => setShowPartnerForm(!showPartnerForm)}
+          >
+            {showPartnerForm ? "Close Form" : "Register New Account"}
+          </button>
+
+          {showPartnerForm && (
+            <form className="partner-form" onSubmit={handleRegisterPartner}>
+              <input type="text" placeholder="Full Name"
+                value={partnerData.name}
+                onChange={(e) => setPartnerData({ ...partnerData, name: e.target.value })}
+                required
+              />
+
+              <input type="email" placeholder="Email"
+                value={partnerData.email}
+                onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
+                required
+              />
+
+              <input type="password" placeholder="Password"
+                value={partnerData.password}
+                onChange={(e) => setPartnerData({ ...partnerData, password: e.target.value })}
+                required
+              />
+
+              <input type="text" placeholder="Phone Number"
+                value={partnerData.phone}
+                onChange={(e) => setPartnerData({ ...partnerData, phone: e.target.value })}
+              />
+
+              <select value={partnerData.role}
+                onChange={(e) => setPartnerData({ ...partnerData, role: e.target.value })}
+              >
+                <option value="DELIVERY_PARTNER">Delivery Partner</option>
+                <option value="USER">User</option>
+                <option value="SUPER_ADMIN">Admin</option>
+              </select>
+
+              <button type="submit">Register</button>
+            </form>
+          )}
+        </div>
+
+        {/* --------------- Add Recyclable Item --------------- */}
+        <div className="panel">
+          <h2>♻ Add New Recyclable Item</h2>
+
+          <form className="product-form" onSubmit={handleAddProduct}>
+            <input type="text" placeholder="Item Title"
+              value={title} onChange={(e) => setTitle(e.target.value)} required
             />
 
-            {/* Role Dropdown */}
-            <select
-              value={partnerData.role}
-              onChange={(e) =>
-                setPartnerData({ ...partnerData, role: e.target.value })
-              }
-              required
-            >
-              <option value="DELIVERY_PARTNER">Delivery Partner</option>
-              <option value="USER">User</option>
-              <option value="SUPER_ADMIN">Admin</option>
-            </select>
+            <input type="text" placeholder="Description"
+              value={description} onChange={(e) => setDescription(e.target.value)} required
+            />
 
-            <button type="submit">Register</button>
+            <input type="number" placeholder="Eco Points"
+              value={points} onChange={(e) => setPoints(e.target.value)} required
+            />
+
+            <button type="submit"><FaPlus /> Add Item</button>
           </form>
-        )}
-      </div>
+        </div>
 
-      {/* ♻️ Add New Recyclable Item */}
-      <div className="panel">
-        <h2>♻️ Add New Recyclable Item</h2>
-        <form className="product-form" onSubmit={handleAddProduct}>
-          <input
-            type="text"
-            placeholder="Item Title (e.g., Plastic Bottles)"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Short Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Eco Points"
-            value={points}
-            onChange={(e) => setPoints(e.target.value)}
-            required
-          />
-          <button type="submit">Add Item</button>
-        </form>
-      </div>
+        {/* --------------- Existing Products --------------- */}
+        <div className="panel">
+          <h2>📋 Recyclable Items</h2>
 
-      {/* 📋 Existing Items */}
-      <div className="panel">
-        <h2>📋 Existing Recyclable Items</h2>
-        {products.length === 0 ? (
-          <p>No recyclable items added yet.</p>
-        ) : (
           <ul className="product-list">
             {products.map((p) => (
               <li key={p.id}>
                 <div>
-                  <strong>{p.title}</strong> — {p.description} <br />
-                  <span className="eco-points">🌱 {p.points} points</span>
+                  <strong>{p.title}</strong> — {p.description}  
+                  <span className="eco-points">🌱 {p.points} pts</span>
                 </div>
-                <button onClick={() => handleDelete(p.id)}>🗑️</button>
+
+                <button className="delete-btn" onClick={() => handleDelete(p.id)}>
+                  🗑️
+                </button>
               </li>
             ))}
           </ul>
-        )}
-      </div>
+        </div>
 
-      {/* Future Tables */}
-      <div className="tables">
-        <section>
-          <h2>All Pickup Requests</h2>
-        </section>
-
-        <section>
-          <h2>All Users</h2>
-        </section>
-      </div>
+      </main>
     </div>
   );
 };

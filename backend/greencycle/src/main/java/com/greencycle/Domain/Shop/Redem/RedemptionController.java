@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.greencycle.Domain.Shop.Shop;
 import com.greencycle.Domain.Shop.ShopService;
+import com.greencycle.Domain.User.Model.User;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
-import com.greencycle.model.User;
+import com.greencycle.Domain.User.Service.UserDetailsImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;

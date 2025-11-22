@@ -1,4 +1,4 @@
-package com.greencycle.Domain.User.jwt;
+package com.greencycle.Domain.Jwt;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
+import com.greencycle.Domain.User.Service.UserDetailsImpl;
 
 import java.util.Date;
 

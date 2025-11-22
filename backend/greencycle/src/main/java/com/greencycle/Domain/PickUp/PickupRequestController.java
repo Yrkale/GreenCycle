@@ -5,19 +5,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.greencycle.Domain.User.Model.User;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
-import com.greencycle.model.User;
+import com.greencycle.Domain.User.Service.UserDetailsImpl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.greencycle.Domain.LiveContributor.Model.LiveContributor;
+import com.greencycle.Domain.LiveContributor.Repository.LiveContributorRepository;
 
-//🟢 NEW imports
-import com.greencycle.Domain.LiveContributor.LiveContributor;
-import com.greencycle.Domain.LiveContributor.LiveContributorRepository;
 import java.time.LocalDateTime;
 
 

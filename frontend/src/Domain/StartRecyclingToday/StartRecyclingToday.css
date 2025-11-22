@@ -37,3 +37,8 @@
 .modal-content {
   margin-top: 20px;
 }
+
+.pickup-wrapper {
+  max-width: 900px;       /* SAME AS pickUpRequest */
+  margin: auto;
+}
