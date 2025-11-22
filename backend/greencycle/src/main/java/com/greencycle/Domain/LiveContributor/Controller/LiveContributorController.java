@@ -1,7 +1,11 @@
-package com.greencycle.Domain.LiveContributor;
+package com.greencycle.Domain.LiveContributor.Controller;
 
  
 import org.springframework.web.bind.annotation.*;
+
+import com.greencycle.Domain.LiveContributor.Model.LiveContributor;
+import com.greencycle.Domain.LiveContributor.Service.LiveContributorService;
+
 import java.util.List;
 
 @RestController

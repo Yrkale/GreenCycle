@@ -9,17 +9,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-//import com.greencycle.model.ERole;
-//import com.greencycle.model.Role;
-import com.greencycle.model.User;
 import com.greencycle.Domain.User.DTO.JwtResponse;
 import com.greencycle.Domain.User.DTO.LoginRequest;
 import com.greencycle.Domain.User.DTO.MessageResponse;
 import com.greencycle.Domain.User.DTO.SignupRequest;
+import com.greencycle.Domain.User.Model.User;
 //import com.greencycle.Domain.User.Repository.RoleRepository;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
-import com.greencycle.Domain.User.jwt.JwtUtils;
+import com.greencycle.Domain.User.Service.UserDetailsImpl;
+import com.greencycle.Domain.Jwt.JwtUtils;
 import com.greencycle.Domain.User.DTO.*;
 
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")

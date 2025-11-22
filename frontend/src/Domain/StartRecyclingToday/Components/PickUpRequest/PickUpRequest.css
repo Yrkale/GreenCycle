@@ -1,19 +1,26 @@
+/* -------------------------------------------------
+   MAIN PICKUP CONTAINER (Same Size as Product)
+---------------------------------------------------*/
 .pickup-container {
-  background: linear-gradient(to top right, #f7fdf7, #ffffff);
+  width: 100%;
+  max-width: 1100px;           /* SAME AS PRODUCT */
+  margin: 0 auto 40px auto;
   padding: 32px;
   border-radius: 16px;
-  border-left: 5px solid #43a047;
-  max-width: 900px;
-  margin: 20px auto;
+  background: linear-gradient(to top right, #f7fdf7, #ffffff);
   box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
   transition: 0.3s ease;
-  position: relative; /* Needed for positioning the close button */
+  position: relative;
+  border-left: none !important; /* Remove green border */
 }
 
 .pickup-container:hover {
   box-shadow: 0 10px 30px rgba(46, 125, 50, 0.18);
 }
 
+/* -------------------------------------------------
+   FORM LAYOUT
+---------------------------------------------------*/
 .pickup-form {
   display: flex;
   flex-direction: column;
@@ -64,8 +71,10 @@ textarea {
   min-height: 70px;
 }
 
+/* -------------------------------------------------
+   FORM SECTIONS
+---------------------------------------------------*/
 .form-section {
-  /* Removed background for a cleaner look */
   border-top: 1px solid #e0e0e0;
   padding-top: 24px;
   margin-top: 24px;
@@ -82,6 +91,9 @@ textarea {
   letter-spacing: 0.5px;
 }
 
+/* -------------------------------------------------
+   SUBMIT BUTTON
+---------------------------------------------------*/
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -90,8 +102,7 @@ textarea {
 }
 
 .submit-btn {
-  flex: 0 1 auto; /* Prevent button from stretching */
-  padding: 15px 30px; /* Give it a nice size */
+  padding: 15px 30px;
   background: linear-gradient(90deg, #66bb6a, #43a047);
   border: none;
   border-radius: 10px;
@@ -109,6 +120,9 @@ textarea {
   box-shadow: 0 6px 20px rgba(67, 160, 71, 0.4);
 }
 
+/* -------------------------------------------------
+   STATUS / LOGIN MSG
+---------------------------------------------------*/
 .status-message {
   margin-top: 20px;
   text-align: center;
@@ -130,36 +144,30 @@ textarea {
   font-weight: 700;
   cursor: pointer;
   text-decoration: underline;
-  font-size: inherit; /* Match the surrounding text size */
+  font-size: inherit;
   padding: 0;
 }
 
+/* -------------------------------------------------
+   REMOVE CLOSE BUTTON
+---------------------------------------------------*/
 .pickup-close-btn {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 24px;
-  line-height: 1;
-  color: #888;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: color 0.2s ease, transform 0.2s ease;
+  display: none !important;
 }
 
-.pickup-close-btn:hover {
-  color: #333;
-  transform: scale(1.1);
+/* -------------------------------------------------
+   PRODUCT WRAPPER (TOP SECTION)
+---------------------------------------------------*/
+.product-section-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 35px auto;
+  transform: scale(1.06);
 }
 
-/* This style adds padding to the top of the admin dashboard, creating space for the back button */
+/* -------------------------------------------------
+   ADMIN NAVBAR (UNCHANGED)
+---------------------------------------------------*/
 .admin-dashboard {
   padding-top: 60px;
 }
@@ -168,29 +176,28 @@ textarea {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: #4caf50; /* Green background */
+  background: #4caf50;
   border: none;
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 14px;
   font-weight: 600;
-  color: white; /* White text for contrast */
+  color: white;
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .admin-back-btn:hover {
-  background: #45a049; /* Darker green on hover */
+  background: #45a049;
 }
 
-/* Styles for the welcome message in the navbar */
 .navbar-right span {
-  font-size: 18px; /* Larger font size */
-  font-weight: 600; /* Bolder text */
-  color: #2e7d32; /* A nice, dark green from your theme */
-  margin-right: 12px; /* Add some space between the text and the logout button */
+  font-size: 18px;
+  font-weight: 600;
+  color: #2e7d32;
+  margin-right: 12px;
 }
 
-/* Ensure vertical alignment with the button */
 .navbar-right {
   display: flex;
   align-items: center;

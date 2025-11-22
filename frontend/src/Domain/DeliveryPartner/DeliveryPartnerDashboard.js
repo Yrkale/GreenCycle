@@ -4,39 +4,52 @@ import MyAssignedRequests from "./Component/MyAssignedRequests";
 import PickupRequestsList from "./Component/PickupRequestsList";
 import { useAuth } from "../User/context/AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  FaHome,
+  FaClipboardList,
+  FaTruck,
+  FaCheckCircle,
+  FaUser,
+  FaSignOutAlt,
+} from "react-icons/fa";
+
 import "./DeliveryPartnerDashboard.css";
 
 const DeliveryPartnerDashboard = () => {
-  const { user, token, hasRole } = useAuth();
+  const { user, token, hasRole, logout } = useAuth();
+  const navigate = useNavigate();
+
   const [stats, setStats] = useState({
     assigned: 0,
     completed: 0,
     pending: 0,
   });
 
+  // Redirect unauthorized users
+  useEffect(() => {
+    if (!user) return;
+    if (!hasRole("DELIVERY_PARTNER")) navigate("/");
+  }, [user, hasRole, navigate]);
+
+  // Fetch dashboard stats
   const fetchStats = async () => {
     try {
-      // Fetch all pickup requests from backend
       const res = await axios.get("http://localhost:8080/api/pickup-requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const allRequests = res.data;
+      const requests = res.data;
 
-      // Assigned to current partner
-      const assigned = allRequests.filter(
-        (req) => req.assignedTo === user?.id && req.status === "ASSIGNED"
+      const assigned = requests.filter(
+        (r) => r.assignedTo === user?.id && r.status === "ASSIGNED"
       ).length;
 
-      // Completed pickups
-      const completed = allRequests.filter(
-        (req) => req.assignedTo === user?.id && req.status === "COMPLETED"
+      const completed = requests.filter(
+        (r) => r.assignedTo === user?.id && r.status === "COMPLETED"
       ).length;
 
-      // Pending requests (not yet assigned to anyone)
-      const pending = allRequests.filter(
-        (req) => req.status === "PENDING"
-      ).length;
+      const pending = requests.filter((r) => r.status === "PENDING").length;
 
       setStats({ assigned, completed, pending });
     } catch (err) {
@@ -45,49 +58,89 @@ const DeliveryPartnerDashboard = () => {
   };
 
   useEffect(() => {
-    if (user && hasRole("ROLE_DELIVERY_PARTNER")) {
+    if (user && hasRole("DELIVERY_PARTNER")) {
       fetchStats();
     }
   }, [user, token]);
 
+  if (!user || !hasRole("DELIVERY_PARTNER")) return null;
+
   return (
-    <div className="partner-dashboard" style={{ padding: "20px" }}>
-      {/* Header */}
-      <h1>Welcome, {user?.username || "Delivery Partner"} 👋</h1>
-      <p>Here’s an overview of your delivery tasks.</p>
+    <>
+      {/* ======================= SIDEBAR ======================= */}
+      <div className="partner-sidebar">
+        <div>
+          <h2 className="partner-logo">🚛 Partner Panel</h2>
 
-      {/* Stats Section */}
-      <div style={{ display: "flex", gap: "20px", margin: "20px 0" }}>
-        <div className="stat-card">
-          <h3>Assigned Requests</h3>
-          <p>{stats.assigned}</p>
+          <nav className="partner-menu">
+            <ul>
+              <li>
+                <FaHome /> Dashboard
+              </li>
+              <li>
+                <FaTruck /> My Assigned Pickups
+              </li>
+              <li>
+                <FaClipboardList /> All Pickup Requests
+              </li>
+              <li>
+                <FaCheckCircle /> Completed
+              </li>
+              <li>
+                <FaUser /> Profile
+              </li>
+            </ul>
+          </nav>
         </div>
-        <div className="stat-card">
-          <h3>Completed Pickups</h3>
-          <p>{stats.completed}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Pending Requests</h3>
-          <p>{stats.pending}</p>
-        </div>
+
+        <button
+          className="partner-logout-btn"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
+          <FaSignOutAlt /> Logout
+        </button>
       </div>
 
-      {/* Panels */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "20px",
-        }}
-      >
-        <div className="panel">
-          <MyAssignedRequests />
+      {/* ======================= MAIN DASHBOARD ======================= */}
+      <div className="partner-dashboard">
+        <h1>Welcome, {user?.username} 👋</h1>
+        <p>Your daily delivery summary.</p>
+
+        {/* Stats Cards */}
+        <div className="partner-stats">
+          <div className="partner-stat-card">
+            <h3>Assigned Requests</h3>
+            <p>{stats.assigned}</p>
+          </div>
+
+          <div className="partner-stat-card">
+            <h3>Completed Pickups</h3>
+            <p>{stats.completed}</p>
+          </div>
+
+          <div className="partner-stat-card">
+            <h3>Pending Requests</h3>
+            <p>{stats.pending}</p>
+          </div>
         </div>
-        <div className="panel">
-          <PickupRequestsList />
+
+        {/* Panels */}
+        <div className="partner-panels">
+          <div className="partner-panel">
+            <h2>📌 My Assigned Pickups</h2>
+            <MyAssignedRequests />
+          </div>
+
+          <div className="partner-panel">
+            <h2>📋 All Pickup Requests</h2>
+            <PickupRequestsList />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

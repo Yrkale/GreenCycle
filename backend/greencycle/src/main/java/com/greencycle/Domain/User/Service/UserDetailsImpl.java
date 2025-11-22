@@ -1,9 +1,10 @@
-package com.greencycle.Domain.User.SecurityServices;
+package com.greencycle.Domain.User.Service;
 
-import com.greencycle.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.greencycle.Domain.User.Model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,24 +36,11 @@ public class UserDetailsImpl implements UserDetails {
         this.role = role;
     }
 
-//    public static UserDetailsImpl build(User user) {
-//        List<GrantedAuthority> authorities = user.getRoles().stream()
-//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-//                .collect(Collectors.toList());
-//
-//        return new UserDetailsImpl(
-//                user.getId(),
-//                user.getUsername(),
-//                user.getEmail(),
-//                user.getPassword(),
-//                authorities);
-//    }
+ 
     
     public static UserDetailsImpl build(User user) {
     	
-       // SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
-
-        // 🔥 No role conversion
+       
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),

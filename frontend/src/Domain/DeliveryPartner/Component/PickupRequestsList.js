@@ -28,7 +28,7 @@ const PickupRequestsList = () => {
   };
 
   useEffect(() => {
-    if (!hasRole("ROLE_DELIVERY_PARTNER")) return;
+    if (!hasRole("DELIVERY_PARTNER")) return;
 
     fetchAll(); // initial load
     intervalRef.current = setInterval(fetchAll, REFRESH_MS);
@@ -53,7 +53,7 @@ const PickupRequestsList = () => {
     }
   };
 
-  if (!hasRole("ROLE_DELIVERY_PARTNER")) {
+  if (!hasRole("DELIVERY_PARTNER")) {
     return <p>❌ Access Denied. Delivery Partner role required.</p>;
   }
 

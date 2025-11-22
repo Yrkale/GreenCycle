@@ -1,8 +1,8 @@
 package com.greencycle.Domain.Shop;
 
+import com.greencycle.Domain.User.Model.User;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.Domain.User.SecurityServices.UserDetailsImpl;
-import com.greencycle.model.User;
+import com.greencycle.Domain.User.Service.UserDetailsImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

@@ -26,7 +26,7 @@ const MyAssignRequest = () => {
   };
 
   useEffect(() => {
-    if (!hasRole("ROLE_DELIVERY_PARTNER")) return;
+    if (!hasRole("DELIVERY_PARTNER")) return;
     fetchMine();
     intervalRef.current = setInterval(fetchMine, REFRESH_MS);
     return () => clearInterval(intervalRef.current);
@@ -60,7 +60,7 @@ const MyAssignRequest = () => {
     }
   };
 
-  if (!hasRole("ROLE_DELIVERY_PARTNER")) {
+  if (!hasRole("DELIVERY_PARTNER")) {
     return <p>❌ Access Denied. Delivery Partner role required.</p>;
   }
 

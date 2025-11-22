@@ -1,14 +1,12 @@
-package com.greencycle.model;
+package com.greencycle.Domain.User.Model;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
- 
+
 @Entity
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
 		@UniqueConstraint(columnNames = "email") })
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -23,9 +21,8 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
- 
-
 	// Constructors
+
 	public User() {
 	}
 
@@ -43,9 +40,7 @@ public class User {
 
 	@Column(nullable = false)
 	private Integer tillNowEcoPoints = 0;
-	
-	
-	
+
 	// 🟢 Getter and Setter
 
 	public String getRole() {
@@ -64,7 +59,6 @@ public class User {
 		this.tillNowEcoPoints = tillNowEcoPoints;
 	}
 
-	
 	public Integer getEcoPoints() {
 		return ecoPoints;
 	}
@@ -105,7 +99,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
- 
-
 }

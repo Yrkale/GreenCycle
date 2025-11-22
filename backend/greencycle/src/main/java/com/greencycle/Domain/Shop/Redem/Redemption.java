@@ -2,7 +2,7 @@ package com.greencycle.Domain.Shop.Redem;
  
  
 import com.greencycle.Domain.Shop.Shop;
-import com.greencycle.model.User;
+import com.greencycle.Domain.User.Model.User;
 
 import java.time.LocalDateTime;
 

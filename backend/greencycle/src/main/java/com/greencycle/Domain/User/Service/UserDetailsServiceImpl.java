@@ -1,7 +1,7 @@
-package com.greencycle.Domain.User.SecurityServices;
+package com.greencycle.Domain.User.Service;
 
+import com.greencycle.Domain.User.Model.User;
 import com.greencycle.Domain.User.Repository.UserRepository;
-import com.greencycle.model.User;
 
 import antlr.collections.List;
 

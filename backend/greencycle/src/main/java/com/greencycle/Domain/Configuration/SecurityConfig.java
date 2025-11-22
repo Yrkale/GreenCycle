@@ -1,6 +1,5 @@
-package com.greencycle.Domain.User.Config;
+package com.greencycle.Domain.Configuration;
 
-import com.greencycle.Domain.User.jwt.JwtAuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.greencycle.Domain.Jwt.JwtAuthTokenFilter;
 
 import java.util.Arrays;
 
