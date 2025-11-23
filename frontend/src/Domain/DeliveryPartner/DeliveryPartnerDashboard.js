@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import MyAssignedRequests from "./Component/MyAssignedRequests";
 import PickupRequestsList from "./Component/PickupRequestsList";
+import CompletedRequests from "./Component/CompletedRequest";
 import { useAuth } from "../User/context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import {
   FaHome,
   FaClipboardList,
@@ -25,6 +27,9 @@ const DeliveryPartnerDashboard = () => {
     completed: 0,
     pending: 0,
   });
+
+  // ⭐ DEFAULT PAGE = dashboard
+  const [activePage, setActivePage] = useState("dashboard");
 
   // Redirect unauthorized users
   useEffect(() => {
@@ -65,6 +70,69 @@ const DeliveryPartnerDashboard = () => {
 
   if (!user || !hasRole("DELIVERY_PARTNER")) return null;
 
+  // ⭐ RENDER PAGES BASED ON SIDEBAR CLICK
+  const renderPage = () => {
+    switch (activePage) {
+      case "assigned":
+        return (
+          <div className="partner-panel">
+            
+            <MyAssignedRequests />
+          </div>
+        );
+
+      case "allRequests":
+        return (
+          <div className="partner-panel">
+             
+            <PickupRequestsList />
+          </div>
+        );
+
+      case "completed":
+        return (
+          <div className="partner-panel">
+            
+            <CompletedRequests filter="COMPLETED" />
+          </div>
+        );
+
+      case "profile":
+        return (
+          <div className="partner-panel">
+            <h2>👤 My Profile</h2>
+            <p><b>Name:</b> {user.username}</p>
+            <p><b>Email:</b> {user.email}</p>
+            <p><b>Role:</b> Delivery Partner</p>
+          </div>
+        );
+
+      // ⭐⭐⭐ DEFAULT DASHBOARD — ONLY STATS, NOTHING ELSE
+      default:
+      case "dashboard":
+        return (
+          <>
+            <div className="partner-stats">
+              <div className="partner-stat-card">
+                <h3>Assigned Requests</h3>
+                <p>{stats.assigned}</p>
+              </div>
+
+              <div className="partner-stat-card">
+                <h3>Completed Pickups</h3>
+                <p>{stats.completed}</p>
+              </div>
+
+              <div className="partner-stat-card">
+                <h3>Live Requests</h3>
+                <p>{stats.pending}</p>
+              </div>
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
     <>
       {/* ======================= SIDEBAR ======================= */}
@@ -74,21 +142,41 @@ const DeliveryPartnerDashboard = () => {
 
           <nav className="partner-menu">
             <ul>
-              <li>
+              <li
+                className={activePage === "dashboard" ? "active" : ""}
+                onClick={() => setActivePage("dashboard")}
+              >
                 <FaHome /> Dashboard
               </li>
-              <li>
+
+              <li
+                className={activePage === "assigned" ? "active" : ""}
+                onClick={() => setActivePage("assigned")}
+              >
                 <FaTruck /> My Assigned Pickups
               </li>
-              <li>
+
+              <li
+                className={activePage === "allRequests" ? "active" : ""}
+                onClick={() => setActivePage("allRequests")}
+              >
                 <FaClipboardList /> All Pickup Requests
               </li>
-              <li>
+
+              <li
+                className={activePage === "completed" ? "active" : ""}
+                onClick={() => setActivePage("completed")}
+              >
                 <FaCheckCircle /> Completed
               </li>
-              <li>
+
+              <li
+                className={activePage === "profile" ? "active" : ""}
+                onClick={() => setActivePage("profile")}
+              >
                 <FaUser /> Profile
               </li>
+
             </ul>
           </nav>
         </div>
@@ -104,41 +192,12 @@ const DeliveryPartnerDashboard = () => {
         </button>
       </div>
 
-      {/* ======================= MAIN DASHBOARD ======================= */}
+      {/* ======================= MAIN CONTENT ======================= */}
       <div className="partner-dashboard">
         <h1>Welcome, {user?.username} 👋</h1>
         <p>Your daily delivery summary.</p>
 
-        {/* Stats Cards */}
-        <div className="partner-stats">
-          <div className="partner-stat-card">
-            <h3>Assigned Requests</h3>
-            <p>{stats.assigned}</p>
-          </div>
-
-          <div className="partner-stat-card">
-            <h3>Completed Pickups</h3>
-            <p>{stats.completed}</p>
-          </div>
-
-          <div className="partner-stat-card">
-            <h3>Pending Requests</h3>
-            <p>{stats.pending}</p>
-          </div>
-        </div>
-
-        {/* Panels */}
-        <div className="partner-panels">
-          <div className="partner-panel">
-            <h2>📌 My Assigned Pickups</h2>
-            <MyAssignedRequests />
-          </div>
-
-          <div className="partner-panel">
-            <h2>📋 All Pickup Requests</h2>
-            <PickupRequestsList />
-          </div>
-        </div>
+        {renderPage()}
       </div>
     </>
   );
