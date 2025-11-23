@@ -238,6 +238,8 @@ const PickUpRequest = ({ onClose }) => {
         <NeedHelp />
 
         </div>
+
+        <br/>
       
        </div>
     </>
