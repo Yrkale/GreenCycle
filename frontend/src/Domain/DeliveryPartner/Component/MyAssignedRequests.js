@@ -7,39 +7,81 @@ const REFRESH_MS = 5000;
 const MyAssignRequest = () => {
   const { user, token, hasRole } = useAuth();
   const [requests, setRequests] = useState([]);
-  const [otpInputs, setOtpInputs] = useState({}); // store OTP inputs per request
+  const [otpInputs, setOtpInputs] = useState({});
   const [message, setMessage] = useState("");
   const intervalRef = useRef(null);
 
-  // 🔹 Fetch assigned pickup requests
-  const fetchMine = async () => {
-    try {
-      if (!user) return;
-      const res = await axios.get(
-        `http://localhost:8080/api/pickup-requests/assigned/${user.id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setRequests(res.data);
-    } catch (err) {
-      console.error("Failed to load assigned requests", err);
-    }
+  // Convert date → "Nov 23, 2025, 10:00 AM - 12:00 PM"
+  const formatPickupTime = (isoString) => {
+    const date = new Date(isoString);
+
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    };
+
+    return date.toLocaleString("en-US", options);
   };
+
+  const fetchUserById = async (id) => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/user/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return res.data.username;
+  } catch (err) {
+    console.error("User fetch failed", err);
+    return "Unknown User";
+  }
+};
+
+
+  // Fetch only ASSIGNED requests
+  const fetchAssigned = async () => {
+  try {
+    if (!user) return;
+
+    const res = await axios.get(
+      `http://localhost:8080/api/pickup-requests/assigned/${user.id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const assignedOnly = await Promise.all(
+      res.data
+        .filter((r) => r.status === "ASSIGNED")
+        .map(async (req) => {
+          const username = await fetchUserById(req.userId);
+
+          return { ...req, username };
+        })
+    );
+
+    setRequests(assignedOnly);
+  } catch (err) {
+    console.error("Failed to load assigned requests", err);
+  }
+};
 
   useEffect(() => {
     if (!hasRole("DELIVERY_PARTNER")) return;
-    fetchMine();
-    intervalRef.current = setInterval(fetchMine, REFRESH_MS);
+
+    fetchAssigned();
+    intervalRef.current = setInterval(fetchAssigned, REFRESH_MS);
+
     return () => clearInterval(intervalRef.current);
   }, [token, user]);
 
-  // 🔹 Handle OTP input change
   const handleOtpChange = (id, value) => {
     setOtpInputs((prev) => ({ ...prev, [id]: value }));
   };
 
-  // 🔹 Verify OTP
   const verifyOtp = async (id) => {
     const otp = otpInputs[id];
+
     if (!otp) {
       setMessage("⚠️ Please enter OTP before verifying.");
       return;
@@ -53,16 +95,12 @@ const MyAssignRequest = () => {
       );
 
       setMessage(res.data.message || "✅ Pickup completed successfully!");
-      fetchMine(); // refresh list after verification
+      fetchAssigned();
     } catch (err) {
-      console.error("OTP verification failed", err);
-      setMessage(err.response?.data?.message || "❌ Invalid OTP or request failed.");
+      console.error("OTP failed", err);
+      setMessage(err.response?.data?.message || "❌ Invalid OTP.");
     }
   };
-
-  if (!hasRole("DELIVERY_PARTNER")) {
-    return <p>❌ Access Denied. Delivery Partner role required.</p>;
-  }
 
   return (
     <div style={{ padding: "10px" }}>
@@ -97,20 +135,33 @@ const MyAssignRequest = () => {
               boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
+            {/* REQUEST CREATOR */}
+           <p>
+  <strong>Customer:</strong> {req.username}
+
+</p>
+
+
+            {/* DATE + TIME 12 HR */}
             <p>
-              <strong>Date:</strong>{" "}
-              {new Date(req.pickupDate).toLocaleString()}
+              <strong>Pickup Time:</strong> {formatPickupTime(req.pickupDate)}
             </p>
+
+            {/* ADDRESS */}
             <p>
               <strong>Address:</strong> {req.address}, {req.city}
             </p>
-            <p>
-              <strong>Status:</strong> {req.status}
-            </p>
 
-            {/* Show item details */}
-            {req.items && req.items.length > 0 && (
-              <div>
+            {/* DESCRIPTION */}
+            {req.description && (
+              <p>
+                <strong>Description:</strong> {req.description}
+              </p>
+            )}
+
+            {/* ITEMS */}
+            {req.items?.length > 0 && (
+              <>
                 <strong>Items:</strong>
                 <ul>
                   {req.items.map((item) => (
@@ -119,45 +170,36 @@ const MyAssignRequest = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </>
             )}
 
-            {/* ✅ OTP verification UI */}
-            {req.status === "ASSIGNED" && (
-              <div style={{ marginTop: "10px" }}>
-                <input
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={otpInputs[req.id] || ""}
-                  onChange={(e) => handleOtpChange(req.id, e.target.value)}
-                  style={{
-                    padding: "6px",
-                    marginRight: "8px",
-                    borderRadius: "5px",
-                    border: "1px solid #ccc",
-                  }}
-                />
-                <button
-                  onClick={() => verifyOtp(req.id)}
-                  style={{
-                    background: "#4caf50",
-                    color: "white",
-                    border: "none",
-                    padding: "6px 10px",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                  }}
-                >
-                  ✅ Verify OTP
-                </button>
-              </div>
-            )}
-
-            {req.status === "COMPLETED" && (
-              <p style={{ color: "green", fontWeight: "bold" }}>
-                ✅ Pickup Completed — EcoPoints: {req.ecoPoints ?? "N/A"}
-              </p>
-            )}
+            {/* OTP Box */}
+            <div style={{ marginTop: "10px" }}>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otpInputs[req.id] || ""}
+                onChange={(e) => handleOtpChange(req.id, e.target.value)}
+                style={{
+                  padding: "6px",
+                  marginRight: "8px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <button
+                onClick={() => verifyOtp(req.id)}
+                style={{
+                  background: "#4caf50",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                Verify OTP
+              </button>
+            </div>
           </div>
         ))
       )}
