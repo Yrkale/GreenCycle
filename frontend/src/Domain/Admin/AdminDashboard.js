@@ -5,6 +5,10 @@ import { useAuth } from "../User/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaUsers, FaRecycle, FaTruck, FaSignOutAlt, FaPlus } from "react-icons/fa";
 import "./AdminDashboard.css";
+import AdminSidebar from "./AdminSidebar";
+import { MdOutlinePending } from "react-icons/md";
+import { MdAssignmentAdd } from "react-icons/md";
+import { FaThumbsUp } from "react-icons/fa";
 
 const AdminDashboard = () => {
   const { token, user, logout } = useAuth();
@@ -129,25 +133,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-layout">
 
-      {/* ---------------------- SIDEBAR ---------------------- */}
-      <aside className="admin-sidebar">
-
-        <h2 className="admin-logo">GreenCycle Admin</h2>
-
-        <div className="sidebar-section">
-          <h4>Navigation</h4>
-          <ul>
-            <li><FaUsers /> Dashboard Overview</li>
-            <li><FaRecycle /> Manage Recyclable Items</li>
-            <li><FaTruck /> Delivery Partners</li>
-          </ul>
-        </div>
-
-        {/* Logout */}
-        <button className="logout-btn" onClick={() => { logout(); navigate("/"); }}>
-          <FaSignOutAlt /> Logout
-        </button>
-      </aside>
+      <AdminSidebar /> {/* Reuse the same sidebar */}
 
       {/* ---------------------- MAIN CONTENT ---------------------- */}
       <main className="admin-main">
@@ -177,112 +163,25 @@ const AdminDashboard = () => {
           </div>
 
           <div className="stat-card orange">
-            <h3>Pending</h3>
+            <MdOutlinePending className="stat-icon" />
+            <h3> 
+            Pending</h3>
             <p>{stats.pending}</p>
           </div>
 
           <div className="stat-card yellow">
+            <MdAssignmentAdd className="stat-icon" />
             <h3>Assigned</h3>
             <p>{stats.assigned}</p>
           </div>
 
           <div className="stat-card teal">
+            <FaThumbsUp className="stat-icon" />
             <h3>Completed</h3>
             <p>{stats.completed}</p>
           </div>
 
         </div>
-
-        {/* --------------- Register Account Panel --------------- */}
-        <div className="panel">
-          <h2>👤 Register New Account</h2>
-
-          <button
-            className="toggle-btn"
-            onClick={() => setShowPartnerForm(!showPartnerForm)}
-          >
-            {showPartnerForm ? "Close Form" : "Register New Account"}
-          </button>
-
-          {showPartnerForm && (
-            <form className="partner-form" onSubmit={handleRegisterPartner}>
-              <input type="text" placeholder="Full Name"
-                value={partnerData.name}
-                onChange={(e) => setPartnerData({ ...partnerData, name: e.target.value })}
-                required
-              />
-
-              <input type="email" placeholder="Email"
-                value={partnerData.email}
-                onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
-                required
-              />
-
-              <input type="password" placeholder="Password"
-                value={partnerData.password}
-                onChange={(e) => setPartnerData({ ...partnerData, password: e.target.value })}
-                required
-              />
-
-              <input type="text" placeholder="Phone Number"
-                value={partnerData.phone}
-                onChange={(e) => setPartnerData({ ...partnerData, phone: e.target.value })}
-              />
-
-              <select value={partnerData.role}
-                onChange={(e) => setPartnerData({ ...partnerData, role: e.target.value })}
-              >
-                <option value="DELIVERY_PARTNER">Delivery Partner</option>
-                <option value="USER">User</option>
-                <option value="SUPER_ADMIN">Admin</option>
-              </select>
-
-              <button type="submit">Register</button>
-            </form>
-          )}
-        </div>
-
-        {/* --------------- Add Recyclable Item --------------- */}
-        <div className="panel">
-          <h2>♻ Add New Recyclable Item</h2>
-
-          <form className="product-form" onSubmit={handleAddProduct}>
-            <input type="text" placeholder="Item Title"
-              value={title} onChange={(e) => setTitle(e.target.value)} required
-            />
-
-            <input type="text" placeholder="Description"
-              value={description} onChange={(e) => setDescription(e.target.value)} required
-            />
-
-            <input type="number" placeholder="Eco Points"
-              value={points} onChange={(e) => setPoints(e.target.value)} required
-            />
-
-            <button type="submit"><FaPlus /> Add Item</button>
-          </form>
-        </div>
-
-        {/* --------------- Existing Products --------------- */}
-        <div className="panel">
-          <h2>📋 Recyclable Items</h2>
-
-          <ul className="product-list">
-            {products.map((p) => (
-              <li key={p.id}>
-                <div>
-                  <strong>{p.title}</strong> — {p.description}  
-                  <span className="eco-points">🌱 {p.points} pts</span>
-                </div>
-
-                <button className="delete-btn" onClick={() => handleDelete(p.id)}>
-                  🗑️
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
       </main>
     </div>
   );
