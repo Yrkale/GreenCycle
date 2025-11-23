@@ -7,9 +7,8 @@ import { AuthContext } from "../../../User/context/AuthContext.js";
 import LoginRegisterModal from "../../../User/components/LoginRegisterModal.js";
 
 const PickUpRequest = ({ onClose }) =>  {
-  const { user } = useContext(AuthContext); // check if user is logged in
+  const { user } = useContext(AuthContext); 
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  
 
   const [formData, setFormData] = useState({
     pickupDate: "",
@@ -23,13 +22,12 @@ const PickUpRequest = ({ onClose }) =>  {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [message, setMessage] = useState("");
 
-  const today = new Date().toISOString().split("T")[0]; // restrict date
+  const today = new Date().toISOString().split("T")[0];
 
-  // Dropdown data
   const cities = ["Akurdi-Pune","Ravet-Pune","Chinchwad-Pune","Nigdi-Pune","Pimpri-Pune"];
   const zipCodes = ["411033"];
   const timeSlots = [
-     "10:00 AM - 12:00 PM",
+    "10:00 AM - 12:00 PM",
     "12:00 PM - 02:00 PM",
     "02:00 PM - 04:00 PM",
     "04:00 PM - 06:00 PM",
@@ -39,9 +37,8 @@ const PickUpRequest = ({ onClose }) =>  {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 🧠 Helper: Convert time slot ("12:00 PM - 02:00 PM") → "12:00"
   const convertTo24Hour = (timeRange) => {
-    const [startTime] = timeRange.split(" - "); // use only start time
+    const [startTime] = timeRange.split(" - ");
     const [time, modifier] = startTime.split(" ");
     let [hours, minutes] = time.split(":");
     if (modifier === "PM" && hours !== "12") hours = String(+hours + 12);
@@ -58,7 +55,6 @@ const PickUpRequest = ({ onClose }) =>  {
     }
 
     try {
-      // ✅ Convert pickup time properly to ISO format
       const time24 = convertTo24Hour(formData.pickupTime);
       const pickupDateTime = `${formData.pickupDate}T${time24}:00`;
 
@@ -72,12 +68,9 @@ const PickUpRequest = ({ onClose }) =>  {
         itemIds: selectedProducts.map((p) => p.id),
       };
 
-      console.log("Submitting pickup request with payload:", payload);
-
       await createPickupRequest(payload);
       setMessage("✅ Pickup request scheduled successfully!");
 
-      // Reset everything
       setFormData({
         pickupDate: "",
         pickupTime: "",
@@ -93,6 +86,9 @@ const PickUpRequest = ({ onClose }) =>  {
     }
   };
 
+  // ---------------------------------------------------------
+  //  USER NOT LOGGED IN  → SHOW LOGIN MESSAGE + CENTERED HEADER
+  // ---------------------------------------------------------
   if (!user) {
     return (
       <>
@@ -100,22 +96,36 @@ const PickUpRequest = ({ onClose }) =>  {
           {onClose && (
             <button className="pickup-close-btn" onClick={onClose} aria-label="Close">&times;</button>
           )}
-          <h3 className="pickup-header">
-            <FaCalendarAlt className="icon" /> Schedule Your Pickup
+
+          {/* UPDATED → Centered Header + Calendar Icon */}
+          <h3 className="pickup-header-center">
+            <FaCalendarAlt className="pickup-header-icon" />
+            Schedule Your Pickup
           </h3>
-          <div className="status-message login-prompt">
-            ⚠️ Please
-            <button className="login-prompt-btn" onClick={() => setLoginModalOpen(true)}>
-              Login
-            </button>
-            to schedule a pickup.
+
+          {/* UPDATED → Login Message Exactly Below Heading */}
+          <div className="login-info-box">
+            <p className="login-info-text">
+              ⚠️ Please{" "}
+              <button className="login-prompt-btn" onClick={() => setLoginModalOpen(true)}>
+                Login
+              </button>{" "}
+              to schedule a pickup.
+            </p>
           </div>
         </div>
 
-        <LoginRegisterModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
+        <LoginRegisterModal 
+          isOpen={isLoginModalOpen} 
+          onClose={() => setLoginModalOpen(false)} 
+        />
       </>
     );
   }
+
+  // ---------------------------------------------------------
+  //  USER LOGGED IN  → SHOW NORMAL FORM
+  // ---------------------------------------------------------
 
   return (
     <div className="pickup-container">
@@ -123,33 +133,31 @@ const PickUpRequest = ({ onClose }) =>  {
         <button className="pickup-close-btn" onClick={onClose} aria-label="Close">&times;</button>
       )}
 
-      {/* Product selection */}
+      <h3 className="pickup-header pickup-header-centre">
+        <FaCalendarAlt className="icon" /> Schedule Your Pickup
+      </h3>
+
       <Product onSelectionChange={setSelectedProducts} />
 
       <form className="pickup-form" onSubmit={handleSubmit}>
         <div className="form-section">
           <h3 className="form-section-title">Your Address</h3>
           <div className="form-group">
-          <label>Street Address *</label>
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          />
-        </div></div>
-
-        <div className="form-row"> 
-          {/* City Dropdown */}
-          <div className="form-group">
-            <label>City *</label>
-            <select
-              name="city"
-              value={formData.city}
+            <label>Street Address *</label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
               onChange={handleChange}
               required
-            >
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label>City *</label>
+            <select name="city" value={formData.city} onChange={handleChange} required>
               <option value="">Select City</option>
               {cities.map((city, i) => (
                 <option key={i} value={city}>
@@ -159,7 +167,6 @@ const PickUpRequest = ({ onClose }) =>  {
             </select>
           </div>
 
-          {/* ZIP Code Dropdown */}
           <div className="form-group">
             <label>ZIP Code *</label>
             <select
@@ -181,55 +188,54 @@ const PickUpRequest = ({ onClose }) =>  {
         <div className="form-section">
           <h3 className="form-section-title">Pickup Time</h3>
           <div className="form-row">
-          {/* Date Picker - No Past Dates */}
-          <div className="form-group">
-            <label>Preferred Date *</label>
-            <input
-              type="date"
-              name="pickupDate"
-              value={formData.pickupDate}
-              onChange={handleChange}
-              min={today}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label>Preferred Date *</label>
+              <input
+                type="date"
+                name="pickupDate"
+                value={formData.pickupDate}
+                onChange={handleChange}
+                min={today}
+                required
+              />
+            </div>
 
-          {/* Preferred Time Dropdown */}
-          <div className="form-group">
-            <label>Preferred Time *</label>
-            <select
-              name="pickupTime"
-              value={formData.pickupTime}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Time Slot</option>
-              {timeSlots.map((slot, i) => (
-                <option key={i} value={slot}>
-                  {slot}
-                </option>
-              ))}
-            </select>
+            <div className="form-group">
+              <label>Preferred Time *</label>
+              <select
+                name="pickupTime"
+                value={formData.pickupTime}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Time Slot</option>
+                {timeSlots.map((slot, i) => (
+                  <option key={i} value={slot}>
+                    {slot}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div></div>
+        </div>
 
         <div className="form-section">
-        <div className="form-group">
-          <label>Special Instructions</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Any specific directions or notes..."
-          ></textarea>
-        </div></div>
+          <div className="form-group">
+            <label>Special Instructions</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Any specific directions or notes..."
+            ></textarea>
+          </div>
+        </div>
 
-       <div className="form-actions">
-  <button type="submit" className="submit-btn">
-    Schedule Pickup
-  </button>
-</div>
-
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            Schedule Pickup
+          </button>
+        </div>
       </form>
 
       {message && <p className="status-message">{message}</p>}

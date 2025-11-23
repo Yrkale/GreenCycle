@@ -64,9 +64,14 @@ const LoginRegisterModal = ({ isOpen, onClose }) => {
         onClose();
         // Use roles from the direct login response for immediate redirection
         // Let's check the username directly from the login response data.
-        // This is a more direct way to identify the specific admin user.
-        if (data?.username === 'Admin' || data?.username === 'SuperAdmin') {
+        const roles = data?.roles || [];
+        const isSuperAdmin = roles.some(role => role.name === 'ROLE_SUPERADMIN');
+        const isDeliveryPartner = roles.some(role => role.id === 3);
+
+        if (isSuperAdmin) {
           navigate("/AdminDashboard"); // Redirect to admin dashboard
+        } else if (isDeliveryPartner) {
+          navigate("/delivery-partner-dashboard"); // Redirect to delivery partner dashboard
         } else {
           navigate("/"); // Redirect to the landing page
         }
