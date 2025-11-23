@@ -1,119 +1,127 @@
+/* Product Modal */
 .product-modal {
   background: #fff;
-  border-radius: 12px;
   padding: 20px;
-  max-width: 1000px;
-  margin: 20px auto;
-  box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
+  border-radius: 18px;
+  max-width: 1100px;
+  margin: 30px auto;
+  box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
 }
 
-.product-header {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+.product-header h2 {
+  color: #2e7d32;
+  font-weight: 700;
 }
 
-.product-header h2 { color: #2e7d32; font-size: 20px; }
-
-.product-body h3 { font-size: 22px; margin-bottom: 8px; text-align: center; }
-.product-body p  { color: #666; text-align: center; margin-bottom: 25px; }
-
+/* Grid Layout */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
-/* Card */
+/* Cards */
 .product-card {
-  background: #f9f9f9;
-  border-radius: 12px;
-  padding: 12px;
-  border: 1px solid #eee;
-  transition: 0.2s ease-in-out;
+  background: #f9fff9;
+  padding: 18px;
+  border-radius: 16px;
+  border: 2px solid transparent;
   cursor: pointer;
-}
-.product-card:hover { transform: translateY(-3px); border-color: #4caf50; }
-
-.product-card input { display: none; } /* keep checkbox but hide it visually */
-.product-card label { display: block; cursor: pointer; }
-
-.image-placeholder {
-  background: #ececec;
-  border-radius: 10px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  font-size: 28px;
-  color: #aaa;
+  transition: 0.3s ease;
 }
 
-.title-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 6px 0 4px;
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(46, 125, 50, 0.18);
 }
 
-/* --- Custom round checkbox with tick --- */
-.checkbox-round {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid #cfd8dc;
-  background: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .15s ease-in-out;
-  flex-shrink: 0;
-  position: relative;
-}
-
-/* tick hidden by default */
-.checkbox-round::after {
-  content: "";
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity .15s ease, transform .15s ease;
-}
-
-/* when card is selected -> green circle + white ✓ */
-.product-card.selected .checkbox-round {
-  background: #16a34a;          /* green fill */
-  border-color: #16a34a;         /* green border */
-}
-.product-card.selected .checkbox-round::after {
-  content: "✓";
-  color: #fff;
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Texts */
-.product-card h4 { margin: 0; font-size: 16px; }
-.product-card p  { font-size: 13px; color: #555; margin: 6px 0 8px; }
-
-.eco-points { color: #2e7d32; font-weight: bold; font-size: 13px; }
-
-/* Selected card styling (green highlight) */
 .product-card.selected {
-  border: 2px solid #16a34a;
-  background: #f0fff4;
-  box-shadow: 0 0 10px rgba(22, 163, 74, 0.2);
+  border: 2px solid #2e7d32;
+  background: #e8f7ea;
 }
 
-/* Summary */
-.summary-box {
-  background: #e6f9eb;
-  border-radius: 10px;
-  padding: 15px;
-  margin-top: 24px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 500;
+.product-card h4 {
   color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+/* Eco Points */
+.eco-points {
+  margin-top: 12px;
+  display: inline-block;
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+/* Summary Box */
+.summary-box {
+  background: #eafcef;
+  padding: 16px;
+  border-radius: 14px;
+  margin-top: 25px;
+  text-align: center;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* -------------------------
+   Quantity Selector
+-------------------------- */
+
+.qty-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 2px solid #ddd;
+  padding: 8px 15px;
+  border-radius: 12px;
+  width: fit-content;
+  margin: 10px 0 5px 0;
+  background: #ffffff;
+}
+
+.qty-btn {
+  background: #eef3f7;
+  border: none;
+  font-size: 22px;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+.qty-btn:hover {
+  background: #dce6ed;
+}
+
+.qty-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* SMALL VERSION */
+.qty-box.small {
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transform: scale(0.85);
+}
+
+.qty-btn.small {
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  border-radius: 6px;
+}
+
+.qty-value.small {
+  font-size: 18px;
+  min-width: 18px;
 }
