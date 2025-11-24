@@ -8,80 +8,98 @@
   font-weight: bold;
   text-align: center;
 }
+
 .section-title .dot {
   height: 10px;
-  width: 10px; 
+  width: 10px;
   background: green;
   border-radius: 50%;
   display: inline-block;
   margin-right: 5px;
 }
+
 .highlight {
   color: #00a651;
 }
+
 .subtitle {
   text-align: center;
   color: #555;
   margin-bottom: 2rem;
 }
 
+/* -------------------------
+   STATS CARDS (if used)
+-------------------------- */
 .stats-cards {
   display: flex;
   gap: 1rem;
   justify-content: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
+
 .stat-card {
   flex: 1;
   max-width: 200px;
+  min-width: 150px;
   padding: 1.5rem;
   border-radius: 12px;
   text-align: center;
   color: #333;
 }
+
 .stat-card .icon {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
+
 .stat-card.green { background: #e6f7e9; }
 .stat-card.blue { background: #e6f0ff; }
 .stat-card.purple { background: #f6e6ff; }
 
-.content {
-  display: flex;
-  gap: 2rem;
-}
-
-/* Recent Activity */
+/* -------------------------
+   RECENT ACTIVITY SECTION
+-------------------------- */
 .recent-activity {
-  flex: 2;
   background: #fff;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  max-width: 900px;
+  margin: auto;
 }
+
 .recent-activity .header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  align-items: center;
+  flex-wrap: wrap; /* ⭐ responsive */
+  gap: 10px;
 }
+
 .live-updates {
   background: #e6f7e9;
   padding: 0.2rem 0.6rem;
   border-radius: 8px;
   font-size: 0.8rem;
 }
+
 .activity-card {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   background: #f9f9f9;
   border-left: 5px solid transparent;
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
+  gap: 1rem; /* ⭐ space for mobile */
 }
+
 .activity-card.seed { border-left-color: #28a745; background: #f1fff5; }
 .activity-card.waste { border-left-color: #007bff; background: #f1f6ff; }
+
 .activity-info .meta {
   font-size: 0.8rem;
   color: #777;
@@ -89,64 +107,89 @@
   gap: 10px;
   margin-top: 5px;
 }
+
 .activity-stats {
   text-align: right;
+  min-width: 60px;
 }
-.amount {
-  display: block;
-  font-weight: bold;
-}
+
 .reward {
   color: #28a745;
   font-size: 0.9rem;
 }
+
 .last-updated {
   font-size: 0.8rem;
   text-align: center;
   color: #999;
 }
 
-/* Sidebar */
-.sidebar {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+/* -------------------------
+   RESPONSIVE BREAKPOINTS
+-------------------------- */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
 }
-.top-week, .join-live {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+/* Mobile */
+@media (max-width: 768px) {
+  .live-contribution {
+    padding: 1.5rem;
+  }
+
+  .activity-card {
+    flex-direction: column; /* ⭐ stack vertically */
+    align-items: flex-start;
+  }
+
+  .activity-stats {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
 }
-.top-user {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .recent-activity {
+    padding: 1rem;
+  }
+
+  .activity-card {
+    padding: 0.8rem;
+  }
+
+  .activity-info strong {
+    font-size: 0.95rem;
+  }
+
+  .meta {
+    font-size: 0.75rem;
+  }
+
+  .reward {
+    font-size: 0.85rem;
+  }
 }
-.value {
-  font-weight: bold;
-  color: #00a651;
-}
-.join-live {
-  text-align: center;
-  background: linear-gradient(135deg, #00a651, #008d4c);
-  color: white;
-}
-.join-live h3 {
-  margin: 0;
-}
-.join-live .btn {
-  margin: 1rem 0;
-  padding: 0.6rem 1.2rem;
-  background: #fff;
-  color: #00a651;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.active-users {
-  font-size: 0.8rem;
-  display: block;
+
+/* Extra Small Screens */
+@media (max-width: 360px) {
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .live-updates {
+    font-size: 0.7rem;
+  }
+
+  .activity-card {
+    gap: 0.6rem;
+  }
 }

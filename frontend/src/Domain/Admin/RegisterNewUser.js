@@ -1,21 +1,14 @@
-
 // src/Domain/Admin/RegisterNewUser.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../User/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
-import {
-  FaUsers,
-  FaRecycle,
-  FaTruck,
-  FaSignOutAlt,
-  FaPlus,
-} from "react-icons/fa";
-import "./AdminDashboard.css";
+import { FaPlus } from "react-icons/fa";
+import "./RegisterNewUserResponsive.css";   // ⭐ NEW RESPONSIVE CSS
 
 const RegisterNewUser = () => {
-  const { token, user, logout } = useAuth();
+  const { token, user } = useAuth();
   const navigate = useNavigate();
 
   const [showPartnerForm, setShowPartnerForm] = useState(true);
@@ -61,15 +54,14 @@ const RegisterNewUser = () => {
 
   return (
     <div className="admin-layout">
-        <AdminSidebar /> {/* Reuse the same sidebar */}
-      <main className="admin-main">
+      <AdminSidebar />
+
+      <main className="admin-main register-container">
         <h1>Welcome, {user?.username} 👋</h1>
         <p>Register new delivery partners, users, or admins below.</p>
 
-        {/* WRAPPER PANEL */}
         <div className="panel">
 
-          {/* Flex Header */}
           <div className="panel-header">
             <h2>👤 Register New Account</h2>
 
@@ -136,7 +128,7 @@ const RegisterNewUser = () => {
                 <option value="SUPER_ADMIN">Admin</option>
               </select>
 
-              <button type="submit">
+              <button type="submit" className="register-btn">
                 <FaPlus /> Register
               </button>
             </form>
@@ -148,4 +140,3 @@ const RegisterNewUser = () => {
 };
 
 export default RegisterNewUser;
-

@@ -1,0 +1,98 @@
+/* ===========================
+   CONTAINER
+=========================== */
+.allusers-container {
+  width: 100%;
+  padding: 30px;
+  margin-left: 260px;
+}
+
+@media (max-width: 900px) {
+  .allusers-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+/* ===========================
+   TABS
+=========================== */
+.tab-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tab-buttons button {
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+/* ===========================
+   PANEL
+=========================== */
+.panel {
+  margin-top: 25px;
+}
+
+.panel h2 {
+  font-size: 20px;
+}
+
+/* ===========================
+   TABLE RESPONSIVE WRAPPER
+=========================== */
+.table-container {
+  width: 100%;
+  overflow-x: auto;      /* ⭐ scrolls horizontally on mobile */
+  margin-top: 10px;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 450px;      /* ⭐ ensures structure doesn't break */
+  border-collapse: collapse;
+}
+
+/* ===========================
+   TABLE STYLING
+=========================== */
+.admin-table th,
+.admin-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8e2;
+}
+
+.admin-table th {
+  background: #e8f5e9;
+  font-weight: bold;
+}
+
+/* ===========================
+   MOBILE VIEW
+=========================== */
+@media (max-width: 600px) {
+  .admin-main h1 {
+    font-size: 22px;
+  }
+
+  .panel h2 {
+    font-size: 18px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .tab-buttons {
+    gap: 8px;
+  }
+
+  .tab-buttons button {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+}

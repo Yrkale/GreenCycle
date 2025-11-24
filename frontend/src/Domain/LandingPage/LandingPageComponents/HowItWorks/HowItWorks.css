@@ -1,27 +1,36 @@
+/* ============================
+   MAIN SECTION
+============================= */
 .how-it-works {
   display: flex;
   flex-direction: column;
   gap: 4rem;
   padding: 4rem 2rem;
-  background: #ffffff; /* White background */
-  color: #111827;      /* Dark text */
+  background: #ffffff;
+  color: #111827;
 }
 
+/* ============================
+   STEP CARD
+============================= */
 .step-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  gap: 2.5rem;
+  flex-wrap: wrap; /* ⭐ allow wrapping on mid screens */
 }
 
 .step-card.reverse {
   flex-direction: row-reverse;
 }
 
+/* ============================
+   TEXT CONTENT
+============================= */
 .step-content {
   flex: 1;
-  min-width: 280px;
+  min-width: 300px;
 }
 
 .step-header {
@@ -32,7 +41,7 @@
 }
 
 .step-icon {
-  background: #22c55e; /* Green circle */
+  background: #22c55e;
   color: white;
   padding: 0.8rem;
   border-radius: 50%;
@@ -45,35 +54,57 @@
 .step-number {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #22c55e; /* Green number */
+  color: #22c55e;
 }
 
 .step-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
   margin-bottom: 0.75rem;
-  color: #111827; /* Dark title */
+  color: #111827;
 }
 
 .step-description {
   font-size: 1rem;
   line-height: 1.6;
-  color: #374151; /* Softer gray for readability */
+  color: #374151;
 }
 
+/* ============================
+   IMAGE
+============================= */
 .step-image img {
-  width: 400px;
+  width: 420px;
   max-width: 100%;
   border-radius: 12px;
   object-fit: cover;
-  border: 1px solid #e5e7eb; /* Light border for contrast */
+  border: 1px solid #e5e7eb;
 }
 
-/* 📱 Responsive */
+/* ======================================================
+   RESPONSIVE BREAKPOINTS
+====================================================== */
+
+/* 📌 Tablet (medium screens) */
+@media (max-width: 992px) {
+  .how-it-works {
+    padding: 3rem 1.5rem;
+  }
+
+  .step-title {
+    font-size: 1.45rem;
+  }
+
+  .step-image img {
+    width: 380px;
+  }
+}
+
+/* 📌 Mobile screens */
 @media (max-width: 768px) {
   .step-card,
   .step-card.reverse {
-    flex-direction: column;
+    flex-direction: column; /* ⭐ stack vertically */
     text-align: center;
   }
 
@@ -83,7 +114,38 @@
 
   .step-image img {
     width: 100%;
-    max-width: 350px;
-    margin: 1rem auto 0;
+    max-width: 330px;
+    margin: 1.2rem auto 0;
+  }
+}
+
+/* 📌 Small mobile screens */
+@media (max-width: 480px) {
+  .step-title {
+    font-size: 1.35rem;
+  }
+
+  .step-description {
+    font-size: 0.95rem;
+  }
+
+  .step-icon {
+    padding: 0.7rem;
+    font-size: 1.1rem;
+  }
+
+  .step-image img {
+    max-width: 280px;
+  }
+}
+
+/* 📌 Extra small screens */
+@media (max-width: 360px) {
+  .step-title {
+    font-size: 1.2rem;
+  }
+
+  .step-number {
+    font-size: 1.1rem;
   }
 }

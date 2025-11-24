@@ -1,0 +1,142 @@
+/* ===========================
+   PAGE CONTAINER
+=========================== */
+.recitem-container {
+  margin-left: 260px;
+  padding: 30px;
+}
+
+@media (max-width: 900px) {
+  .recitem-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+.recitem-container h1 {
+  font-size: 28px;
+  color: #2e7d32;
+}
+
+.recitem-container p {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* ===========================
+   FORM PANEL
+=========================== */
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.product-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f7faf8;
+  font-size: 15px;
+}
+
+.add-btn {
+  background: #2e7d32;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #1b5e20;
+}
+
+/* ===========================
+   PRODUCT LIST
+=========================== */
+.product-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.product-list li {
+  display: flex;
+  justify-content: space-between;
+  background: #f9fef9;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.product-info {
+  max-width: 80%;
+}
+
+.eco-points {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.delete-btn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #c62828;
+}
+
+/* ===========================
+   RESPONSIVE DESIGN
+=========================== */
+@media (max-width: 768px) {
+  .product-list li {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-info {
+    max-width: 100%;
+  }
+
+  .add-btn,
+  .product-form input {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Smaller devices */
+@media (max-width: 480px) {
+  .recitem-container {
+    padding: 15px;
+  }
+
+  .recitem-container h1 {
+    font-size: 22px;
+  }
+
+  .product-form input {
+    padding: 9px;
+    font-size: 13px;
+  }
+
+  .add-btn {
+    padding: 9px;
+    font-size: 14px;
+  }
+
+  .product-list li {
+    padding: 12px;
+  }
+}

@@ -1,9 +1,9 @@
 /* -------------------------------------------------
-   MAIN PICKUP CONTAINER (Same Size as Product)
+   MAIN PICKUP CONTAINER
 ---------------------------------------------------*/
 .pickup-container {
   width: 100%;
-  max-width: 1100px;           /* SAME AS PRODUCT */
+  max-width: 1100px;
   margin: 0 auto 40px auto;
   padding: 32px;
   border-radius: 16px;
@@ -11,7 +11,6 @@
   box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
   transition: 0.3s ease;
   position: relative;
-  border-left: none !important; /* Remove green border */
 }
 
 .pickup-container:hover {
@@ -88,7 +87,6 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: 0.5px;
 }
 
 /* -------------------------------------------------
@@ -97,8 +95,6 @@ textarea {
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 14px;
-  margin-top: 10px;
 }
 
 .submit-btn {
@@ -110,7 +106,7 @@ textarea {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
   box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3);
 }
 
@@ -121,7 +117,7 @@ textarea {
 }
 
 /* -------------------------------------------------
-   STATUS / LOGIN MSG
+   STATUS MESSAGE
 ---------------------------------------------------*/
 .status-message {
   margin-top: 20px;
@@ -144,19 +140,11 @@ textarea {
   font-weight: 700;
   cursor: pointer;
   text-decoration: underline;
-  font-size: inherit;
   padding: 0;
 }
 
 /* -------------------------------------------------
-   REMOVE CLOSE BUTTON
----------------------------------------------------*/
-.pickup-close-btn {
-  display: none !important;
-}
-
-/* -------------------------------------------------
-   PRODUCT WRAPPER (TOP SECTION)
+   PRODUCT SECTION WRAPPER
 ---------------------------------------------------*/
 .product-section-wrapper {
   width: 100%;
@@ -166,40 +154,75 @@ textarea {
 }
 
 /* -------------------------------------------------
-   ADMIN NAVBAR (UNCHANGED)
+   RESPONSIVENESS
 ---------------------------------------------------*/
-.admin-dashboard {
-  padding-top: 60px;
+
+/* Large Tablets */
+@media (max-width: 1024px) {
+  .pickup-container {
+    padding: 28px;
+  }
+
+  .product-section-wrapper {
+    transform: scale(1.03);
+  }
 }
 
-.admin-back-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #4caf50;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Tablets */
+@media (max-width: 768px) {
+  .pickup-container {
+    padding: 22px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+
+  .product-section-wrapper {
+    transform: scale(1);
+  }
 }
 
-.admin-back-btn:hover {
-  background: #45a049;
+/* Mobile */
+@media (max-width: 480px) {
+  .pickup-container {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .submit-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  .product-section-wrapper {
+    transform: scale(0.98);
+  }
 }
 
-.navbar-right span {
-  font-size: 18px;
-  font-weight: 600;
-  color: #2e7d32;
-  margin-right: 12px;
-}
+/* Very small phones (Galaxy Fold, iPhone Mini) */
+@media (max-width: 360px) {
+  .pickup-container {
+    padding: 14px;
+  }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  .form-section-title {
+    font-size: 16px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+  }
 }

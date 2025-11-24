@@ -4,27 +4,29 @@
   padding: 20px;
   background: #fff;
   max-width: 900px;
-  margin: auto;
+  margin: 20px auto;
+  color: #333;
 }
 
 .needhelp-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  text-align: center;
 }
 
 .needhelp-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 40px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 40px;
+  align-items: center;
 }
 
 .needhelp-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-size: 15px;
-  color: #333;
 }
 
 .needhelp-icon {
@@ -32,10 +34,53 @@
   font-size: 18px;
 }
 
-/* Responsive */
+/* ================================ */
+/* RESPONSIVE DESIGN */
+/* ================================ */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .needhelp-container {
+    padding: 18px;
+  }
+
+  .needhelp-grid {
+    gap: 16px 25px;
+  }
+
+  .needhelp-item {
+    font-size: 14px;
+  }
+}
+
+/* Large phones */
 @media (max-width: 600px) {
   .needhelp-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    text-align: left;
+  }
+
+  .needhelp-item {
+    font-size: 14px;
+  }
+
+  .needhelp-title {
+    font-size: 18px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+  .needhelp-container {
+    padding: 15px;
+  }
+
+  .needhelp-item {
+    gap: 10px;
+    font-size: 13.5px;
+  }
+
+  .needhelp-icon {
+    font-size: 16px;
   }
 }

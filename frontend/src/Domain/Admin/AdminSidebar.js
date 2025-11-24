@@ -1,62 +1,86 @@
-
 // src/Domain/Admin/AdminSidebar.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../User/context/AuthContext";
 import { FaUsers, FaRecycle, FaTruck, FaSignOutAlt } from "react-icons/fa";
 import { IoAccessibility } from "react-icons/io5";
-import "./AdminDashboard.css"; // reuse the same CSS
 import { IoMdArrowDropdownCircle } from "react-icons/io";
+import "./AdminSidebarResponsive.css";  // ⭐ NEW RESPONSIVE CSS
 
 const AdminSidebar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [showUsersDropdown, setShowUsersDropdown] = useState(false);
 
-  const toggleUsersDropdown = () => {
-    setShowUsersDropdown(!showUsersDropdown);
-  };
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <aside className="admin-sidebar">
-      <h2 className="admin-logo">GreenCycle Admin</h2>
-
-      
-
-      <div className="sidebar-section">
-        <h4>Navigation</h4>
-        <ul className="admin-menu">
-          <li onClick={() => navigate("/admindashboard")}>
-            <FaUsers /> Dashboard Overview
-          </li>
-
-          <li onClick={() => navigate("/admin/manage-items")}>
-            <FaRecycle /> Manage Recyclable Items
-          </li>
-
-          <li onClick={() => navigate("/admin/register-user")}>
-            <IoAccessibility /> Register New User
-          </li>
-
-           <li onClick={() => navigate("/admin/all-users")}>
-            <IoMdArrowDropdownCircle /> Manage Users
-          </li> 
-        
-        </ul>
-      </div>
-
+    <>
+      {/* ⭐ MOBILE MENU BUTTON ⭐ */}
       <button
-        className="logout-btn"
-        onClick={() => {
-          logout();
-          navigate("/");
-        }}
+        className="admin-mobile-menu-btn"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        <FaSignOutAlt /> Logout
+        ☰
       </button>
-    </aside>
+
+      {/* ⭐ SIDEBAR ⭐ */}
+      <aside className={`admin-sidebar ${sidebarOpen ? "open" : ""}`}>
+        <h2 className="admin-logo">GreenCycle Admin</h2>
+
+        <div className="sidebar-section">
+          <h4>Navigation</h4>
+
+          <ul className="admin-menu">
+            <li
+              onClick={() => {
+                navigate("/admindashboard");
+                setSidebarOpen(false);
+              }}
+            >
+              <FaUsers /> Dashboard Overview
+            </li>
+
+            <li
+              onClick={() => {
+                navigate("/admin/manage-items");
+                setSidebarOpen(false);
+              }}
+            >
+              <FaRecycle /> Manage Recyclable Items
+            </li>
+
+            <li
+              onClick={() => {
+                navigate("/admin/register-user");
+                setSidebarOpen(false);
+              }}
+            >
+              <IoAccessibility /> Register New User
+            </li>
+
+            <li
+              onClick={() => {
+                navigate("/admin/all-users");
+                setSidebarOpen(false);
+              }}
+            >
+              <IoMdArrowDropdownCircle /> Manage Users
+            </li>
+          </ul>
+        </div>
+
+        <button
+          className="logout-btn"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
+          <FaSignOutAlt /> Logout
+        </button>
+      </aside>
+    </>
   );
 };
 
 export default AdminSidebar;
-

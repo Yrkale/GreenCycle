@@ -11,6 +11,12 @@
   font-size: 1.8rem;
   font-weight: 600;
   color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #555;
   margin-bottom: 2rem;
 }
 
@@ -53,8 +59,7 @@
 .rank-badge {
   position: absolute;
   top: 18px;
-  left: 50%;
-  transform: translateX(40px);
+  right: 18px;
   background: #ffd700;
   color: #fff;
   font-weight: 600;
@@ -64,15 +69,9 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.rank-badge.gold {
-  background-color: #f1b602;
-}
-.rank-badge.silver {
-  background-color: #bfc5ca;
-}
-.rank-badge.bronze {
-  background-color: #cd7f32;
-}
+.rank-badge.gold { background-color: #f1b602; }
+.rank-badge.silver { background-color: #bfc5ca; }
+.rank-badge.bronze { background-color: #cd7f32; }
 
 /* Texts */
 .contributor-card h3 {
@@ -103,10 +102,11 @@
 /* ⚙ Stats Section */
 .stats-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   border-top: 1px solid #eee;
   margin-top: 1rem;
   padding-top: 0.8rem;
+  gap: 1.2rem;
 }
 
 .stat-box {
@@ -120,4 +120,103 @@
   font-size: 1rem;
   color: #777;
   margin-bottom: 0.2rem;
+}
+
+/* Join Banner */
+.join-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e9f8ef;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  max-width: 650px;
+  margin: 2rem auto 0;
+}
+
+.join-banner p {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: #444;
+}
+
+.join-btn {
+  background: #29a76c;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.join-btn:hover {
+  background: #23955e;
+}
+
+/* -----------------------------------------------------
+   RESPONSIVE BREAKPOINTS
+----------------------------------------------------- */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .contributors-container h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .contributors-grid {
+    gap: 1rem;
+  }
+
+  .contributor-card {
+    width: 90%;     /* Cards expand neatly on mobile */
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .rank-badge {
+    top: 10px;
+    right: 10px;
+  }
+
+  .join-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .contributors-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .contributor-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .join-btn {
+    width: 100%; /* full width button on small phone */
+  }
+}
+
+/* Extra Small */
+@media (max-width: 360px) {
+  .contributors-container {
+    padding: 2rem 0.5rem;
+  }
+
+  .contributor-card {
+    width: 100%;
+  }
 }

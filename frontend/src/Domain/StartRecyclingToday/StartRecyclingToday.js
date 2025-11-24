@@ -1,31 +1,34 @@
+// src/StartRecyclingToday/StartRecyclingToday.js
 import React, { useState, useContext } from "react";
-import "../StartRecyclingToday/StartRecyclingToday.css";
+import "./StartRecyclingToday.css"; // Updated CSS below
 import Product from "./Components/Product/Product";
 import PickUpRequest from "./Components/PickUpRequest/PickUpRequest";
 
-import LoginRegisterModal from "../User/components/LoginRegisterModal"; 
+import LoginRegisterModal from "../User/components/LoginRegisterModal";
 import { AuthContext } from "../User/context/AuthContext";
 
 const Modal = ({ isOpen, onClose }) => {
   const { user } = useContext(AuthContext);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [showLoginModal, setShowLoginModal] = useState(false); // 🟢 LOGIN POPUP CONTROL
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-container"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        
+        {/* ❌ Close Button */}
+        <button className="close-btn" onClick={onClose}>
+          &times;
+        </button>
 
-        {/* 🟡 CASE 1: User NOT logged in */}
+        {/* If NOT logged in */}
         {!user && (
           <div className="login-warning-box">
             <p className="login-warning">
               ⚠️ Please{" "}
-              <button 
+              <button
                 className="login-link-btn"
                 onClick={() => setShowLoginModal(true)}
               >
@@ -36,21 +39,17 @@ const Modal = ({ isOpen, onClose }) => {
           </div>
         )}
 
-        {/* 🟢 CASE 2: User Logged In */}
+        {/* If LOGGED IN */}
         {user && (
-          <>
-            <div className="pickup-wrapper">
-              <PickUpRequest
-                selectedProducts={selectedProducts}
-                onClose={onClose}
-              />
-            </div>
-
-            
-          </>
+          <div className="pickup-wrapper">
+            <PickUpRequest
+              selectedProducts={selectedProducts}
+              onClose={onClose}
+            />
+          </div>
         )}
 
-        {/* 🟢 LOGIN POPUP */}
+        {/* Login Modal */}
         <LoginRegisterModal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}

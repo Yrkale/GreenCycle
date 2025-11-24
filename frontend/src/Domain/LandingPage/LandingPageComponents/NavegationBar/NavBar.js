@@ -2,70 +2,82 @@ import React, { useState } from "react";
 import "./NavBar.css";
 import LoginRegisterModal from "../../../User/components/LoginRegisterModal";
 import logo from "../../LandingPageAssets/logo.png";
-import { useAuth } from "../../../User/context/AuthContext"; 
+import { useAuth } from "../../../User/context/AuthContext";
 import { Link } from "react-router-dom";
-
- 
-
 
 function NavBar() {
   const { user, hasRole, logout } = useAuth();
 
-  console.log("👤 User in Navbar:", user);
-  console.log("🎭 Role:", user?.role);
-  console.log("🧪 Actual role:", user?.role);
-
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleMenuClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <header className="navbar">
-      {/* Left side */}
+
+      {/* LEFT */}
       <div className="navbar-left">
         <img src={logo} alt="GreenCycle Logo" className="logo" />
         <h1 className="brand">GreenCycle</h1>
       </div>
 
-      {/* Center links */}
+      {/* CENTER LINKS */}
       <nav className={`navbar-center ${menuOpen ? "active" : ""}`}>
-        <a href="#How-It-Works">How It Works</a>
-        <a href="/shop">Shop</a>
-        <a href="#impact">Impact</a>
-        <a href="#TopContributor">Contributors</a>
-        <a href="#LiveContributor">Live Feed</a>
-        <a href="#Join">Contact</a>
-        <a href="/AboutUs">About Us</a>
+        <a href="#How-It-Works" onClick={handleMenuClick}>How It Works</a>
+        <a href="/shop" onClick={handleMenuClick}>Shop</a>
+        <a href="#impact" onClick={handleMenuClick}>Impact</a>
+        <a href="#TopContributor" onClick={handleMenuClick}>Contributors</a>
+        <a href="#LiveContributor" onClick={handleMenuClick}>Live Feed</a>
+        <a href="#Join" onClick={handleMenuClick}>Contact</a>
+        <a href="/AboutUs" onClick={handleMenuClick}>About Us</a>
 
-        {/* 👤 Normal User */}
-       {hasRole("USER") && (
-  <>
-    <Link to="/MyPickUp">Schedule Pickup</Link>
-    <a href="/profile">Profile</a>
-
-  </>
-)}
-
-        {/* 🚚 Delivery Partner */}
-        {hasRole("DELIVERY_PARTNER") && (
+        {/* USER LINKS */}
+        {hasRole("USER") && (
           <>
-            <a href="/DeliveryPartnerDashboard">Dashboard</a>
-            
+            <Link to="/MyPickUp" onClick={handleMenuClick}>Schedule Pickup</Link>
+            <Link to="/profile" onClick={handleMenuClick}>Profile</Link>
           </>
         )}
 
-        {/* 🛠 Admin */}
-        {hasRole("SUPER_ADMIN") && <a href="/AdminDashboard">Admin Dashboard</a>}
+        {hasRole("DELIVERY_PARTNER") && (
+          <a href="/DeliveryPartnerDashboard" onClick={handleMenuClick}>
+            Dashboard
+          </a>
+        )}
+
+        {hasRole("SUPER_ADMIN") && (
+          <a href="/AdminDashboard" onClick={handleMenuClick}>
+            Admin Dashboard
+          </a>
+        )}
+
+        {/* MOBILE LOGOUT ONLY */}
+        {user && (
+          <button
+            className="btn ghost logout-mobile"
+            onClick={() => {
+              logout();
+              handleMenuClick();
+            }}
+          >
+            Logout
+          </button>
+        )}
       </nav>
 
-      {/* Right side */}
+      {/* RIGHT SIDE – Username always visible */}
       <div className="navbar-right">
         {user ? (
           <>
             <span className="welcome">
               👋 Hi, {user.username || user.email?.split("@")[0]}
             </span>
-            <button className="btn ghost" onClick={logout}>
+
+            {/* DESKTOP LOGOUT ONLY */}
+            <button className="btn ghost logout-desktop" onClick={logout}>
               Logout
             </button>
           </>
@@ -76,7 +88,7 @@ function NavBar() {
         )}
       </div>
 
-      {/* Hamburger menu */}
+      {/* HAMBURGER */}
       <div
         className={`hamburger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -86,7 +98,7 @@ function NavBar() {
         <span></span>
       </div>
 
-      {/* Login/Register Modal */}
+      {/* LOGIN MODAL */}
       <LoginRegisterModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

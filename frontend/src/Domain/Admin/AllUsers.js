@@ -1,8 +1,9 @@
+// src/Domain/Admin/AllUsers.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../User/context/AuthContext";
 import AdminSidebar from "./AdminSidebar";
-import "./AdminDashboard.css";
+import "./AllUsersResponsive.css";   // ⭐ NEW RESPONSIVE CSS FILE
 
 const AllUsers = () => {
   const { token } = useAuth();
@@ -47,7 +48,7 @@ const AllUsers = () => {
     <div className="admin-layout">
       <AdminSidebar />
 
-      <main className="admin-main">
+      <main className="admin-main allusers-container">
         <h1>Admin Dashboard</h1>
 
         {/* TAB BUTTONS */}
@@ -73,25 +74,27 @@ const AllUsers = () => {
             {activeTab === "users" ? "All Users" : "All Delivery Partners"}
           </h2>
 
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Username</th> {/* Correct field */}
-                <th>Email</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {(activeTab === "users" ? users : partners).map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.username}</td> {/* Fixed */}
-                  <td>{item.email}</td>
+          <div className="table-container"> {/* ⭐ scroll wrapper */}
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {(activeTab === "users" ? users : partners).map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.username}</td>
+                    <td>{item.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </div>

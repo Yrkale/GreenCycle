@@ -1,9 +1,7 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 .navbar {
-  position: fixed; /* stays fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -12,13 +10,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 40px;
-  background: #eff5ef; /* white navbar */
-  border-bottom: 1px solid #e5e7eb; /* subtle divider */
-  box-sizing: border-box;
-  transition: all 0.3s ease;
+  background: #eff5ef;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-/* Logo */
+/* LEFT */
 .navbar-left {
   display: flex;
   align-items: center;
@@ -34,11 +30,11 @@
 .brand {
   font-size: 20px;
   font-weight: bold;
-  color: #111827; /* dark brand text */
   white-space: nowrap;
+  color: #111827;
 }
 
-/* Links */
+/* CENTER */
 .navbar-center {
   display: flex;
   gap: 20px;
@@ -46,71 +42,70 @@
 }
 
 .navbar-center a {
-  color: #374151; /* dark gray */
+  color: #374151;
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;
-  transition: color 0.3s;
 }
 
 .navbar-center a:hover {
-  color: #22c55e; /* eco green hover */
+  color: #22c55e;
 }
 
-/* Buttons */
+/* RIGHT SIDE */
 .navbar-right {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
 }
 
+.welcome {
+  font-size: 15px;
+  white-space: nowrap;
+  color: #111827;
+}
+
+/* BUTTONS */
 .btn {
   padding: 8px 16px;
   border-radius: 6px;
-  border: none;
   cursor: pointer;
   font-weight: 500;
   font-size: 0.95rem;
-  transition: 0.3s ease;
-}
-
-.btn.primary {
-  background: #16a34a;
-  color: white;
-}
-
-.btn.primary:hover {
-  background: #15803d;
 }
 
 .btn.ghost {
   background: transparent;
-  color: #374151;
   border: 1px solid #d1d5db;
+  color: #374151;
 }
 
 .btn.ghost:hover {
-  color: #22c55e;
   border-color: #22c55e;
+  color: #22c55e;
 }
 
-/* Hamburger */
+/* LOGOUT VISIBILITY */
+.logout-desktop { display: inline-block; }
+.logout-mobile { display: none; }
+
+/* HAMBURGER */
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
+  width: 26px;
+  height: 20px;
   cursor: pointer;
 }
 
 .hamburger span {
   height: 3px;
-  background: #111827; /* dark bars */
+  background: #111827;
   border-radius: 2px;
   transition: 0.3s;
 }
 
-/* Animation when open */
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translateY(7px);
 }
@@ -121,124 +116,68 @@
   transform: rotate(-45deg) translateY(-7px);
 }
 
-/* ===================================================== */
-/* ✅ RESPONSIVE DESIGN */
-/* ===================================================== */
+/* =============================== */
+/* RESPONSIVE */
+/* =============================== */
 
-/* Tablets and smaller laptops */
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 14px 30px;
-  }
-
-  .brand {
-    font-size: 18px;
-  }
-
-  .navbar-center a {
-    font-size: 14px;
-  }
-
-  .btn {
-    padding: 7px 14px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Tablets and below */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 14px 24px;
-  }
 
-  /* Hide desktop menus */
+  /* HIDE LINKS + DESKTOP LOGOUT ONLY */
   .navbar-center,
-  .navbar-right {
+  .navbar-right button.logout-desktop {
     display: none;
   }
 
+  /* KEEP USERNAME ALWAYS VISIBLE */
+  .navbar-right {
+    display: flex !important;
+  }
+
   .hamburger {
     display: flex;
   }
 
-  /* Mobile dropdown menu */
+  /* MOBILE DROPDOWN */
   .navbar-center.active {
     position: absolute;
-    top: 64px;
+    top: 70px;
     left: 0;
     width: 100%;
     background: #f9fafb;
-    flex-direction: column;
-    display: flex;
-    padding: 20px;
-    gap: 12px;
     border-top: 1px solid #e5e7eb;
-    animation: dropdownFade 0.3s ease;
+    flex-direction: column;
+    padding: 20px;
+    gap: 14px;
+    display: flex;
+    animation: dropdownFade 0.25s ease;
   }
 
   .navbar-center.active a {
+    text-align: center;
     font-size: 16px;
     padding: 8px 0;
-    color: #111827;
-    text-align: center;
   }
 
-  .navbar-center.active a:hover {
-    color: #22c55e;
-  }
-
-  /* Mobile buttons below menu */
-  .navbar-right.active {
-    position: absolute;
-    top: calc(64px + 230px);
-    left: 0;
-    width: 100%;
-    background: #f9fafb;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0 20px;
-  }
-
-  .navbar-right.active .btn {
-    width: 80%;
-    max-width: 250px;
+  /* MOBILE LOGOUT */
+  .logout-mobile {
+    display: block;
+    width: 85%;
+    margin: 0 auto;
+    padding: 12px;
   }
 }
 
-/* Small mobile phones */
 @media (max-width: 480px) {
-  .navbar {
-    padding: 12px 18px;
-  }
+  .navbar { padding: 14px 18px; }
 
-  .brand {
-    font-size: 16px;
-  }
+  .logo { width: 42px; height: 42px; }
 
-  .logo {
-    width: 42px;
-    height: 42px;
-  }
+  .brand { font-size: 17px; }
 
-  .hamburger {
-    width: 22px;
-    height: 16px;
-  }
-
-  .navbar-center.active a {
-    font-size: 15px;
-  }
+  .hamburger { width: 22px; height: 16px; }
 }
 
-/* Animation */
 @keyframes dropdownFade {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

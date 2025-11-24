@@ -1,0 +1,110 @@
+/* ================================
+   SIDEBAR BASE STYLING (same theme)
+================================ */
+.admin-sidebar {
+  width: 260px;
+  background: #2e7d32;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1000;
+  transition: 0.3s ease;
+}
+
+.admin-logo {
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.sidebar-section {
+  margin-top: 10px;
+}
+
+.sidebar-section h4 {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.admin-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.admin-menu li {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transition: 0.3s ease;
+}
+
+.admin-menu li:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateX(4px);
+}
+
+/* Logout button */
+.logout-btn {
+  background: #c62828;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 10px;
+  transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
+/* ===================================
+   MOBILE MENU BUTTON
+=================================== */
+.admin-mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 299px;
+  background: #2e7d32;
+  color: white;
+  font-size: 28px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+/* ===================================
+   RESPONSIVE SIDEBAR
+=================================== */
+@media (max-width: 768px) {
+  .admin-mobile-menu-btn {
+    display: block;
+  }
+
+  .admin-sidebar {
+    width: 230px;
+    left: -230px; /* hidden */
+  }
+
+  .admin-sidebar.open {
+    left: 0; /* slide in */
+  }
+}

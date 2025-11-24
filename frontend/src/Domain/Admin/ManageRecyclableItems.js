@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../User/context/AuthContext";
-import { FaUsers, FaRecycle, FaTruck, FaSignOutAlt, FaPlus } from "react-icons/fa";
-import "./AdminDashboard.css"; // make sure your CSS file handles sidebar and main content
+// src/Domain/Admin/ManageRecItem.js
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect } from "react";
-
+import { useAuth } from "../User/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
-import { IoIosMailOpen } from "react-icons/io";
+import { FaPlus } from "react-icons/fa";
+import "./ManageRecItemResponsive.css";   // ⭐ NEW RESPONSIVE CSS FILE
 
 const ManageRecItem = () => {
-  const { user, logout } = useAuth();
   const { token } = useAuth();
   const navigate = useNavigate();
 
@@ -19,18 +16,7 @@ const ManageRecItem = () => {
   const [points, setPoints] = useState("");
   const [products, setProducts] = useState([]);
 
-  // const handleAddProduct = (e) => {
-  //   e.preventDefault();
-
-  //   const newItem = { title, description, points };
-  //   console.log("Added:", newItem);
-
-  //   setTitle("");
-  //   setDescription("");
-  //   setPoints("");
-  // };
-
-    // Add product
+  // Add product
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
@@ -48,6 +34,7 @@ const ManageRecItem = () => {
       console.error("❌ Failed:", err);
     }
   };
+
   // Delete product
   const handleDelete = async (id) => {
     try {
@@ -57,9 +44,9 @@ const ManageRecItem = () => {
       fetchProducts();
     } catch (err) {
       console.error("❌ Failed to delete:", err);
-      console.log('item id ',id)
     }
   };
+
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/recyclable-items", {
@@ -71,19 +58,23 @@ const ManageRecItem = () => {
     }
   };
 
-useEffect(() => {
-      if (token) fetchProducts();
-    }, [token]);
-return (
-    <div className="admin-layout">
-      <AdminSidebar /> {/* Reuse the same sidebar */}
+  useEffect(() => {
+    if (token) fetchProducts();
+  }, [token]);
 
-      <main className="admin-main">
+  return (
+    <div className="admin-layout">
+      <AdminSidebar />
+
+      <main className="admin-main recitem-container">
+
         <h1>Manage Recyclable Items</h1>
         <p>Add new items and set eco-points for recycling.</p>
 
+        {/* Add Item Panel */}
         <div className="panel">
           <h2>♻ Add New Recyclable Item</h2>
+
           <form className="product-form" onSubmit={handleAddProduct}>
             <input
               type="text"
@@ -92,6 +83,7 @@ return (
               onChange={(e) => setTitle(e.target.value)}
               required
             />
+
             <input
               type="text"
               placeholder="Description"
@@ -99,6 +91,7 @@ return (
               onChange={(e) => setDescription(e.target.value)}
               required
             />
+
             <input
               type="number"
               placeholder="Eco Points"
@@ -106,21 +99,22 @@ return (
               onChange={(e) => setPoints(e.target.value)}
               required
             />
-            <button type="submit">
+
+            <button type="submit" className="add-btn">
               <FaPlus /> Add Item
             </button>
           </form>
         </div>
-        
-        {/* --------------- Existing Products --------------- */}
+
+        {/* List Panel */}
         <div className="panel">
           <h2>📋 Recyclable Items</h2>
 
           <ul className="product-list">
             {products.map((p) => (
               <li key={p.id}>
-                <div>
-                  <strong>{p.title}</strong> — {p.description}  
+                <div className="product-info">
+                  <strong>{p.title}</strong> — {p.description}
                   <span className="eco-points">🌱 {p.points} pts</span>
                 </div>
 
@@ -129,12 +123,11 @@ return (
                 </button>
               </li>
             ))}
-            </ul>
-            </div>
+          </ul>
+        </div>
       </main>
-    </div>  
+    </div>
   );
 };
 
-   
 export default ManageRecItem;

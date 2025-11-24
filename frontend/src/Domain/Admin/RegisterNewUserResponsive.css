@@ -1,0 +1,141 @@
+/* ===========================
+   CONTAINER
+=========================== */
+.register-container {
+  width: 100%;
+  margin-left: 260px;
+  padding: 30px;
+}
+
+@media (max-width: 900px) {
+  .register-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+}
+
+.register-container h1 {
+  font-size: 28px;
+  color: #2e7d32;
+}
+
+.register-container p {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* ===========================
+   PANEL
+=========================== */
+.panel {
+  margin-top: 25px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  background: #2e7d32;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toggle-btn:hover {
+  background: #1b5e20;
+}
+
+.panel h2 {
+  color: #2e7d32;
+  font-size: 22px;
+}
+
+/* ===========================
+   FORM STYLING
+=========================== */
+.partner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.partner-form input,
+.partner-form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background: #f8fdf8;
+}
+
+.register-btn {
+  background: #2e7d32;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.register-btn:hover {
+  background: #1b5e20;
+}
+
+/* ===========================
+   RESPONSIVE FORM
+=========================== */
+@media (max-width: 768px) {
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .register-container h1 {
+    font-size: 22px;
+  }
+
+  .partner-form input,
+  .partner-form select {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .register-btn {
+    padding: 10px;
+  }
+
+  .toggle-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 15px;
+  }
+
+  .partner-form input,
+  .partner-form select {
+    padding: 9px;
+    font-size: 13px;
+  }
+
+  .register-btn {
+    padding: 9px;
+    font-size: 14px;
+  }
+}

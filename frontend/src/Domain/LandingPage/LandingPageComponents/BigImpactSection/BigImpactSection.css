@@ -1,6 +1,9 @@
+/* ===============================
+   MAIN SECTION
+================================*/
 .impact-section {
-  background-color: #ffffff;   /* White background */
-  color: #374151;              /* Dark gray text */
+  background-color: #ffffff;
+  color: #374151;
   text-align: center;
   padding: 80px 20px;
 
@@ -12,33 +15,40 @@
 .impact-section h2 {
   font-size: 2.5rem;
   margin-bottom: 16px;
-  color: #111827; /* Almost black for headings */
+  color: #111827;
 }
 
 .impact-section .highlight {
-  color: #22c55e; /* Green highlight */
+  color: #22c55e;
 }
 
 .impact-subtitle {
   max-width: 800px;
   margin: 0 auto 60px auto;
   font-size: 1.1rem;
-  color: #6b7280; /* Softer gray for subtitle */
+  color: #6b7280;
+  line-height: 1.6;
 }
 
+/* ===============================
+   CARDS GRID
+================================*/
 .impact-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
+/* ===============================
+   CARD DESIGN
+================================*/
 .impact-card {
-  background-color: #f9fafb; /* Light gray card bg */
+  background-color: #f9fafb;
   padding: 25px;
   border-radius: 12px;
-  border: 1px solid #e5e7eb; /* subtle border */
+  border: 1px solid #e5e7eb;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: left;
 }
@@ -53,20 +63,20 @@
   justify-content: center;
   align-items: center;
   font-size: 2.5rem;
-  color: #22c55e; /* green stays */
+  color: #22c55e;
   margin-bottom: 15px;
 }
 
 .impact-card h3 {
   font-size: 1.4rem;
   margin-bottom: 10px;
-  color: #111827; /* Dark heading */
+  color: #111827;
   text-align: center;
 }
 
 .impact-card p {
   font-size: 0.95rem;
-  color: #374151; /* darker text */
+  color: #374151;
   margin-bottom: 15px;
   text-align: center;
 }
@@ -76,14 +86,16 @@
 }
 
 .impact-card li {
-  color: #22c55e; /* Green bullets */
+  color: #22c55e;
   margin-bottom: 6px;
   font-size: 0.9rem;
 }
 
-/* ✅ RESPONSIVE STYLES */
+/* ===============================
+   RESPONSIVE BREAKPOINTS
+================================*/
 
-/* For large tablets / small laptops */
+/* 💻 Large Tablets / Small Laptops */
 @media (max-width: 1024px) {
   .impact-section {
     padding: 60px 15px;
@@ -100,17 +112,13 @@
 
   .impact-cards {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 25px;
     max-width: 800px;
   }
 }
 
-/* For tablets & mid-sized devices */
+/* 📱 Tablets */
 @media (max-width: 768px) {
-  .impact-section {
-    padding: 50px 10px;
-  }
-
   .impact-section h2 {
     font-size: 2rem;
   }
@@ -121,7 +129,7 @@
   }
 
   .impact-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   .impact-card p {
@@ -129,10 +137,10 @@
   }
 }
 
-/* For mobile phones */
+/* 📱 Mobile */
 @media (max-width: 480px) {
   .impact-section {
-    padding: 40px 10px;
+    padding: 45px 12px;
   }
 
   .impact-section h2 {
@@ -145,8 +153,8 @@
   }
 
   .impact-cards {
-    grid-template-columns: 1fr; /* single column */
-    gap: 15px;
+    grid-template-columns: 1fr; /* 1 card per row */
+    gap: 16px;
     width: 100%;
   }
 
@@ -160,10 +168,29 @@
   }
 
   .impact-card h3 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 
   .impact-card p {
     font-size: 0.9rem;
+  }
+
+  .impact-card ul {
+    padding-left: 0; /* center align list */
+  }
+}
+
+/* 📱 Extra Small Screens */
+@media (max-width: 360px) {
+  .impact-section h2 {
+    font-size: 1.55rem;
+  }
+
+  .impact-card h3 {
+    font-size: 1rem;
+  }
+
+  .impact-card p {
+    font-size: 0.85rem;
   }
 }
