@@ -1,0 +1,153 @@
+/* Main container */
+.assign-container {
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  width: 100%;
+}
+
+/* Title */
+.assign-title {
+  font-size: 26px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Grid for cards */
+.assign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+/* Card base style */
+.assign-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+  font-size: 14px;
+}
+
+.assign-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Card Title */
+.assign-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* Card subtitle */
+.assign-card-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* OTP row */
+.assign-otp-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.assign-otp-input {
+  flex: 1;
+  padding: 7px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.assign-otp-btn {
+  padding: 7px 14px;
+  background: #2f8a3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.assign-otp-btn:hover {
+  background: #256e32;
+}
+
+/* Pastel backgrounds */
+.pastel-0 { background: #f7f9fc; }
+.pastel-1 { background: #ddeafb; }
+.pastel-2 { background: #fff4cc; }
+.pastel-3 { background: #ffdcdc; }
+.pastel-4 { background: #dff6dd; }
+
+
+
+/* -----------------------------
+   RESPONSIVE BREAKPOINTS
+------------------------------ */
+
+/* Tablets (width < 900px) */
+@media (max-width: 900px) {
+  .assign-title {
+    font-size: 22px;
+  }
+
+  .assign-card {
+    padding: 14px;
+  }
+
+  .assign-card-title {
+    font-size: 17px;
+  }
+
+  .assign-otp-row {
+    flex-direction: row;
+  }
+}
+
+/* Mobile phones (width < 600px) */
+@media (max-width: 600px) {
+  .assign-container {
+    padding: 12px;
+  }
+
+  .assign-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .assign-grid {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 14px;
+  }
+
+  .assign-card {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .assign-card-title {
+    font-size: 16px;
+  }
+
+  .assign-card-subtitle {
+    font-size: 13px;
+  }
+
+  /* OTP row becomes vertical on small mobile screens */
+  .assign-otp-row {
+    flex-direction: column;
+  }
+
+  .assign-otp-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

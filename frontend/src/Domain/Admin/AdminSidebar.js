@@ -21,6 +21,8 @@ const AdminSidebar = () => {
     <aside className="admin-sidebar">
       <h2 className="admin-logo">GreenCycle Admin</h2>
 
+      
+
       <div className="sidebar-section">
         <h4>Navigation</h4>
         <ul className="admin-menu">
@@ -36,22 +38,10 @@ const AdminSidebar = () => {
             <IoAccessibility /> Register New User
           </li>
 
-          {/* Manage Users with Dropdown */}
-          <li className="dropdown">
-            <div onClick={toggleUsersDropdown} style={{ cursor: "pointer" }}>
-              <IoMdArrowDropdownCircle /> Manage Users
-            </div>
-            {showUsersDropdown && (
-              <ul className="submenu">
-                <li onClick={() => navigate("/admin/all-delivery-partners")}>
-                  All Delivery Partners
-                </li>
-                <li onClick={() => navigate("/admin/all-users")}>
-                  All Users
-                </li>
-              </ul>
-            )}
-          </li>
+           <li onClick={() => navigate("/admin/all-users")}>
+            <IoMdArrowDropdownCircle /> Manage Users
+          </li> 
+        
         </ul>
       </div>
 

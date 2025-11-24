@@ -1,0 +1,134 @@
+/* Main container */
+.pickup-container {
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  width: 100%;
+}
+
+/* Title */
+.pickup-title {
+  font-size: 26px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Grid layout */
+.pickup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+/* Card design */
+.pickup-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+  font-size: 14px;
+}
+
+.pickup-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Card title */
+.pickup-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* Subtitle */
+.pickup-card-subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Accept button */
+.pickup-accept-btn {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #2f8a3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+  width: 100%;
+}
+
+.pickup-accept-btn:hover {
+  background: #256e32;
+}
+
+/* Pastel background colors */
+.pastel-0 { background: #f7f9fc; }
+.pastel-1 { background: #ddeafb; }
+.pastel-2 { background: #fff4cc; }
+.pastel-3 { background: #ffdcdc; }
+.pastel-4 { background: #dff6dd; }
+
+
+
+/* ------------------------------------
+   RESPONSIVE BREAKPOINTS
+------------------------------------- */
+
+/* Tablets (max-width: 900px) */
+@media (max-width: 900px) {
+  .pickup-title {
+    font-size: 22px;
+  }
+
+  .pickup-card {
+    padding: 14px;
+  }
+
+  .pickup-card-title {
+    font-size: 16px;
+  }
+}
+
+/* Mobile (max-width: 600px) */
+@media (max-width: 600px) {
+  .pickup-container {
+    padding: 12px;
+  }
+
+  .pickup-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .pickup-grid {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 14px;
+  }
+
+  .pickup-card {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .pickup-card-title {
+    font-size: 16px;
+  }
+
+  .pickup-card-subtitle {
+    font-size: 13px;
+  }
+
+  .pickup-accept-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+}

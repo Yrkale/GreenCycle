@@ -96,6 +96,26 @@ public class UserController {
     }
     
     
+ // ============================================================
+ //  Get All Users
+ // ============================================================
+ @GetMapping("/all")
+ public ResponseEntity<List<User>> getAllUsers() {
+     List<User> users = userRepository.findByRole("USER");
+     return ResponseEntity.ok(users);
+ }
+
+ // ============================================================
+ // Get All Delivery Partners
+ // ============================================================
+ @GetMapping("/delivery-partners")
+ public ResponseEntity<List<User>> getAllDeliveryPartners() {
+     List<User> partners = userRepository.findByRole("DELIVERY_PARTNER");
+     return ResponseEntity.ok(partners);
+ }
+
+    
+    
     
     
     @GetMapping("/top-contributors")

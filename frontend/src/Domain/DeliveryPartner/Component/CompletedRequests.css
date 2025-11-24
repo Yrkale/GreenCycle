@@ -1,0 +1,126 @@
+/* Container */
+.completed-container {
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  width: 100%;
+}
+
+/* Title */
+.completed-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Grid layout */
+.completed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+/* Card */
+.completed-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.completed-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.completed-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.completed-card-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.completed-items ul {
+  padding-left: 18px;
+  margin-top: 5px;
+}
+
+/* Eco points */
+.eco-earned {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f7a1f;
+}
+
+/* Pastel backgrounds */
+.pastel-0 { background: #f7f9fc; }
+.pastel-1 { background: #ddeafb; }
+.pastel-2 { background: #fff4cc; }
+.pastel-3 { background: #ffdcdc; }
+.pastel-4 { background: #dff6dd; }
+
+
+
+/* -------------------------
+   RESPONSIVE BREAKPOINTS 
+----------------------------*/
+
+/* Tablets (medium devices) */
+@media (max-width: 900px) {
+  .completed-title {
+    font-size: 22px;
+  }
+
+  .completed-card {
+    padding: 14px;
+  }
+
+  .completed-card-title {
+    font-size: 17px;
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 600px) {
+  .completed-container {
+    padding: 10px;
+  }
+
+  .completed-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .completed-grid {
+    grid-template-columns: 1fr; /* single column */
+    gap: 14px;
+  }
+
+  .completed-card {
+    font-size: 13px;
+    padding: 14px;
+  }
+
+  .completed-card-title {
+    font-size: 16px;
+  }
+
+  .completed-card-subtitle {
+    font-size: 13px;
+  }
+
+  .eco-earned {
+    font-size: 14px;
+  }
+}

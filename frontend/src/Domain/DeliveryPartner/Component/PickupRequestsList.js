@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../User/context/AuthContext";
 import axios from "axios";
+import "./PickupRequestsList.css";
 
 const REFRESH_MS = 5000;
 
@@ -11,15 +12,49 @@ const PickupRequestsList = () => {
   const [loading, setLoading] = useState(true);
   const intervalRef = useRef(null);
 
+  const formatPickupTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  // Fetch username by userId
+  const fetchUserById = async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/user/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data.username;
+    } catch {
+      return "Unknown User";
+    }
+  };
+
   // Fetch all pickup requests
   const fetchAll = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/pickup-requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      //console.log("Fetched pickup requests:", res.data); // Debug
-      // ✅ Only keep pending requests
-      setRequests(res.data.filter((r) => r.status === "PENDING"));
+
+      // Only pending
+      const pending = res.data.filter((r) => r.status === "PENDING");
+
+      // Add username to each request
+      const withNames = await Promise.all(
+        pending.map(async (req) => {
+          const username = await fetchUserById(req.userId);
+          return { ...req, username };
+        })
+      );
+
+      setRequests(withNames);
     } catch (err) {
       console.error("Failed to load pickup requests", err);
     } finally {
@@ -30,53 +65,89 @@ const PickupRequestsList = () => {
   useEffect(() => {
     if (!hasRole("DELIVERY_PARTNER")) return;
 
-    fetchAll(); // initial load
+    fetchAll();
     intervalRef.current = setInterval(fetchAll, REFRESH_MS);
+
     return () => clearInterval(intervalRef.current);
   }, [token, hasRole]);
 
-  // Accept a pickup request
   const accept = async (id) => {
     try {
       await axios.put(
         `http://localhost:8080/api/pickup-requests/${id}/accept`,
         {},
         {
-          params: { partnerId: user.id }, // Assign to current partner
+          params: { partnerId: user.id },
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      fetchAll(); // reload list after accepting
+
+      fetchAll();
     } catch (err) {
-      console.error("Accept failed", err);
       alert("❌ Failed to accept request.");
     }
   };
 
-  if (!hasRole("DELIVERY_PARTNER")) {
+  if (!hasRole("DELIVERY_PARTNER"))
     return <p>❌ Access Denied. Delivery Partner role required.</p>;
-  }
 
   if (loading) return <p>Loading…</p>;
 
   return (
-    <div>
-      <h2>Available Pickup Requests</h2>
-      {requests.length === 0 ? <p>No pending requests right now.</p> : null}
-      {requests.map((req) => (
-        <div key={req.id} className="p-4 border rounded mb-2 shadow">
-          <p><strong>Address:</strong> {req.address}, {req.city}</p>
-          <p><strong>Date:</strong> {req.pickupDate}</p>
-          <p><strong>Status:</strong> {req.status}</p>
+    <div className="">
+      <h2 className="pickup-title">📦 Available Pickup Requests</h2>
 
-          <button
-            className="bg-green-600 text-white px-3 py-1 rounded"
-            onClick={() => accept(req.id)}
-          >
-            Accept
-          </button>
+      {requests.length === 0 ? (
+        <p>No pending requests right now.</p>
+      ) : (
+        <div className="pickup-grid">
+          {requests.map((req, index) => (
+            <div className={`pickup-card pastel-${index % 5}`} key={req.id}>
+              {/* CUSTOMER NAME */}
+              <h3 className="pickup-card-title">{req.username}</h3>
+
+              {/* PICKUP TIME */}
+              <h4 className="pickup-card-subtitle">
+                {formatPickupTime(req.pickupDate)}
+              </h4>
+
+              {/* ADDRESS */}
+              <p>
+                <strong>Address:</strong> {req.address}, {req.city}
+              </p>
+
+              {/* DESCRIPTION */}
+              {req.description && (
+                <p>
+                  <strong>Description:</strong> {req.description}
+                </p>
+              )}
+
+              {/* ITEMS */}
+              {req.items?.length > 0 && (
+                <div className="pickup-items">
+                  <strong>Items:</strong>
+                  <ul>
+                    {req.items.map((item) => (
+                      <li key={item.id}>
+                        {item.title} ({item.points} pts)
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* ACCEPT BUTTON */}
+              <button
+                className="pickup-accept-btn"
+                onClick={() => accept(req.id)}
+              >
+                Accept
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

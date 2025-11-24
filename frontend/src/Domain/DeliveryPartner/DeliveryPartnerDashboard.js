@@ -22,13 +22,14 @@ const DeliveryPartnerDashboard = () => {
   const { user, token, hasRole, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [sidebarOpen, setSidebarOpen] = useState(false); // ⭐ MOBILE MENU TOGGLE
+
   const [stats, setStats] = useState({
     assigned: 0,
     completed: 0,
     pending: 0,
   });
 
-  // ⭐ DEFAULT PAGE = dashboard
   const [activePage, setActivePage] = useState("dashboard");
 
   // Redirect unauthorized users
@@ -70,32 +71,16 @@ const DeliveryPartnerDashboard = () => {
 
   if (!user || !hasRole("DELIVERY_PARTNER")) return null;
 
-  // ⭐ RENDER PAGES BASED ON SIDEBAR CLICK
   const renderPage = () => {
     switch (activePage) {
       case "assigned":
-        return (
-          <div className="partner-panel">
-            
-            <MyAssignedRequests />
-          </div>
-        );
+        return <MyAssignedRequests />;
 
       case "allRequests":
-        return (
-          <div className="partner-panel">
-             
-            <PickupRequestsList />
-          </div>
-        );
+        return <PickupRequestsList />;
 
       case "completed":
-        return (
-          <div className="partner-panel">
-            
-            <CompletedRequests filter="COMPLETED" />
-          </div>
-        );
+        return <CompletedRequests filter="COMPLETED" />;
 
       case "profile":
         return (
@@ -107,36 +92,41 @@ const DeliveryPartnerDashboard = () => {
           </div>
         );
 
-      // ⭐⭐⭐ DEFAULT DASHBOARD — ONLY STATS, NOTHING ELSE
       default:
       case "dashboard":
         return (
-          <>
-            <div className="partner-stats">
-              <div className="partner-stat-card">
-                <h3>Assigned Requests</h3>
-                <p>{stats.assigned}</p>
-              </div>
-
-              <div className="partner-stat-card">
-                <h3>Completed Pickups</h3>
-                <p>{stats.completed}</p>
-              </div>
-
-              <div className="partner-stat-card">
-                <h3>Live Requests</h3>
-                <p>{stats.pending}</p>
-              </div>
+          <div className="partner-stats">
+            <div className="partner-stat-card">
+              <h3>Assigned Requests</h3>
+              <p>{stats.assigned}</p>
             </div>
-          </>
+
+            <div className="partner-stat-card">
+              <h3>Completed Pickups</h3>
+              <p>{stats.completed}</p>
+            </div>
+
+            <div className="partner-stat-card">
+              <h3>Live Requests</h3>
+              <p>{stats.pending}</p>
+            </div>
+          </div>
         );
     }
   };
 
   return (
     <>
-      {/* ======================= SIDEBAR ======================= */}
-      <div className="partner-sidebar">
+      {/* ⭐⭐ MOBILE MENU BUTTON ⭐⭐ */}
+      <button
+        className="mobile-menu-btn"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        ☰
+      </button>
+
+      {/* ⭐⭐ SIDEBAR ⭐⭐ */}
+      <div className={`partner-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div>
           <h2 className="partner-logo">🚛 Partner Panel</h2>
 
@@ -144,39 +134,53 @@ const DeliveryPartnerDashboard = () => {
             <ul>
               <li
                 className={activePage === "dashboard" ? "active" : ""}
-                onClick={() => setActivePage("dashboard")}
+                onClick={() => {
+                  setActivePage("dashboard");
+                  setSidebarOpen(false);
+                }}
               >
                 <FaHome /> Dashboard
               </li>
 
               <li
                 className={activePage === "assigned" ? "active" : ""}
-                onClick={() => setActivePage("assigned")}
+                onClick={() => {
+                  setActivePage("assigned");
+                  setSidebarOpen(false);
+                }}
               >
                 <FaTruck /> My Assigned Pickups
               </li>
 
               <li
                 className={activePage === "allRequests" ? "active" : ""}
-                onClick={() => setActivePage("allRequests")}
+                onClick={() => {
+                  setActivePage("allRequests");
+                  setSidebarOpen(false);
+                }}
               >
                 <FaClipboardList /> All Pickup Requests
               </li>
 
               <li
                 className={activePage === "completed" ? "active" : ""}
-                onClick={() => setActivePage("completed")}
+                onClick={() => {
+                  setActivePage("completed");
+                  setSidebarOpen(false);
+                }}
               >
                 <FaCheckCircle /> Completed
               </li>
 
               <li
                 className={activePage === "profile" ? "active" : ""}
-                onClick={() => setActivePage("profile")}
+                onClick={() => {
+                  setActivePage("profile");
+                  setSidebarOpen(false);
+                }}
               >
                 <FaUser /> Profile
               </li>
-
             </ul>
           </nav>
         </div>
@@ -192,7 +196,7 @@ const DeliveryPartnerDashboard = () => {
         </button>
       </div>
 
-      {/* ======================= MAIN CONTENT ======================= */}
+      {/* ⭐⭐ MAIN CONTENT ⭐⭐ */}
       <div className="partner-dashboard">
         <h1>Welcome, {user?.username} 👋</h1>
         <p>Your daily delivery summary.</p>

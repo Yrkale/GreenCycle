@@ -2,15 +2,16 @@
    GLOBAL LAYOUT
 ================================*/
 .partner-dashboard {
-  margin-left: 260px; /* make space for sidebar */
+  margin-left: 260px;
   padding: 30px;
   min-height: 100vh;
   background: #f0f7f1;
   font-family: "Poppins", sans-serif;
+  transition: 0.3s ease;
 }
 
 /* ===============================
-   SIDEBAR (FIXED)
+   SIDEBAR
 ================================*/
 .partner-sidebar {
   width: 260px;
@@ -25,6 +26,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 1000;
+  transition: 0.3s ease;
 }
 
 .partner-logo {
@@ -55,7 +58,13 @@
   transform: translateX(4px);
 }
 
-/* Logout Button */
+.partner-menu ul li.active {
+  background: #d4dcd5;
+  color: #2e7d32 !important;
+  font-weight: 600;
+}
+
+/* Logout */
 .partner-logout-btn {
   padding: 12px;
   background: #c62828;
@@ -104,17 +113,10 @@
   text-align: center;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: 0.3s ease;
-  animation: fadeInUp 0.6s ease backwards;
 }
 
 .partner-stat-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
-}
-
-.partner-stat-card h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
 }
 
 .partner-stat-card p {
@@ -133,48 +135,72 @@
   margin-top: 30px;
 }
 
-.partner-panel {
-  background: white;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+/* ===============================
+   MOBILE MENU BUTTON
+================================*/
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #2e7d32;
+  color: white;
+  font-size: 26px;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 2000;
 }
 
-.partner-panel h2 {
-  font-size: 20px;
-  color: #2e7d32;
-  margin-bottom: 15px;
+/* SHOW ONLY ON MOBILE */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    margin-left: 299px;
+    display: block;
+  }
 }
 
 /* ===============================
-   ANIMATIONS
+   RESPONSIVE
 ================================*/
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0px);
+@media (max-width: 992px) {
+  .partner-dashboard {
+    margin-left: 220px;
   }
 }
 
+@media (max-width: 768px) {
+  .partner-sidebar {
+    width: 220px;
+    left: -220px;
+  }
 
-/* Highlight active sidebar menu item */
-.partner-menu ul li.active {
-  background: #d4dcd5; /* light green */
-  color: #2e7d32 !important; /* dark green text */
-  font-weight: 600;
-  border-radius: 8px;
+  .partner-sidebar.open {
+    left: 0;
+  }
+
+  .partner-dashboard {
+    margin-left: 0 !important;
+    padding: 18px;
+  }
+
+  .partner-stats,
+  .partner-panels {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* Smooth hover + active animation */
-.partner-menu ul li {
-  transition: all 0.25s ease;
-}
+@media (max-width: 480px) {
+  .partner-dashboard {
+    padding: 12px;
+  }
 
-.partner-menu ul li:hover {
-  background: #83d1a4;
-  border-radius: 8px;
+  .partner-dashboard h1 {
+    font-size: 20px;
+  }
+
+  .partner-dashboard p {
+    font-size: 14px;
+  }
 }
